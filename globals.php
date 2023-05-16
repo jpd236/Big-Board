@@ -33,17 +33,15 @@ function preprint($arr) {
 
 // ERROR HANDLING
 
-// TODO: Find a replacement that supports PHP 8
-
-// $sentry_settings = ['environment' => 'production'];
-// if ($DEBUG) {
-// 	$sentry_settings['environment'] = 'development';
-// }
-// $sentryClient  = new Raven_Client(getenv('SENTRY_CONFIG'), $sentry_settings);
-// $error_handler = new Raven_ErrorHandler($sentryClient);
-// $error_handler->registerExceptionHandler();
-// $error_handler->registerErrorHandler();
-// $error_handler->registerShutdownFunction();
+$sentry_settings = ['environment' => 'production'];
+if ($DEBUG) {
+	$sentry_settings['environment'] = 'development';
+}
+$sentryClient  = new Raven_Client(getenv('SENTRY_CONFIG'), $sentry_settings);
+$error_handler = new Raven_ErrorHandler($sentryClient);
+$error_handler->registerExceptionHandler();
+$error_handler->registerErrorHandler();
+$error_handler->registerShutdownFunction();
 
 // TIMEZONES
 
