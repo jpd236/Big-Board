@@ -4,10 +4,6 @@ namespace Base;
 
 use \Member as ChildMember;
 use \MemberQuery as ChildMemberQuery;
-use \News as ChildNews;
-use \NewsQuery as ChildNewsQuery;
-use \Note as ChildNote;
-use \NoteQuery as ChildNoteQuery;
 use \Puzzle as ChildPuzzle;
 use \PuzzleMember as ChildPuzzleMember;
 use \PuzzleMemberQuery as ChildPuzzleMemberQuery;
@@ -15,8 +11,6 @@ use \PuzzleQuery as ChildPuzzleQuery;
 use \Exception;
 use \PDO;
 use Map\MemberTableMap;
-use Map\NewsTableMap;
-use Map\NoteTableMap;
 use Map\PuzzleMemberTableMap;
 use Map\PuzzleTableMap;
 use Propel\Runtime\Propel;
@@ -43,19 +37,21 @@ abstract class Member implements ActiveRecordInterface
 {
     /**
      * TableMap class name
+     *
+     * @var string
      */
-    const TABLE_MAP = '\\Map\\MemberTableMap';
+    public const TABLE_MAP = '\\Map\\MemberTableMap';
 
 
     /**
      * attribute to determine if this object has previously been saved.
-     * @var boolean
+     * @var bool
      */
     protected $new = true;
 
     /**
      * attribute to determine whether this object has been deleted.
-     * @var boolean
+     * @var bool
      */
     protected $deleted = false;
 
@@ -64,14 +60,14 @@ abstract class Member implements ActiveRecordInterface
      * Tracking modified columns allows us to only update modified columns.
      * @var array
      */
-    protected $modifiedColumns = array();
+    protected $modifiedColumns = [];
 
     /**
      * The (virtual) columns that are added at runtime
      * The formatters can add supplementary columns based on a resultset
      * @var array
      */
-    protected $virtualColumns = array();
+    protected $virtualColumns = [];
 
     /**
      * The value for the id field.
@@ -90,85 +86,76 @@ abstract class Member implements ActiveRecordInterface
     /**
      * The value for the google_id field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $google_id;
 
     /**
      * The value for the google_refresh field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $google_refresh;
 
     /**
      * The value for the slack_id field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $slack_id;
 
     /**
      * The value for the slack_handle field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $slack_handle;
 
     /**
      * The value for the strengths field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $strengths;
 
     /**
      * The value for the avatar field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $avatar;
 
     /**
      * The value for the phone_number field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $phone_number;
 
     /**
      * The value for the location field.
      *
-     * @var        string
+     * @var        string|null
      */
     protected $location;
 
     /**
      * @var        ObjectCollection|ChildPuzzle[] Collection to store aggregation of ChildPuzzle objects.
+     * @phpstan-var ObjectCollection&\Traversable<ChildPuzzle> Collection to store aggregation of ChildPuzzle objects.
      */
     protected $collWrangledPuzzles;
     protected $collWrangledPuzzlesPartial;
 
     /**
-     * @var        ObjectCollection|ChildNote[] Collection to store aggregation of ChildNote objects.
-     */
-    protected $collNotes;
-    protected $collNotesPartial;
-
-    /**
      * @var        ObjectCollection|ChildPuzzleMember[] Collection to store aggregation of ChildPuzzleMember objects.
+     * @phpstan-var ObjectCollection&\Traversable<ChildPuzzleMember> Collection to store aggregation of ChildPuzzleMember objects.
      */
     protected $collPuzzleMembers;
     protected $collPuzzleMembersPartial;
 
     /**
-     * @var        ObjectCollection|ChildNews[] Collection to store aggregation of ChildNews objects.
-     */
-    protected $collNews;
-    protected $collNewsPartial;
-
-    /**
      * @var        ObjectCollection|ChildPuzzle[] Cross Collection to store aggregation of ChildPuzzle objects.
+     * @phpstan-var ObjectCollection&\Traversable<ChildPuzzle> Cross Collection to store aggregation of ChildPuzzle objects.
      */
     protected $collPuzzles;
 
@@ -181,39 +168,30 @@ abstract class Member implements ActiveRecordInterface
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
-     * @var boolean
+     * @var bool
      */
     protected $alreadyInSave = false;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildPuzzle[]
+     * @phpstan-var ObjectCollection&\Traversable<ChildPuzzle>
      */
     protected $puzzlesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildPuzzle[]
+     * @phpstan-var ObjectCollection&\Traversable<ChildPuzzle>
      */
     protected $wrangledPuzzlesScheduledForDeletion = null;
 
     /**
      * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildNote[]
-     */
-    protected $notesScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildPuzzleMember[]
+     * @phpstan-var ObjectCollection&\Traversable<ChildPuzzleMember>
      */
     protected $puzzleMembersScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildNews[]
-     */
-    protected $newsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Member object.
@@ -225,9 +203,9 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Returns whether the object has been modified.
      *
-     * @return boolean True if the object has been modified.
+     * @return bool True if the object has been modified.
      */
-    public function isModified()
+    public function isModified(): bool
     {
         return !!$this->modifiedColumns;
     }
@@ -235,10 +213,10 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Has specified column been modified?
      *
-     * @param  string  $col column fully qualified name (TableMap::TYPE_COLNAME), e.g. Book::AUTHOR_ID
-     * @return boolean True if $col has been modified.
+     * @param string $col column fully qualified name (TableMap::TYPE_COLNAME), e.g. Book::AUTHOR_ID
+     * @return bool True if $col has been modified.
      */
-    public function isColumnModified($col)
+    public function isColumnModified(string $col): bool
     {
         return $this->modifiedColumns && isset($this->modifiedColumns[$col]);
     }
@@ -247,7 +225,7 @@ abstract class Member implements ActiveRecordInterface
      * Get the columns that have been modified in this object.
      * @return array A unique list of the modified column names for this object.
      */
-    public function getModifiedColumns()
+    public function getModifiedColumns(): array
     {
         return $this->modifiedColumns ? array_keys($this->modifiedColumns) : [];
     }
@@ -257,9 +235,9 @@ abstract class Member implements ActiveRecordInterface
      * be false, if the object was retrieved from storage or was created
      * and then saved.
      *
-     * @return boolean true, if the object has never been persisted.
+     * @return bool True, if the object has never been persisted.
      */
-    public function isNew()
+    public function isNew(): bool
     {
         return $this->new;
     }
@@ -268,45 +246,43 @@ abstract class Member implements ActiveRecordInterface
      * Setter for the isNew attribute.  This method will be called
      * by Propel-generated children and objects.
      *
-     * @param boolean $b the state of the object.
+     * @param bool $b the state of the object.
      */
-    public function setNew($b)
+    public function setNew(bool $b): void
     {
-        $this->new = (boolean) $b;
+        $this->new = $b;
     }
 
     /**
      * Whether this object has been deleted.
-     * @return boolean The deleted state of this object.
+     * @return bool The deleted state of this object.
      */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
         return $this->deleted;
     }
 
     /**
      * Specify whether this object has been deleted.
-     * @param  boolean $b The deleted state of this object.
+     * @param bool $b The deleted state of this object.
      * @return void
      */
-    public function setDeleted($b)
+    public function setDeleted(bool $b): void
     {
-        $this->deleted = (boolean) $b;
+        $this->deleted = $b;
     }
 
     /**
      * Sets the modified state for the object to be false.
-     * @param  string $col If supplied, only the specified column is reset.
+     * @param string $col If supplied, only the specified column is reset.
      * @return void
      */
-    public function resetModified($col = null)
+    public function resetModified(?string $col = null): void
     {
         if (null !== $col) {
-            if (isset($this->modifiedColumns[$col])) {
-                unset($this->modifiedColumns[$col]);
-            }
+            unset($this->modifiedColumns[$col]);
         } else {
-            $this->modifiedColumns = array();
+            $this->modifiedColumns = [];
         }
     }
 
@@ -315,10 +291,10 @@ abstract class Member implements ActiveRecordInterface
      * <code>obj</code> is an instance of <code>Member</code>, delegates to
      * <code>equals(Member)</code>.  Otherwise, returns <code>false</code>.
      *
-     * @param  mixed   $obj The object to compare to.
-     * @return boolean Whether equal to the object specified.
+     * @param mixed $obj The object to compare to.
+     * @return bool Whether equal to the object specified.
      */
-    public function equals($obj)
+    public function equals($obj): bool
     {
         if (!$obj instanceof static) {
             return false;
@@ -340,7 +316,7 @@ abstract class Member implements ActiveRecordInterface
      *
      * @return array
      */
-    public function getVirtualColumns()
+    public function getVirtualColumns(): array
     {
         return $this->virtualColumns;
     }
@@ -348,10 +324,10 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Checks the existence of a virtual column in this object
      *
-     * @param  string  $name The virtual column name
-     * @return boolean
+     * @param string $name The virtual column name
+     * @return bool
      */
-    public function hasVirtualColumn($name)
+    public function hasVirtualColumn(string $name): bool
     {
         return array_key_exists($name, $this->virtualColumns);
     }
@@ -359,15 +335,15 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the value of a virtual column in this object
      *
-     * @param  string $name The virtual column name
+     * @param string $name The virtual column name
      * @return mixed
      *
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function getVirtualColumn($name)
+    public function getVirtualColumn(string $name)
     {
         if (!$this->hasVirtualColumn($name)) {
-            throw new PropelException(sprintf('Cannot get value of inexistent virtual column %s.', $name));
+            throw new PropelException(sprintf('Cannot get value of nonexistent virtual column `%s`.', $name));
         }
 
         return $this->virtualColumns[$name];
@@ -376,12 +352,12 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Set the value of a virtual column in this object
      *
-     * @param string $name  The virtual column name
-     * @param mixed  $value The value to give to the virtual column
+     * @param string $name The virtual column name
+     * @param mixed $value The value to give to the virtual column
      *
-     * @return $this|Member The current object, for fluid interface
+     * @return $this The current object, for fluid interface
      */
-    public function setVirtualColumn($name, $value)
+    public function setVirtualColumn(string $name, $value)
     {
         $this->virtualColumns[$name] = $value;
 
@@ -391,13 +367,13 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Logs a message using Propel::log().
      *
-     * @param  string  $msg
-     * @param  int     $priority One of the Propel::LOG_* logging levels
-     * @return boolean
+     * @param string $msg
+     * @param int $priority One of the Propel::LOG_* logging levels
+     * @return void
      */
-    protected function log($msg, $priority = Propel::LOG_INFO)
+    protected function log(string $msg, int $priority = Propel::LOG_INFO): void
     {
-        return Propel::log(get_class($this) . ': ' . $msg, $priority);
+        Propel::log(get_class($this) . ': ' . $msg, $priority);
     }
 
     /**
@@ -408,24 +384,27 @@ abstract class Member implements ActiveRecordInterface
      *  => {"Id":9012,"Title":"Don Juan","ISBN":"0140422161","Price":12.99,"PublisherId":1234,"AuthorId":5678}');
      * </code>
      *
-     * @param  mixed   $parser                 A AbstractParser instance, or a format name ('XML', 'YAML', 'JSON', 'CSV')
-     * @param  boolean $includeLazyLoadColumns (optional) Whether to include lazy load(ed) columns. Defaults to TRUE.
-     * @return string  The exported data
+     * @param \Propel\Runtime\Parser\AbstractParser|string $parser An AbstractParser instance, or a format name ('XML', 'YAML', 'JSON', 'CSV')
+     * @param bool $includeLazyLoadColumns (optional) Whether to include lazy load(ed) columns. Defaults to TRUE.
+     * @param string $keyType (optional) One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME, TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM. Defaults to TableMap::TYPE_PHPNAME.
+     * @return string The exported data
      */
-    public function exportTo($parser, $includeLazyLoadColumns = true)
+    public function exportTo($parser, bool $includeLazyLoadColumns = true, string $keyType = TableMap::TYPE_PHPNAME): string
     {
         if (!$parser instanceof AbstractParser) {
             $parser = AbstractParser::getParser($parser);
         }
 
-        return $parser->fromArray($this->toArray(TableMap::TYPE_PHPNAME, $includeLazyLoadColumns, array(), true));
+        return $parser->fromArray($this->toArray($keyType, $includeLazyLoadColumns, array(), true));
     }
 
     /**
      * Clean up internal collections prior to serializing
      * Avoids recursive loops that turn into segmentation faults when serializing
+     *
+     * @return array<string>
      */
-    public function __sleep()
+    public function __sleep(): array
     {
         $this->clearAllReferences();
 
@@ -463,7 +442,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [google_id] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getGoogleId()
     {
@@ -473,7 +452,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [google_refresh] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getGoogleRefresh()
     {
@@ -483,7 +462,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [slack_id] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getSlackId()
     {
@@ -493,7 +472,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [slack_handle] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getSlackHandle()
     {
@@ -503,7 +482,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [strengths] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getStrengths()
     {
@@ -513,7 +492,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [avatar] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getAvatar()
     {
@@ -523,7 +502,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [phone_number] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getPhoneNumber()
     {
@@ -533,7 +512,7 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Get the [location] column value.
      *
-     * @return string
+     * @return string|null
      */
     public function getLocation()
     {
@@ -543,8 +522,8 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Set the value of [id] column.
      *
-     * @param int $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param int $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -558,13 +537,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setId()
+    }
 
     /**
      * Set the value of [full_name] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setFullName($v)
     {
@@ -578,13 +557,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setFullName()
+    }
 
     /**
      * Set the value of [google_id] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setGoogleId($v)
     {
@@ -598,13 +577,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setGoogleId()
+    }
 
     /**
      * Set the value of [google_refresh] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setGoogleRefresh($v)
     {
@@ -618,13 +597,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setGoogleRefresh()
+    }
 
     /**
      * Set the value of [slack_id] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setSlackId($v)
     {
@@ -638,13 +617,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setSlackId()
+    }
 
     /**
      * Set the value of [slack_handle] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setSlackHandle($v)
     {
@@ -658,13 +637,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setSlackHandle()
+    }
 
     /**
      * Set the value of [strengths] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setStrengths($v)
     {
@@ -678,13 +657,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setStrengths()
+    }
 
     /**
      * Set the value of [avatar] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setAvatar($v)
     {
@@ -698,13 +677,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setAvatar()
+    }
 
     /**
      * Set the value of [phone_number] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setPhoneNumber($v)
     {
@@ -718,13 +697,13 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setPhoneNumber()
+    }
 
     /**
      * Set the value of [location] column.
      *
-     * @param string $v new value
-     * @return $this|\Member The current object (for fluent API support)
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
      */
     public function setLocation($v)
     {
@@ -738,7 +717,7 @@ abstract class Member implements ActiveRecordInterface
         }
 
         return $this;
-    } // setLocation()
+    }
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -746,13 +725,13 @@ abstract class Member implements ActiveRecordInterface
      * This method can be used in conjunction with isModified() to indicate whether an object is both
      * modified _and_ has some values set which are non-default.
      *
-     * @return boolean Whether the columns in this object are only been set with default values.
+     * @return bool Whether the columns in this object are only been set with default values.
      */
-    public function hasOnlyDefaultValues()
+    public function hasOnlyDefaultValues(): bool
     {
         // otherwise, everything was equal, so return TRUE
         return true;
-    } // hasOnlyDefaultValues()
+    }
 
     /**
      * Hydrates (populates) the object variables with values from the database resultset.
@@ -762,17 +741,17 @@ abstract class Member implements ActiveRecordInterface
      * for results of JOIN queries where the resultset row includes columns from two or
      * more tables.
      *
-     * @param array   $row       The row returned by DataFetcher->fetch().
-     * @param int     $startcol  0-based offset column which indicates which restultset column to start with.
-     * @param boolean $rehydrate Whether this object is being re-hydrated from the database.
-     * @param string  $indexType The index type of $row. Mostly DataFetcher->getIndexType().
+     * @param array $row The row returned by DataFetcher->fetch().
+     * @param int $startcol 0-based offset column which indicates which resultset column to start with.
+     * @param bool $rehydrate Whether this object is being re-hydrated from the database.
+     * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                   One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                            TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @return int             next starting column
-     * @throws PropelException - Any caught Exception will be rewrapped as a PropelException.
+     * @return int next starting column
+     * @throws \Propel\Runtime\Exception\PropelException - Any caught Exception will be rewrapped as a PropelException.
      */
-    public function hydrate($row, $startcol = 0, $rehydrate = false, $indexType = TableMap::TYPE_NUM)
+    public function hydrate(array $row, int $startcol = 0, bool $rehydrate = false, string $indexType = TableMap::TYPE_NUM): int
     {
         try {
 
@@ -805,8 +784,8 @@ abstract class Member implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : MemberTableMap::translateFieldName('Location', TableMap::TYPE_PHPNAME, $indexType)];
             $this->location = (null !== $col) ? (string) $col : null;
-            $this->resetModified();
 
+            $this->resetModified();
             $this->setNew(false);
 
             if ($rehydrate) {
@@ -831,23 +810,24 @@ abstract class Member implements ActiveRecordInterface
      * the base method from the overridden method (i.e. parent::ensureConsistency()),
      * in case your model changes.
      *
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
+     * @return void
      */
-    public function ensureConsistency()
+    public function ensureConsistency(): void
     {
-    } // ensureConsistency
+    }
 
     /**
      * Reloads this object from datastore based on primary key and (optionally) resets all associated objects.
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
-     * @param      ConnectionInterface $con (optional) The ConnectionInterface connection to use.
+     * @param bool $deep (optional) Whether to also de-associated any related objects.
+     * @param ConnectionInterface $con (optional) The ConnectionInterface connection to use.
      * @return void
-     * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
+     * @throws \Propel\Runtime\Exception\PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
-    public function reload($deep = false, ConnectionInterface $con = null)
+    public function reload(bool $deep = false, ?ConnectionInterface $con = null): void
     {
         if ($this->isDeleted()) {
             throw new PropelException("Cannot reload a deleted object.");
@@ -876,11 +856,7 @@ abstract class Member implements ActiveRecordInterface
 
             $this->collWrangledPuzzles = null;
 
-            $this->collNotes = null;
-
             $this->collPuzzleMembers = null;
-
-            $this->collNews = null;
 
             $this->collPuzzles = null;
         } // if (deep)
@@ -889,13 +865,13 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param      ConnectionInterface $con
+     * @param ConnectionInterface $con
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      * @see Member::setDeleted()
      * @see Member::isDeleted()
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): void
     {
         if ($this->isDeleted()) {
             throw new PropelException("This object has already been deleted.");
@@ -925,12 +901,12 @@ abstract class Member implements ActiveRecordInterface
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param      ConnectionInterface $con
-     * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
-     * @throws PropelException
+     * @param ConnectionInterface $con
+     * @return int The number of rows affected by this insert/update and any referring fk objects' save() operations.
+     * @throws \Propel\Runtime\Exception\PropelException
      * @see doSave()
      */
-    public function save(ConnectionInterface $con = null)
+    public function save(?ConnectionInterface $con = null): int
     {
         if ($this->isDeleted()) {
             throw new PropelException("You cannot save an object that has been deleted.");
@@ -975,12 +951,12 @@ abstract class Member implements ActiveRecordInterface
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param      ConnectionInterface $con
-     * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
-     * @throws PropelException
+     * @param ConnectionInterface $con
+     * @return int The number of rows affected by this insert/update and any referring fk objects' save() operations.
+     * @throws \Propel\Runtime\Exception\PropelException
      * @see save()
      */
-    protected function doSave(ConnectionInterface $con)
+    protected function doSave(ConnectionInterface $con): int
     {
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
@@ -999,7 +975,7 @@ abstract class Member implements ActiveRecordInterface
 
             if ($this->puzzlesScheduledForDeletion !== null) {
                 if (!$this->puzzlesScheduledForDeletion->isEmpty()) {
-                    $pks = array();
+                    $pks = [];
                     foreach ($this->puzzlesScheduledForDeletion as $entry) {
                         $entryPk = [];
 
@@ -1044,24 +1020,6 @@ abstract class Member implements ActiveRecordInterface
                 }
             }
 
-            if ($this->notesScheduledForDeletion !== null) {
-                if (!$this->notesScheduledForDeletion->isEmpty()) {
-                    foreach ($this->notesScheduledForDeletion as $note) {
-                        // need to save related object because we set the relation to null
-                        $note->save($con);
-                    }
-                    $this->notesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNotes !== null) {
-                foreach ($this->collNotes as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             if ($this->puzzleMembersScheduledForDeletion !== null) {
                 if (!$this->puzzleMembersScheduledForDeletion->isEmpty()) {
                     \PuzzleMemberQuery::create()
@@ -1079,42 +1037,24 @@ abstract class Member implements ActiveRecordInterface
                 }
             }
 
-            if ($this->newsScheduledForDeletion !== null) {
-                if (!$this->newsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->newsScheduledForDeletion as $news) {
-                        // need to save related object because we set the relation to null
-                        $news->save($con);
-                    }
-                    $this->newsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNews !== null) {
-                foreach ($this->collNews as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
 
         return $affectedRows;
-    } // doSave()
+    }
 
     /**
      * Insert the row in the database.
      *
-     * @param      ConnectionInterface $con
+     * @param ConnectionInterface $con
      *
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      * @see doSave()
      */
-    protected function doInsert(ConnectionInterface $con)
+    protected function doInsert(ConnectionInterface $con): void
     {
-        $modifiedColumns = array();
+        $modifiedColumns = [];
         $index = 0;
 
         $this->modifiedColumns[MemberTableMap::COL_ID] = true;
@@ -1166,33 +1106,43 @@ abstract class Member implements ActiveRecordInterface
                 switch ($columnName) {
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+
                         break;
                     case 'full_name':
                         $stmt->bindValue($identifier, $this->full_name, PDO::PARAM_STR);
+
                         break;
                     case 'google_id':
                         $stmt->bindValue($identifier, $this->google_id, PDO::PARAM_STR);
+
                         break;
                     case 'google_refresh':
                         $stmt->bindValue($identifier, $this->google_refresh, PDO::PARAM_STR);
+
                         break;
                     case 'slack_id':
                         $stmt->bindValue($identifier, $this->slack_id, PDO::PARAM_STR);
+
                         break;
                     case 'slack_handle':
                         $stmt->bindValue($identifier, $this->slack_handle, PDO::PARAM_STR);
+
                         break;
                     case 'strengths':
                         $stmt->bindValue($identifier, $this->strengths, PDO::PARAM_STR);
+
                         break;
                     case 'avatar':
                         $stmt->bindValue($identifier, $this->avatar, PDO::PARAM_STR);
+
                         break;
                     case 'phone_number':
                         $stmt->bindValue($identifier, $this->phone_number, PDO::PARAM_STR);
+
                         break;
                     case 'location':
                         $stmt->bindValue($identifier, $this->location, PDO::PARAM_STR);
+
                         break;
                 }
             }
@@ -1215,12 +1165,12 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Update the row in the database.
      *
-     * @param      ConnectionInterface $con
+     * @param ConnectionInterface $con
      *
-     * @return Integer Number of updated rows
+     * @return int Number of updated rows
      * @see doSave()
      */
-    protected function doUpdate(ConnectionInterface $con)
+    protected function doUpdate(ConnectionInterface $con): int
     {
         $selectCriteria = $this->buildPkeyCriteria();
         $valuesCriteria = $this->buildCriteria();
@@ -1231,14 +1181,14 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param      string $name name
-     * @param      string $type The type of fieldname the $name is of:
+     * @param string $name name
+     * @param string $type The type of fieldname the $name is of:
      *                     one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                     TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                     Defaults to TableMap::TYPE_PHPNAME.
      * @return mixed Value of field.
      */
-    public function getByName($name, $type = TableMap::TYPE_PHPNAME)
+    public function getByName(string $name, string $type = TableMap::TYPE_PHPNAME)
     {
         $pos = MemberTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
@@ -1250,45 +1200,44 @@ abstract class Member implements ActiveRecordInterface
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param      int $pos position in xml schema
+     * @param int $pos Position in XML schema
      * @return mixed Value of field at $pos
      */
-    public function getByPosition($pos)
+    public function getByPosition(int $pos)
     {
         switch ($pos) {
             case 0:
                 return $this->getId();
-                break;
+
             case 1:
                 return $this->getFullName();
-                break;
+
             case 2:
                 return $this->getGoogleId();
-                break;
+
             case 3:
                 return $this->getGoogleRefresh();
-                break;
+
             case 4:
                 return $this->getSlackId();
-                break;
+
             case 5:
                 return $this->getSlackHandle();
-                break;
+
             case 6:
                 return $this->getStrengths();
-                break;
+
             case 7:
                 return $this->getAvatar();
-                break;
+
             case 8:
                 return $this->getPhoneNumber();
-                break;
+
             case 9:
                 return $this->getLocation();
-                break;
+
             default:
                 return null;
-                break;
         } // switch()
     }
 
@@ -1298,24 +1247,23 @@ abstract class Member implements ActiveRecordInterface
      * You can specify the key type of the array by passing one of the class
      * type constants.
      *
-     * @param     string  $keyType (optional) One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME,
+     * @param string $keyType (optional) One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME,
      *                    TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                    Defaults to TableMap::TYPE_PHPNAME.
-     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
-     * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
-     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
+     * @param bool $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param bool $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
-     * @return array an associative array containing the field names (as keys) and field values
+     * @return array An associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
+    public function toArray(string $keyType = TableMap::TYPE_PHPNAME, bool $includeLazyLoadColumns = true, array $alreadyDumpedObjects = [], bool $includeForeignObjects = false): array
     {
-
         if (isset($alreadyDumpedObjects['Member'][$this->hashCode()])) {
-            return '*RECURSION*';
+            return ['*RECURSION*'];
         }
         $alreadyDumpedObjects['Member'][$this->hashCode()] = true;
         $keys = MemberTableMap::getFieldNames($keyType);
-        $result = array(
+        $result = [
             $keys[0] => $this->getId(),
             $keys[1] => $this->getFullName(),
             $keys[2] => $this->getGoogleId(),
@@ -1326,7 +1274,7 @@ abstract class Member implements ActiveRecordInterface
             $keys[7] => $this->getAvatar(),
             $keys[8] => $this->getPhoneNumber(),
             $keys[9] => $this->getLocation(),
-        );
+        ];
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -1348,21 +1296,6 @@ abstract class Member implements ActiveRecordInterface
 
                 $result[$key] = $this->collWrangledPuzzles->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collNotes) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'notes';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'notes';
-                        break;
-                    default:
-                        $key = 'Notes';
-                }
-
-                $result[$key] = $this->collNotes->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
             if (null !== $this->collPuzzleMembers) {
 
                 switch ($keyType) {
@@ -1378,21 +1311,6 @@ abstract class Member implements ActiveRecordInterface
 
                 $result[$key] = $this->collPuzzleMembers->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
-            if (null !== $this->collNews) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'news';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'news';
-                        break;
-                    default:
-                        $key = 'News';
-                }
-
-                $result[$key] = $this->collNews->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
         }
 
         return $result;
@@ -1401,30 +1319,32 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param  string $name
-     * @param  mixed  $value field value
-     * @param  string $type The type of fieldname the $name is of:
+     * @param string $name
+     * @param mixed $value field value
+     * @param string $type The type of fieldname the $name is of:
      *                one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *                Defaults to TableMap::TYPE_PHPNAME.
-     * @return $this|\Member
+     * @return $this
      */
-    public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
+    public function setByName(string $name, $value, string $type = TableMap::TYPE_PHPNAME)
     {
         $pos = MemberTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
-        return $this->setByPosition($pos, $value);
+        $this->setByPosition($pos, $value);
+
+        return $this;
     }
 
     /**
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param  int $pos position in xml schema
-     * @param  mixed $value field value
-     * @return $this|\Member
+     * @param int $pos position in xml schema
+     * @param mixed $value field value
+     * @return $this
      */
-    public function setByPosition($pos, $value)
+    public function setByPosition(int $pos, $value)
     {
         switch ($pos) {
             case 0:
@@ -1475,11 +1395,11 @@ abstract class Member implements ActiveRecordInterface
      * TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      * The default key type is the column's TableMap::TYPE_PHPNAME.
      *
-     * @param      array  $arr     An array to populate the object from.
-     * @param      string $keyType The type of keys the array uses.
-     * @return void
+     * @param array $arr An array to populate the object from.
+     * @param string $keyType The type of keys the array uses.
+     * @return $this
      */
-    public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
+    public function fromArray(array $arr, string $keyType = TableMap::TYPE_PHPNAME)
     {
         $keys = MemberTableMap::getFieldNames($keyType);
 
@@ -1513,6 +1433,8 @@ abstract class Member implements ActiveRecordInterface
         if (array_key_exists($keys[9], $arr)) {
             $this->setLocation($arr[$keys[9]]);
         }
+
+        return $this;
     }
 
      /**
@@ -1532,9 +1454,9 @@ abstract class Member implements ActiveRecordInterface
      * @param string $data The source data to import from
      * @param string $keyType The type of keys the array uses.
      *
-     * @return $this|\Member The current object, for fluid interface
+     * @return $this The current object, for fluid interface
      */
-    public function importFrom($parser, $data, $keyType = TableMap::TYPE_PHPNAME)
+    public function importFrom($parser, string $data, string $keyType = TableMap::TYPE_PHPNAME)
     {
         if (!$parser instanceof AbstractParser) {
             $parser = AbstractParser::getParser($parser);
@@ -1548,9 +1470,9 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Build a Criteria object containing the values of all modified columns in this object.
      *
-     * @return Criteria The Criteria object containing all modified values.
+     * @return \Propel\Runtime\ActiveQuery\Criteria The Criteria object containing all modified values.
      */
-    public function buildCriteria()
+    public function buildCriteria(): Criteria
     {
         $criteria = new Criteria(MemberTableMap::DATABASE_NAME);
 
@@ -1592,13 +1514,13 @@ abstract class Member implements ActiveRecordInterface
      * Builds a Criteria object containing the primary key for this object.
      *
      * Unlike buildCriteria() this method includes the primary key values regardless
-     * of whether or not they have been modified.
+     * of whether they have been modified.
      *
      * @throws LogicException if no primary key is defined
      *
-     * @return Criteria The Criteria object containing value(s) for primary key(s).
+     * @return \Propel\Runtime\ActiveQuery\Criteria The Criteria object containing value(s) for primary key(s).
      */
-    public function buildPkeyCriteria()
+    public function buildPkeyCriteria(): Criteria
     {
         $criteria = ChildMemberQuery::create();
         $criteria->add(MemberTableMap::COL_ID, $this->id);
@@ -1610,7 +1532,7 @@ abstract class Member implements ActiveRecordInterface
      * If the primary key is not null, return the hashcode of the
      * primary key. Otherwise, return the hash code of the object.
      *
-     * @return int Hashcode
+     * @return int|string Hashcode
      */
     public function hashCode()
     {
@@ -1640,19 +1562,20 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param       int $key Primary key.
+     * @param int|null $key Primary key.
      * @return void
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey(?int $key = null): void
     {
         $this->setId($key);
     }
 
     /**
      * Returns true if the primary key for this object is null.
-     * @return boolean
+     *
+     * @return bool
      */
-    public function isPrimaryKeyNull()
+    public function isPrimaryKeyNull(): bool
     {
         return null === $this->getId();
     }
@@ -1663,12 +1586,13 @@ abstract class Member implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \Member (or compatible) type.
-     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
-     * @throws PropelException
+     * @param object $copyObj An object of \Member (or compatible) type.
+     * @param bool $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param bool $makeNew Whether to reset autoincrement PKs and make the object new.
+     * @throws \Propel\Runtime\Exception\PropelException
+     * @return void
      */
-    public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
+    public function copyInto(object $copyObj, bool $deepCopy = false, bool $makeNew = true): void
     {
         $copyObj->setFullName($this->getFullName());
         $copyObj->setGoogleId($this->getGoogleId());
@@ -1691,21 +1615,9 @@ abstract class Member implements ActiveRecordInterface
                 }
             }
 
-            foreach ($this->getNotes() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNote($relObj->copy($deepCopy));
-                }
-            }
-
             foreach ($this->getPuzzleMembers() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addPuzzleMember($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getNews() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNews($relObj->copy($deepCopy));
                 }
             }
 
@@ -1725,11 +1637,11 @@ abstract class Member implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param  boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param bool $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @return \Member Clone of current object.
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function copy($deepCopy = false)
+    public function copy(bool $deepCopy = false)
     {
         // we use get_class(), because this might be a subclass
         $clazz = get_class($this);
@@ -1745,25 +1657,17 @@ abstract class Member implements ActiveRecordInterface
      * Avoids crafting an 'init[$relationName]s' method name
      * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param      string $relationName The name of the relation to initialize
+     * @param string $relationName The name of the relation to initialize
      * @return void
      */
-    public function initRelation($relationName)
+    public function initRelation($relationName): void
     {
-        if ('WrangledPuzzle' == $relationName) {
+        if ('WrangledPuzzle' === $relationName) {
             $this->initWrangledPuzzles();
             return;
         }
-        if ('Note' == $relationName) {
-            $this->initNotes();
-            return;
-        }
-        if ('PuzzleMember' == $relationName) {
+        if ('PuzzleMember' === $relationName) {
             $this->initPuzzleMembers();
-            return;
-        }
-        if ('News' == $relationName) {
-            $this->initNews();
             return;
         }
     }
@@ -1774,18 +1678,22 @@ abstract class Member implements ActiveRecordInterface
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
-     * @see        addWrangledPuzzles()
+     * @return $this
+     * @see addWrangledPuzzles()
      */
     public function clearWrangledPuzzles()
     {
         $this->collWrangledPuzzles = null; // important to set this to NULL since that means it is uninitialized
+
+        return $this;
     }
 
     /**
      * Reset is the collWrangledPuzzles collection loaded partially.
+     *
+     * @return void
      */
-    public function resetPartialWrangledPuzzles($v = true)
+    public function resetPartialWrangledPuzzles($v = true): void
     {
         $this->collWrangledPuzzlesPartial = $v;
     }
@@ -1797,12 +1705,12 @@ abstract class Member implements ActiveRecordInterface
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param bool $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
      */
-    public function initWrangledPuzzles($overrideExisting = true)
+    public function initWrangledPuzzles(bool $overrideExisting = true): void
     {
         if (null !== $this->collWrangledPuzzles && !$overrideExisting) {
             return;
@@ -1823,18 +1731,28 @@ abstract class Member implements ActiveRecordInterface
      * If this ChildMember is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param ConnectionInterface $con optional connection object
      * @return ObjectCollection|ChildPuzzle[] List of ChildPuzzle objects
-     * @throws PropelException
+     * @phpstan-return ObjectCollection&\Traversable<ChildPuzzle> List of ChildPuzzle objects
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function getWrangledPuzzles(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getWrangledPuzzles(?Criteria $criteria = null, ?ConnectionInterface $con = null)
     {
         $partial = $this->collWrangledPuzzlesPartial && !$this->isNew();
-        if (null === $this->collWrangledPuzzles || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collWrangledPuzzles) {
+        if (null === $this->collWrangledPuzzles || null !== $criteria || $partial) {
+            if ($this->isNew()) {
                 // return empty collection
-                $this->initWrangledPuzzles();
+                if (null === $this->collWrangledPuzzles) {
+                    $this->initWrangledPuzzles();
+                } else {
+                    $collectionClassName = PuzzleTableMap::getTableMap()->getCollectionClassName();
+
+                    $collWrangledPuzzles = new $collectionClassName;
+                    $collWrangledPuzzles->setModel('\Puzzle');
+
+                    return $collWrangledPuzzles;
+                }
             } else {
                 $collWrangledPuzzles = ChildPuzzleQuery::create(null, $criteria)
                     ->filterByWrangler($this)
@@ -1878,11 +1796,11 @@ abstract class Member implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $wrangledPuzzles A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildMember The current object (for fluent API support)
+     * @param Collection $wrangledPuzzles A Propel collection.
+     * @param ConnectionInterface $con Optional connection object
+     * @return $this The current object (for fluent API support)
      */
-    public function setWrangledPuzzles(Collection $wrangledPuzzles, ConnectionInterface $con = null)
+    public function setWrangledPuzzles(Collection $wrangledPuzzles, ?ConnectionInterface $con = null)
     {
         /** @var ChildPuzzle[] $wrangledPuzzlesToDelete */
         $wrangledPuzzlesToDelete = $this->getWrangledPuzzles(new Criteria(), $con)->diff($wrangledPuzzles);
@@ -1908,13 +1826,13 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Returns the number of related Puzzle objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Puzzle objects.
-     * @throws PropelException
+     * @param Criteria $criteria
+     * @param bool $distinct
+     * @param ConnectionInterface $con
+     * @return int Count of related Puzzle objects.
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function countWrangledPuzzles(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countWrangledPuzzles(?Criteria $criteria = null, bool $distinct = false, ?ConnectionInterface $con = null): int
     {
         $partial = $this->collWrangledPuzzlesPartial && !$this->isNew();
         if (null === $this->collWrangledPuzzles || null !== $criteria || $partial) {
@@ -1943,8 +1861,8 @@ abstract class Member implements ActiveRecordInterface
      * Method called to associate a ChildPuzzle object to this object
      * through the ChildPuzzle foreign key attribute.
      *
-     * @param  ChildPuzzle $l ChildPuzzle
-     * @return $this|\Member The current object (for fluent API support)
+     * @param ChildPuzzle $l ChildPuzzle
+     * @return $this The current object (for fluent API support)
      */
     public function addWrangledPuzzle(ChildPuzzle $l)
     {
@@ -1967,15 +1885,15 @@ abstract class Member implements ActiveRecordInterface
     /**
      * @param ChildPuzzle $wrangledPuzzle The ChildPuzzle object to add.
      */
-    protected function doAddWrangledPuzzle(ChildPuzzle $wrangledPuzzle)
+    protected function doAddWrangledPuzzle(ChildPuzzle $wrangledPuzzle): void
     {
         $this->collWrangledPuzzles[]= $wrangledPuzzle;
         $wrangledPuzzle->setWrangler($this);
     }
 
     /**
-     * @param  ChildPuzzle $wrangledPuzzle The ChildPuzzle object to remove.
-     * @return $this|ChildMember The current object (for fluent API support)
+     * @param ChildPuzzle $wrangledPuzzle The ChildPuzzle object to remove.
+     * @return $this The current object (for fluent API support)
      */
     public function removeWrangledPuzzle(ChildPuzzle $wrangledPuzzle)
     {
@@ -1994,273 +1912,27 @@ abstract class Member implements ActiveRecordInterface
     }
 
     /**
-     * Clears out the collNotes collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addNotes()
-     */
-    public function clearNotes()
-    {
-        $this->collNotes = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collNotes collection loaded partially.
-     */
-    public function resetPartialNotes($v = true)
-    {
-        $this->collNotesPartial = $v;
-    }
-
-    /**
-     * Initializes the collNotes collection.
-     *
-     * By default this just sets the collNotes collection to an empty array (like clearcollNotes());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNotes($overrideExisting = true)
-    {
-        if (null !== $this->collNotes && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = NoteTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collNotes = new $collectionClassName;
-        $this->collNotes->setModel('\Note');
-    }
-
-    /**
-     * Gets an array of ChildNote objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildMember is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildNote[] List of ChildNote objects
-     * @throws PropelException
-     */
-    public function getNotes(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collNotesPartial && !$this->isNew();
-        if (null === $this->collNotes || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNotes) {
-                // return empty collection
-                $this->initNotes();
-            } else {
-                $collNotes = ChildNoteQuery::create(null, $criteria)
-                    ->filterByAuthor($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collNotesPartial && count($collNotes)) {
-                        $this->initNotes(false);
-
-                        foreach ($collNotes as $obj) {
-                            if (false == $this->collNotes->contains($obj)) {
-                                $this->collNotes->append($obj);
-                            }
-                        }
-
-                        $this->collNotesPartial = true;
-                    }
-
-                    return $collNotes;
-                }
-
-                if ($partial && $this->collNotes) {
-                    foreach ($this->collNotes as $obj) {
-                        if ($obj->isNew()) {
-                            $collNotes[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNotes = $collNotes;
-                $this->collNotesPartial = false;
-            }
-        }
-
-        return $this->collNotes;
-    }
-
-    /**
-     * Sets a collection of ChildNote objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $notes A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildMember The current object (for fluent API support)
-     */
-    public function setNotes(Collection $notes, ConnectionInterface $con = null)
-    {
-        /** @var ChildNote[] $notesToDelete */
-        $notesToDelete = $this->getNotes(new Criteria(), $con)->diff($notes);
-
-
-        $this->notesScheduledForDeletion = $notesToDelete;
-
-        foreach ($notesToDelete as $noteRemoved) {
-            $noteRemoved->setAuthor(null);
-        }
-
-        $this->collNotes = null;
-        foreach ($notes as $note) {
-            $this->addNote($note);
-        }
-
-        $this->collNotes = $notes;
-        $this->collNotesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Note objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Note objects.
-     * @throws PropelException
-     */
-    public function countNotes(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collNotesPartial && !$this->isNew();
-        if (null === $this->collNotes || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNotes) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getNotes());
-            }
-
-            $query = ChildNoteQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByAuthor($this)
-                ->count($con);
-        }
-
-        return count($this->collNotes);
-    }
-
-    /**
-     * Method called to associate a ChildNote object to this object
-     * through the ChildNote foreign key attribute.
-     *
-     * @param  ChildNote $l ChildNote
-     * @return $this|\Member The current object (for fluent API support)
-     */
-    public function addNote(ChildNote $l)
-    {
-        if ($this->collNotes === null) {
-            $this->initNotes();
-            $this->collNotesPartial = true;
-        }
-
-        if (!$this->collNotes->contains($l)) {
-            $this->doAddNote($l);
-
-            if ($this->notesScheduledForDeletion and $this->notesScheduledForDeletion->contains($l)) {
-                $this->notesScheduledForDeletion->remove($this->notesScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildNote $note The ChildNote object to add.
-     */
-    protected function doAddNote(ChildNote $note)
-    {
-        $this->collNotes[]= $note;
-        $note->setAuthor($this);
-    }
-
-    /**
-     * @param  ChildNote $note The ChildNote object to remove.
-     * @return $this|ChildMember The current object (for fluent API support)
-     */
-    public function removeNote(ChildNote $note)
-    {
-        if ($this->getNotes()->contains($note)) {
-            $pos = $this->collNotes->search($note);
-            $this->collNotes->remove($pos);
-            if (null === $this->notesScheduledForDeletion) {
-                $this->notesScheduledForDeletion = clone $this->collNotes;
-                $this->notesScheduledForDeletion->clear();
-            }
-            $this->notesScheduledForDeletion[]= $note;
-            $note->setAuthor(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Member is new, it will return
-     * an empty collection; or if this Member has previously
-     * been saved, it will retrieve related Notes from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Member.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildNote[] List of ChildNote objects
-     */
-    public function getNotesJoinPuzzle(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildNoteQuery::create(null, $criteria);
-        $query->joinWith('Puzzle', $joinBehavior);
-
-        return $this->getNotes($query, $con);
-    }
-
-    /**
      * Clears out the collPuzzleMembers collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return void
-     * @see        addPuzzleMembers()
+     * @return $this
+     * @see addPuzzleMembers()
      */
     public function clearPuzzleMembers()
     {
         $this->collPuzzleMembers = null; // important to set this to NULL since that means it is uninitialized
+
+        return $this;
     }
 
     /**
      * Reset is the collPuzzleMembers collection loaded partially.
+     *
+     * @return void
      */
-    public function resetPartialPuzzleMembers($v = true)
+    public function resetPartialPuzzleMembers($v = true): void
     {
         $this->collPuzzleMembersPartial = $v;
     }
@@ -2272,12 +1944,12 @@ abstract class Member implements ActiveRecordInterface
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
+     * @param bool $overrideExisting If set to true, the method call initializes
      *                                        the collection even if it is not empty
      *
      * @return void
      */
-    public function initPuzzleMembers($overrideExisting = true)
+    public function initPuzzleMembers(bool $overrideExisting = true): void
     {
         if (null !== $this->collPuzzleMembers && !$overrideExisting) {
             return;
@@ -2298,18 +1970,28 @@ abstract class Member implements ActiveRecordInterface
      * If this ChildMember is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param ConnectionInterface $con optional connection object
      * @return ObjectCollection|ChildPuzzleMember[] List of ChildPuzzleMember objects
-     * @throws PropelException
+     * @phpstan-return ObjectCollection&\Traversable<ChildPuzzleMember> List of ChildPuzzleMember objects
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function getPuzzleMembers(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getPuzzleMembers(?Criteria $criteria = null, ?ConnectionInterface $con = null)
     {
         $partial = $this->collPuzzleMembersPartial && !$this->isNew();
-        if (null === $this->collPuzzleMembers || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collPuzzleMembers) {
+        if (null === $this->collPuzzleMembers || null !== $criteria || $partial) {
+            if ($this->isNew()) {
                 // return empty collection
-                $this->initPuzzleMembers();
+                if (null === $this->collPuzzleMembers) {
+                    $this->initPuzzleMembers();
+                } else {
+                    $collectionClassName = PuzzleMemberTableMap::getTableMap()->getCollectionClassName();
+
+                    $collPuzzleMembers = new $collectionClassName;
+                    $collPuzzleMembers->setModel('\PuzzleMember');
+
+                    return $collPuzzleMembers;
+                }
             } else {
                 $collPuzzleMembers = ChildPuzzleMemberQuery::create(null, $criteria)
                     ->filterByMember($this)
@@ -2353,11 +2035,11 @@ abstract class Member implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $puzzleMembers A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildMember The current object (for fluent API support)
+     * @param Collection $puzzleMembers A Propel collection.
+     * @param ConnectionInterface $con Optional connection object
+     * @return $this The current object (for fluent API support)
      */
-    public function setPuzzleMembers(Collection $puzzleMembers, ConnectionInterface $con = null)
+    public function setPuzzleMembers(Collection $puzzleMembers, ?ConnectionInterface $con = null)
     {
         /** @var ChildPuzzleMember[] $puzzleMembersToDelete */
         $puzzleMembersToDelete = $this->getPuzzleMembers(new Criteria(), $con)->diff($puzzleMembers);
@@ -2386,13 +2068,13 @@ abstract class Member implements ActiveRecordInterface
     /**
      * Returns the number of related PuzzleMember objects.
      *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related PuzzleMember objects.
-     * @throws PropelException
+     * @param Criteria $criteria
+     * @param bool $distinct
+     * @param ConnectionInterface $con
+     * @return int Count of related PuzzleMember objects.
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function countPuzzleMembers(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countPuzzleMembers(?Criteria $criteria = null, bool $distinct = false, ?ConnectionInterface $con = null): int
     {
         $partial = $this->collPuzzleMembersPartial && !$this->isNew();
         if (null === $this->collPuzzleMembers || null !== $criteria || $partial) {
@@ -2421,8 +2103,8 @@ abstract class Member implements ActiveRecordInterface
      * Method called to associate a ChildPuzzleMember object to this object
      * through the ChildPuzzleMember foreign key attribute.
      *
-     * @param  ChildPuzzleMember $l ChildPuzzleMember
-     * @return $this|\Member The current object (for fluent API support)
+     * @param ChildPuzzleMember $l ChildPuzzleMember
+     * @return $this The current object (for fluent API support)
      */
     public function addPuzzleMember(ChildPuzzleMember $l)
     {
@@ -2445,15 +2127,15 @@ abstract class Member implements ActiveRecordInterface
     /**
      * @param ChildPuzzleMember $puzzleMember The ChildPuzzleMember object to add.
      */
-    protected function doAddPuzzleMember(ChildPuzzleMember $puzzleMember)
+    protected function doAddPuzzleMember(ChildPuzzleMember $puzzleMember): void
     {
         $this->collPuzzleMembers[]= $puzzleMember;
         $puzzleMember->setMember($this);
     }
 
     /**
-     * @param  ChildPuzzleMember $puzzleMember The ChildPuzzleMember object to remove.
-     * @return $this|ChildMember The current object (for fluent API support)
+     * @param ChildPuzzleMember $puzzleMember The ChildPuzzleMember object to remove.
+     * @return $this The current object (for fluent API support)
      */
     public function removePuzzleMember(ChildPuzzleMember $puzzleMember)
     {
@@ -2483,267 +2165,18 @@ abstract class Member implements ActiveRecordInterface
      * api reasonable.  You can provide public methods for those you
      * actually need in Member.
      *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param ConnectionInterface $con optional connection object
+     * @param string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildPuzzleMember[] List of ChildPuzzleMember objects
+     * @phpstan-return ObjectCollection&\Traversable<ChildPuzzleMember}> List of ChildPuzzleMember objects
      */
-    public function getPuzzleMembersJoinPuzzle(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getPuzzleMembersJoinPuzzle(?Criteria $criteria = null, ?ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildPuzzleMemberQuery::create(null, $criteria);
         $query->joinWith('Puzzle', $joinBehavior);
 
         return $this->getPuzzleMembers($query, $con);
-    }
-
-    /**
-     * Clears out the collNews collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addNews()
-     */
-    public function clearNews()
-    {
-        $this->collNews = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collNews collection loaded partially.
-     */
-    public function resetPartialNews($v = true)
-    {
-        $this->collNewsPartial = $v;
-    }
-
-    /**
-     * Initializes the collNews collection.
-     *
-     * By default this just sets the collNews collection to an empty array (like clearcollNews());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNews($overrideExisting = true)
-    {
-        if (null !== $this->collNews && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = NewsTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collNews = new $collectionClassName;
-        $this->collNews->setModel('\News');
-    }
-
-    /**
-     * Gets an array of ChildNews objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildMember is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildNews[] List of ChildNews objects
-     * @throws PropelException
-     */
-    public function getNews(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collNewsPartial && !$this->isNew();
-        if (null === $this->collNews || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNews) {
-                // return empty collection
-                $this->initNews();
-            } else {
-                $collNews = ChildNewsQuery::create(null, $criteria)
-                    ->filterByMember($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collNewsPartial && count($collNews)) {
-                        $this->initNews(false);
-
-                        foreach ($collNews as $obj) {
-                            if (false == $this->collNews->contains($obj)) {
-                                $this->collNews->append($obj);
-                            }
-                        }
-
-                        $this->collNewsPartial = true;
-                    }
-
-                    return $collNews;
-                }
-
-                if ($partial && $this->collNews) {
-                    foreach ($this->collNews as $obj) {
-                        if ($obj->isNew()) {
-                            $collNews[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNews = $collNews;
-                $this->collNewsPartial = false;
-            }
-        }
-
-        return $this->collNews;
-    }
-
-    /**
-     * Sets a collection of ChildNews objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $news A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildMember The current object (for fluent API support)
-     */
-    public function setNews(Collection $news, ConnectionInterface $con = null)
-    {
-        /** @var ChildNews[] $newsToDelete */
-        $newsToDelete = $this->getNews(new Criteria(), $con)->diff($news);
-
-
-        $this->newsScheduledForDeletion = $newsToDelete;
-
-        foreach ($newsToDelete as $newsRemoved) {
-            $newsRemoved->setMember(null);
-        }
-
-        $this->collNews = null;
-        foreach ($news as $news) {
-            $this->addNews($news);
-        }
-
-        $this->collNews = $news;
-        $this->collNewsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related News objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related News objects.
-     * @throws PropelException
-     */
-    public function countNews(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collNewsPartial && !$this->isNew();
-        if (null === $this->collNews || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNews) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getNews());
-            }
-
-            $query = ChildNewsQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByMember($this)
-                ->count($con);
-        }
-
-        return count($this->collNews);
-    }
-
-    /**
-     * Method called to associate a ChildNews object to this object
-     * through the ChildNews foreign key attribute.
-     *
-     * @param  ChildNews $l ChildNews
-     * @return $this|\Member The current object (for fluent API support)
-     */
-    public function addNews(ChildNews $l)
-    {
-        if ($this->collNews === null) {
-            $this->initNews();
-            $this->collNewsPartial = true;
-        }
-
-        if (!$this->collNews->contains($l)) {
-            $this->doAddNews($l);
-
-            if ($this->newsScheduledForDeletion and $this->newsScheduledForDeletion->contains($l)) {
-                $this->newsScheduledForDeletion->remove($this->newsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildNews $news The ChildNews object to add.
-     */
-    protected function doAddNews(ChildNews $news)
-    {
-        $this->collNews[]= $news;
-        $news->setMember($this);
-    }
-
-    /**
-     * @param  ChildNews $news The ChildNews object to remove.
-     * @return $this|ChildMember The current object (for fluent API support)
-     */
-    public function removeNews(ChildNews $news)
-    {
-        if ($this->getNews()->contains($news)) {
-            $pos = $this->collNews->search($news);
-            $this->collNews->remove($pos);
-            if (null === $this->newsScheduledForDeletion) {
-                $this->newsScheduledForDeletion = clone $this->collNews;
-                $this->newsScheduledForDeletion->clear();
-            }
-            $this->newsScheduledForDeletion[]= $news;
-            $news->setMember(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Member is new, it will return
-     * an empty collection; or if this Member has previously
-     * been saved, it will retrieve related News from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Member.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildNews[] List of ChildNews objects
-     */
-    public function getNewsJoinPuzzle(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildNewsQuery::create(null, $criteria);
-        $query->joinWith('Puzzle', $joinBehavior);
-
-        return $this->getNews($query, $con);
     }
 
     /**
@@ -2783,7 +2216,7 @@ abstract class Member implements ActiveRecordInterface
      *
      * @return bool
      */
-    public function isPuzzlesLoaded()
+    public function isPuzzlesLoaded(): bool
     {
         return null !== $this->collPuzzles;
     }
@@ -2798,12 +2231,13 @@ abstract class Member implements ActiveRecordInterface
      * If this ChildMember is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      ConnectionInterface $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param ConnectionInterface $con Optional connection object
      *
      * @return ObjectCollection|ChildPuzzle[] List of ChildPuzzle objects
+     * @phpstan-return ObjectCollection&\Traversable<ChildPuzzle> List of ChildPuzzle objects
      */
-    public function getPuzzles(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getPuzzles(?Criteria $criteria = null, ?ConnectionInterface $con = null)
     {
         $partial = $this->collPuzzlesPartial && !$this->isNew();
         if (null === $this->collPuzzles || null !== $criteria || $partial) {
@@ -2844,11 +2278,11 @@ abstract class Member implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param  Collection $puzzles A Propel collection.
-     * @param  ConnectionInterface $con Optional connection object
-     * @return $this|ChildMember The current object (for fluent API support)
+     * @param Collection $puzzles A Propel collection.
+     * @param ConnectionInterface $con Optional connection object
+     * @return $this The current object (for fluent API support)
      */
-    public function setPuzzles(Collection $puzzles, ConnectionInterface $con = null)
+    public function setPuzzles(Collection $puzzles, ?ConnectionInterface $con = null)
     {
         $this->clearPuzzles();
         $currentPuzzles = $this->getPuzzles();
@@ -2875,13 +2309,13 @@ abstract class Member implements ActiveRecordInterface
      * Gets the number of Puzzle objects related by a many-to-many relationship
      * to the current object by way of the solver cross-reference table.
      *
-     * @param      Criteria $criteria Optional query object to filter the query
-     * @param      boolean $distinct Set to true to force count distinct
-     * @param      ConnectionInterface $con Optional connection object
+     * @param Criteria $criteria Optional query object to filter the query
+     * @param bool $distinct Set to true to force count distinct
+     * @param ConnectionInterface $con Optional connection object
      *
-     * @return int the number of related Puzzle objects
+     * @return int The number of related Puzzle objects
      */
-    public function countPuzzles(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countPuzzles(?Criteria $criteria = null, $distinct = false, ?ConnectionInterface $con = null): int
     {
         $partial = $this->collPuzzlesPartial && !$this->isNew();
         if (null === $this->collPuzzles || null !== $criteria || $partial) {
@@ -2993,6 +2427,8 @@ abstract class Member implements ActiveRecordInterface
      * Clears the current object, sets all attributes to their default values and removes
      * outgoing references as well as back-references (from other objects to this one. Results probably in a database
      * change of those foreign objects when you call `save` there).
+     *
+     * @return $this
      */
     public function clear()
     {
@@ -3011,6 +2447,8 @@ abstract class Member implements ActiveRecordInterface
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
+
+        return $this;
     }
 
     /**
@@ -3019,9 +2457,10 @@ abstract class Member implements ActiveRecordInterface
      * This method is used to reset all php object references (not the actual reference in the database).
      * Necessary for object serialisation.
      *
-     * @param      boolean $deep Whether to also clear the references on all referrer objects.
+     * @param bool $deep Whether to also clear the references on all referrer objects.
+     * @return $this
      */
-    public function clearAllReferences($deep = false)
+    public function clearAllReferences(bool $deep = false)
     {
         if ($deep) {
             if ($this->collWrangledPuzzles) {
@@ -3029,18 +2468,8 @@ abstract class Member implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collNotes) {
-                foreach ($this->collNotes as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->collPuzzleMembers) {
                 foreach ($this->collPuzzleMembers as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collNews) {
-                foreach ($this->collNews as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -3052,10 +2481,9 @@ abstract class Member implements ActiveRecordInterface
         } // if ($deep)
 
         $this->collWrangledPuzzles = null;
-        $this->collNotes = null;
         $this->collPuzzleMembers = null;
-        $this->collNews = null;
         $this->collPuzzles = null;
+        return $this;
     }
 
     /**
@@ -3070,99 +2498,79 @@ abstract class Member implements ActiveRecordInterface
 
     /**
      * Code to be run before persisting the object
-     * @param  ConnectionInterface $con
-     * @return boolean
+     * @param ConnectionInterface|null $con
+     * @return bool
      */
-    public function preSave(ConnectionInterface $con = null)
+    public function preSave(?ConnectionInterface $con = null): bool
     {
-        if (is_callable('parent::preSave')) {
-            return parent::preSave($con);
-        }
-        return true;
+                return true;
     }
 
     /**
      * Code to be run after persisting the object
-     * @param ConnectionInterface $con
+     * @param ConnectionInterface|null $con
+     * @return void
      */
-    public function postSave(ConnectionInterface $con = null)
+    public function postSave(?ConnectionInterface $con = null): void
     {
-        if (is_callable('parent::postSave')) {
-            parent::postSave($con);
-        }
-    }
+            }
 
     /**
      * Code to be run before inserting to database
-     * @param  ConnectionInterface $con
-     * @return boolean
+     * @param ConnectionInterface|null $con
+     * @return bool
      */
-    public function preInsert(ConnectionInterface $con = null)
+    public function preInsert(?ConnectionInterface $con = null): bool
     {
-        if (is_callable('parent::preInsert')) {
-            return parent::preInsert($con);
-        }
-        return true;
+                return true;
     }
 
     /**
      * Code to be run after inserting to database
-     * @param ConnectionInterface $con
+     * @param ConnectionInterface|null $con
+     * @return void
      */
-    public function postInsert(ConnectionInterface $con = null)
+    public function postInsert(?ConnectionInterface $con = null): void
     {
-        if (is_callable('parent::postInsert')) {
-            parent::postInsert($con);
-        }
-    }
+            }
 
     /**
      * Code to be run before updating the object in database
-     * @param  ConnectionInterface $con
-     * @return boolean
+     * @param ConnectionInterface|null $con
+     * @return bool
      */
-    public function preUpdate(ConnectionInterface $con = null)
+    public function preUpdate(?ConnectionInterface $con = null): bool
     {
-        if (is_callable('parent::preUpdate')) {
-            return parent::preUpdate($con);
-        }
-        return true;
+                return true;
     }
 
     /**
      * Code to be run after updating the object in database
-     * @param ConnectionInterface $con
+     * @param ConnectionInterface|null $con
+     * @return void
      */
-    public function postUpdate(ConnectionInterface $con = null)
+    public function postUpdate(?ConnectionInterface $con = null): void
     {
-        if (is_callable('parent::postUpdate')) {
-            parent::postUpdate($con);
-        }
-    }
+            }
 
     /**
      * Code to be run before deleting the object in database
-     * @param  ConnectionInterface $con
-     * @return boolean
+     * @param ConnectionInterface|null $con
+     * @return bool
      */
-    public function preDelete(ConnectionInterface $con = null)
+    public function preDelete(?ConnectionInterface $con = null): bool
     {
-        if (is_callable('parent::preDelete')) {
-            return parent::preDelete($con);
-        }
-        return true;
+                return true;
     }
 
     /**
      * Code to be run after deleting the object in database
-     * @param ConnectionInterface $con
+     * @param ConnectionInterface|null $con
+     * @return void
      */
-    public function postDelete(ConnectionInterface $con = null)
+    public function postDelete(?ConnectionInterface $con = null): void
     {
-        if (is_callable('parent::postDelete')) {
-            parent::postDelete($con);
-        }
-    }
+            }
 
 
     /**
@@ -3172,7 +2580,7 @@ abstract class Member implements ActiveRecordInterface
      * Allows to define default __call() behavior if you overwrite __call()
      *
      * @param string $name
-     * @param mixed  $params
+     * @param mixed $params
      *
      * @return array|string
      */
@@ -3192,15 +2600,18 @@ abstract class Member implements ActiveRecordInterface
 
         if (0 === strpos($name, 'from')) {
             $format = substr($name, 4);
+            $inputData = $params[0];
+            $keyType = $params[1] ?? TableMap::TYPE_PHPNAME;
 
-            return $this->importFrom($format, reset($params));
+            return $this->importFrom($format, $inputData, $keyType);
         }
 
         if (0 === strpos($name, 'to')) {
             $format = substr($name, 2);
-            $includeLazyLoadColumns = isset($params[0]) ? $params[0] : true;
+            $includeLazyLoadColumns = $params[0] ?? true;
+            $keyType = $params[1] ?? TableMap::TYPE_PHPNAME;
 
-            return $this->exportTo($format, $includeLazyLoadColumns);
+            return $this->exportTo($format, $includeLazyLoadColumns, $keyType);
         }
 
         throw new BadMethodCallException(sprintf('Call to undefined method: %s.', $name));

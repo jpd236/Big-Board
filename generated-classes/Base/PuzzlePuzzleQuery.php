@@ -11,14 +11,13 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'relationship' table.
- *
- *
+ * Base class that represents a query for the `relationship` table.
  *
  * @method     ChildPuzzlePuzzleQuery orderByPuzzleId($order = Criteria::ASC) Order by the puzzle_id column
  * @method     ChildPuzzlePuzzleQuery orderByParentId($order = Criteria::ASC) Order by the parent_id column
@@ -54,25 +53,30 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzlePuzzleQuery rightJoinWithParent() Adds a RIGHT JOIN clause and with to the query using the Parent relation
  * @method     ChildPuzzlePuzzleQuery innerJoinWithParent() Adds a INNER JOIN clause and with to the query using the Parent relation
  *
- * @method     \PuzzleQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \PuzzleQuery|\PuzzleQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildPuzzlePuzzle findOne(ConnectionInterface $con = null) Return the first ChildPuzzlePuzzle matching the query
- * @method     ChildPuzzlePuzzle findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPuzzlePuzzle matching the query, or a new ChildPuzzlePuzzle object populated from the query conditions when no match is found
+ * @method     ChildPuzzlePuzzle|null findOne(?ConnectionInterface $con = null) Return the first ChildPuzzlePuzzle matching the query
+ * @method     ChildPuzzlePuzzle findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildPuzzlePuzzle matching the query, or a new ChildPuzzlePuzzle object populated from the query conditions when no match is found
  *
- * @method     ChildPuzzlePuzzle findOneByPuzzleId(int $puzzle_id) Return the first ChildPuzzlePuzzle filtered by the puzzle_id column
- * @method     ChildPuzzlePuzzle findOneByParentId(int $parent_id) Return the first ChildPuzzlePuzzle filtered by the parent_id column *
-
- * @method     ChildPuzzlePuzzle requirePk($key, ConnectionInterface $con = null) Return the ChildPuzzlePuzzle by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPuzzlePuzzle requireOne(ConnectionInterface $con = null) Return the first ChildPuzzlePuzzle matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzlePuzzle|null findOneByPuzzleId(int $puzzle_id) Return the first ChildPuzzlePuzzle filtered by the puzzle_id column
+ * @method     ChildPuzzlePuzzle|null findOneByParentId(int $parent_id) Return the first ChildPuzzlePuzzle filtered by the parent_id column
+ *
+ * @method     ChildPuzzlePuzzle requirePk($key, ?ConnectionInterface $con = null) Return the ChildPuzzlePuzzle by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzlePuzzle requireOne(?ConnectionInterface $con = null) Return the first ChildPuzzlePuzzle matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPuzzlePuzzle requireOneByPuzzleId(int $puzzle_id) Return the first ChildPuzzlePuzzle filtered by the puzzle_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzlePuzzle requireOneByParentId(int $parent_id) Return the first ChildPuzzlePuzzle filtered by the parent_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPuzzlePuzzle[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPuzzlePuzzle objects based on current ModelCriteria
- * @method     ChildPuzzlePuzzle[]|ObjectCollection findByPuzzleId(int $puzzle_id) Return ChildPuzzlePuzzle objects filtered by the puzzle_id column
- * @method     ChildPuzzlePuzzle[]|ObjectCollection findByParentId(int $parent_id) Return ChildPuzzlePuzzle objects filtered by the parent_id column
- * @method     ChildPuzzlePuzzle[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildPuzzlePuzzle[]|Collection find(?ConnectionInterface $con = null) Return ChildPuzzlePuzzle objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildPuzzlePuzzle> find(?ConnectionInterface $con = null) Return ChildPuzzlePuzzle objects based on current ModelCriteria
  *
+ * @method     ChildPuzzlePuzzle[]|Collection findByPuzzleId(int|array<int> $puzzle_id) Return ChildPuzzlePuzzle objects filtered by the puzzle_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzlePuzzle> findByPuzzleId(int|array<int> $puzzle_id) Return ChildPuzzlePuzzle objects filtered by the puzzle_id column
+ * @method     ChildPuzzlePuzzle[]|Collection findByParentId(int|array<int> $parent_id) Return ChildPuzzlePuzzle objects filtered by the parent_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzlePuzzle> findByParentId(int|array<int> $parent_id) Return ChildPuzzlePuzzle objects filtered by the parent_id column
+ *
+ * @method     ChildPuzzlePuzzle[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildPuzzlePuzzle> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class PuzzlePuzzleQuery extends ModelCriteria
 {
@@ -81,9 +85,9 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Initializes internal state of \Base\PuzzlePuzzleQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'palindrome', $modelName = '\\PuzzlePuzzle', $modelAlias = null)
     {
@@ -93,12 +97,12 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Returns a new ChildPuzzlePuzzleQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildPuzzlePuzzleQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildPuzzlePuzzleQuery) {
             return $criteria;
@@ -128,7 +132,7 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      *
      * @return ChildPuzzlePuzzle|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -160,8 +164,8 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -194,8 +198,8 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildPuzzlePuzzle|array|mixed the result, formatted by the current formatter
      */
@@ -215,12 +219,12 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -237,9 +241,9 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
@@ -252,14 +256,16 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
         if (empty($keys)) {
-            return $this->add(null, '1<>1', Criteria::CUSTOM);
+            $this->add(null, '1<>1', Criteria::CUSTOM);
+
+            return $this;
         }
         foreach ($keys as $key) {
             $cton0 = $this->getNewCriterion(PuzzlePuzzleTableMap::COL_PUZZLE_ID, $key[0], Criteria::EQUAL);
@@ -283,15 +289,15 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      *
      * @see       filterByChild()
      *
-     * @param     mixed $puzzleId The value to use as filter.
+     * @param mixed $puzzleId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPuzzleId($puzzleId = null, $comparison = null)
+    public function filterByPuzzleId($puzzleId = null, ?string $comparison = null)
     {
         if (is_array($puzzleId)) {
             $useMinMax = false;
@@ -311,7 +317,9 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzlePuzzleTableMap::COL_PUZZLE_ID, $puzzleId, $comparison);
+        $this->addUsingAlias(PuzzlePuzzleTableMap::COL_PUZZLE_ID, $puzzleId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -326,15 +334,15 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      *
      * @see       filterByParent()
      *
-     * @param     mixed $parentId The value to use as filter.
+     * @param mixed $parentId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByParentId($parentId = null, $comparison = null)
+    public function filterByParentId($parentId = null, ?string $comparison = null)
     {
         if (is_array($parentId)) {
             $useMinMax = false;
@@ -354,20 +362,22 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzlePuzzleTableMap::COL_PARENT_ID, $parentId, $comparison);
+        $this->addUsingAlias(PuzzlePuzzleTableMap::COL_PARENT_ID, $parentId, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \Puzzle object
      *
      * @param \Puzzle|ObjectCollection $puzzle The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByChild($puzzle, $comparison = null)
+    public function filterByChild($puzzle, ?string $comparison = null)
     {
         if ($puzzle instanceof \Puzzle) {
             return $this
@@ -377,8 +387,10 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(PuzzlePuzzleTableMap::COL_PUZZLE_ID, $puzzle->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByChild() only accepts arguments of type \Puzzle or Collection');
         }
@@ -387,12 +399,12 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Child relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinChild($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinChild(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Child');
@@ -421,9 +433,9 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \PuzzleQuery A secondary query class using the current class as primary query
      */
@@ -435,16 +447,112 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     }
 
     /**
+     * Use the Child relation Puzzle object
+     *
+     * @param callable(\PuzzleQuery):\PuzzleQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withChildQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useChildQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the Child relation to the Puzzle table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \PuzzleQuery The inner query object of the EXISTS statement
+     */
+    public function useChildExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useExistsQuery('Child', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the Child relation to the Puzzle table for a NOT EXISTS query.
+     *
+     * @see useChildExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useChildNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useExistsQuery('Child', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the Child relation to the Puzzle table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \PuzzleQuery The inner query object of the IN statement
+     */
+    public function useInChildQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useInQuery('Child', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the Child relation to the Puzzle table for a NOT IN query.
+     *
+     * @see useChildInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInChildQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useInQuery('Child', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \Puzzle object
      *
      * @param \Puzzle|ObjectCollection $puzzle The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByParent($puzzle, $comparison = null)
+    public function filterByParent($puzzle, ?string $comparison = null)
     {
         if ($puzzle instanceof \Puzzle) {
             return $this
@@ -454,8 +562,10 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(PuzzlePuzzleTableMap::COL_PARENT_ID, $puzzle->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByParent() only accepts arguments of type \Puzzle or Collection');
         }
@@ -464,12 +574,12 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Parent relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinParent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinParent(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Parent');
@@ -498,9 +608,9 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \PuzzleQuery A secondary query class using the current class as primary query
      */
@@ -512,11 +622,107 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
     }
 
     /**
+     * Use the Parent relation Puzzle object
+     *
+     * @param callable(\PuzzleQuery):\PuzzleQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withParentQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useParentQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the Parent relation to the Puzzle table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \PuzzleQuery The inner query object of the EXISTS statement
+     */
+    public function useParentExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useExistsQuery('Parent', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the Parent relation to the Puzzle table for a NOT EXISTS query.
+     *
+     * @see useParentExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useParentNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useExistsQuery('Parent', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the Parent relation to the Puzzle table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \PuzzleQuery The inner query object of the IN statement
+     */
+    public function useInParentQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useInQuery('Parent', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the Parent relation to the Puzzle table for a NOT IN query.
+     *
+     * @see useParentInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInParentQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useInQuery('Parent', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildPuzzlePuzzle $puzzlePuzzle Object to remove from the list of results
+     * @param ChildPuzzlePuzzle $puzzlePuzzle Object to remove from the list of results
      *
-     * @return $this|ChildPuzzlePuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($puzzlePuzzle = null)
     {
@@ -535,7 +741,7 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzlePuzzleTableMap::DATABASE_NAME);
@@ -560,12 +766,12 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzlePuzzleTableMap::DATABASE_NAME);
@@ -590,4 +796,4 @@ abstract class PuzzlePuzzleQuery extends ModelCriteria
         });
     }
 
-} // PuzzlePuzzleQuery
+}

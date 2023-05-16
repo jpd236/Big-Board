@@ -12,14 +12,13 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'puzzle' table.
- *
- *
+ * Base class that represents a query for the `puzzle` table.
  *
  * @method     ChildPuzzleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildPuzzleQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -31,7 +30,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleQuery orderBySlackChannelId($order = Criteria::ASC) Order by the slack_channel_id column
  * @method     ChildPuzzleQuery orderByWranglerId($order = Criteria::ASC) Order by the wrangler_id column
  * @method     ChildPuzzleQuery orderBySheetModDate($order = Criteria::ASC) Order by the sheet_mod_date column
- * @method     ChildPuzzleQuery orderByPostCount($order = Criteria::ASC) Order by the post_count column
  * @method     ChildPuzzleQuery orderBySolverCount($order = Criteria::ASC) Order by the solver_count column
  * @method     ChildPuzzleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildPuzzleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -46,7 +44,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleQuery groupBySlackChannelId() Group by the slack_channel_id column
  * @method     ChildPuzzleQuery groupByWranglerId() Group by the wrangler_id column
  * @method     ChildPuzzleQuery groupBySheetModDate() Group by the sheet_mod_date column
- * @method     ChildPuzzleQuery groupByPostCount() Group by the post_count column
  * @method     ChildPuzzleQuery groupBySolverCount() Group by the solver_count column
  * @method     ChildPuzzleQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildPuzzleQuery groupByUpdatedAt() Group by the updated_at column
@@ -68,26 +65,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleQuery leftJoinWithWrangler() Adds a LEFT JOIN clause and with to the query using the Wrangler relation
  * @method     ChildPuzzleQuery rightJoinWithWrangler() Adds a RIGHT JOIN clause and with to the query using the Wrangler relation
  * @method     ChildPuzzleQuery innerJoinWithWrangler() Adds a INNER JOIN clause and with to the query using the Wrangler relation
- *
- * @method     ChildPuzzleQuery leftJoinTagAlert($relationAlias = null) Adds a LEFT JOIN clause to the query using the TagAlert relation
- * @method     ChildPuzzleQuery rightJoinTagAlert($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TagAlert relation
- * @method     ChildPuzzleQuery innerJoinTagAlert($relationAlias = null) Adds a INNER JOIN clause to the query using the TagAlert relation
- *
- * @method     ChildPuzzleQuery joinWithTagAlert($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the TagAlert relation
- *
- * @method     ChildPuzzleQuery leftJoinWithTagAlert() Adds a LEFT JOIN clause and with to the query using the TagAlert relation
- * @method     ChildPuzzleQuery rightJoinWithTagAlert() Adds a RIGHT JOIN clause and with to the query using the TagAlert relation
- * @method     ChildPuzzleQuery innerJoinWithTagAlert() Adds a INNER JOIN clause and with to the query using the TagAlert relation
- *
- * @method     ChildPuzzleQuery leftJoinNote($relationAlias = null) Adds a LEFT JOIN clause to the query using the Note relation
- * @method     ChildPuzzleQuery rightJoinNote($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Note relation
- * @method     ChildPuzzleQuery innerJoinNote($relationAlias = null) Adds a INNER JOIN clause to the query using the Note relation
- *
- * @method     ChildPuzzleQuery joinWithNote($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Note relation
- *
- * @method     ChildPuzzleQuery leftJoinWithNote() Adds a LEFT JOIN clause and with to the query using the Note relation
- * @method     ChildPuzzleQuery rightJoinWithNote() Adds a RIGHT JOIN clause and with to the query using the Note relation
- * @method     ChildPuzzleQuery innerJoinWithNote() Adds a INNER JOIN clause and with to the query using the Note relation
  *
  * @method     ChildPuzzleQuery leftJoinPuzzleMember($relationAlias = null) Adds a LEFT JOIN clause to the query using the PuzzleMember relation
  * @method     ChildPuzzleQuery rightJoinPuzzleMember($relationAlias = null) Adds a RIGHT JOIN clause to the query using the PuzzleMember relation
@@ -119,38 +96,27 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleQuery rightJoinWithPuzzleChild() Adds a RIGHT JOIN clause and with to the query using the PuzzleChild relation
  * @method     ChildPuzzleQuery innerJoinWithPuzzleChild() Adds a INNER JOIN clause and with to the query using the PuzzleChild relation
  *
- * @method     ChildPuzzleQuery leftJoinNews($relationAlias = null) Adds a LEFT JOIN clause to the query using the News relation
- * @method     ChildPuzzleQuery rightJoinNews($relationAlias = null) Adds a RIGHT JOIN clause to the query using the News relation
- * @method     ChildPuzzleQuery innerJoinNews($relationAlias = null) Adds a INNER JOIN clause to the query using the News relation
+ * @method     \MemberQuery|\PuzzleMemberQuery|\PuzzlePuzzleQuery|\PuzzlePuzzleQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildPuzzleQuery joinWithNews($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the News relation
+ * @method     ChildPuzzle|null findOne(?ConnectionInterface $con = null) Return the first ChildPuzzle matching the query
+ * @method     ChildPuzzle findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildPuzzle matching the query, or a new ChildPuzzle object populated from the query conditions when no match is found
  *
- * @method     ChildPuzzleQuery leftJoinWithNews() Adds a LEFT JOIN clause and with to the query using the News relation
- * @method     ChildPuzzleQuery rightJoinWithNews() Adds a RIGHT JOIN clause and with to the query using the News relation
- * @method     ChildPuzzleQuery innerJoinWithNews() Adds a INNER JOIN clause and with to the query using the News relation
+ * @method     ChildPuzzle|null findOneById(int $id) Return the first ChildPuzzle filtered by the id column
+ * @method     ChildPuzzle|null findOneByTitle(string $title) Return the first ChildPuzzle filtered by the title column
+ * @method     ChildPuzzle|null findOneByUrl(string $url) Return the first ChildPuzzle filtered by the url column
+ * @method     ChildPuzzle|null findOneBySpreadsheetId(string $spreadsheet_id) Return the first ChildPuzzle filtered by the spreadsheet_id column
+ * @method     ChildPuzzle|null findOneBySolution(string $solution) Return the first ChildPuzzle filtered by the solution column
+ * @method     ChildPuzzle|null findOneByStatus(string $status) Return the first ChildPuzzle filtered by the status column
+ * @method     ChildPuzzle|null findOneBySlackChannel(string $slack_channel) Return the first ChildPuzzle filtered by the slack_channel column
+ * @method     ChildPuzzle|null findOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzle filtered by the slack_channel_id column
+ * @method     ChildPuzzle|null findOneByWranglerId(int $wrangler_id) Return the first ChildPuzzle filtered by the wrangler_id column
+ * @method     ChildPuzzle|null findOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzle filtered by the sheet_mod_date column
+ * @method     ChildPuzzle|null findOneBySolverCount(int $solver_count) Return the first ChildPuzzle filtered by the solver_count column
+ * @method     ChildPuzzle|null findOneByCreatedAt(string $created_at) Return the first ChildPuzzle filtered by the created_at column
+ * @method     ChildPuzzle|null findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzle filtered by the updated_at column
  *
- * @method     \MemberQuery|\TagAlertQuery|\NoteQuery|\PuzzleMemberQuery|\PuzzlePuzzleQuery|\NewsQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
- *
- * @method     ChildPuzzle findOne(ConnectionInterface $con = null) Return the first ChildPuzzle matching the query
- * @method     ChildPuzzle findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPuzzle matching the query, or a new ChildPuzzle object populated from the query conditions when no match is found
- *
- * @method     ChildPuzzle findOneById(int $id) Return the first ChildPuzzle filtered by the id column
- * @method     ChildPuzzle findOneByTitle(string $title) Return the first ChildPuzzle filtered by the title column
- * @method     ChildPuzzle findOneByUrl(string $url) Return the first ChildPuzzle filtered by the url column
- * @method     ChildPuzzle findOneBySpreadsheetId(string $spreadsheet_id) Return the first ChildPuzzle filtered by the spreadsheet_id column
- * @method     ChildPuzzle findOneBySolution(string $solution) Return the first ChildPuzzle filtered by the solution column
- * @method     ChildPuzzle findOneByStatus(string $status) Return the first ChildPuzzle filtered by the status column
- * @method     ChildPuzzle findOneBySlackChannel(string $slack_channel) Return the first ChildPuzzle filtered by the slack_channel column
- * @method     ChildPuzzle findOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzle filtered by the slack_channel_id column
- * @method     ChildPuzzle findOneByWranglerId(int $wrangler_id) Return the first ChildPuzzle filtered by the wrangler_id column
- * @method     ChildPuzzle findOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzle filtered by the sheet_mod_date column
- * @method     ChildPuzzle findOneByPostCount(int $post_count) Return the first ChildPuzzle filtered by the post_count column
- * @method     ChildPuzzle findOneBySolverCount(int $solver_count) Return the first ChildPuzzle filtered by the solver_count column
- * @method     ChildPuzzle findOneByCreatedAt(string $created_at) Return the first ChildPuzzle filtered by the created_at column
- * @method     ChildPuzzle findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzle filtered by the updated_at column *
-
- * @method     ChildPuzzle requirePk($key, ConnectionInterface $con = null) Return the ChildPuzzle by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPuzzle requireOne(ConnectionInterface $con = null) Return the first ChildPuzzle matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzle requirePk($key, ?ConnectionInterface $con = null) Return the ChildPuzzle by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzle requireOne(?ConnectionInterface $con = null) Return the first ChildPuzzle matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPuzzle requireOneById(int $id) Return the first ChildPuzzle filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneByTitle(string $title) Return the first ChildPuzzle filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -162,42 +128,56 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzle requireOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzle filtered by the slack_channel_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneByWranglerId(int $wrangler_id) Return the first ChildPuzzle filtered by the wrangler_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzle filtered by the sheet_mod_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPuzzle requireOneByPostCount(int $post_count) Return the first ChildPuzzle filtered by the post_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneBySolverCount(int $solver_count) Return the first ChildPuzzle filtered by the solver_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneByCreatedAt(string $created_at) Return the first ChildPuzzle filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneByUpdatedAt(string $updated_at) Return the first ChildPuzzle filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPuzzle[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPuzzle objects based on current ModelCriteria
- * @method     ChildPuzzle[]|ObjectCollection findById(int $id) Return ChildPuzzle objects filtered by the id column
- * @method     ChildPuzzle[]|ObjectCollection findByTitle(string $title) Return ChildPuzzle objects filtered by the title column
- * @method     ChildPuzzle[]|ObjectCollection findByUrl(string $url) Return ChildPuzzle objects filtered by the url column
- * @method     ChildPuzzle[]|ObjectCollection findBySpreadsheetId(string $spreadsheet_id) Return ChildPuzzle objects filtered by the spreadsheet_id column
- * @method     ChildPuzzle[]|ObjectCollection findBySolution(string $solution) Return ChildPuzzle objects filtered by the solution column
- * @method     ChildPuzzle[]|ObjectCollection findByStatus(string $status) Return ChildPuzzle objects filtered by the status column
- * @method     ChildPuzzle[]|ObjectCollection findBySlackChannel(string $slack_channel) Return ChildPuzzle objects filtered by the slack_channel column
- * @method     ChildPuzzle[]|ObjectCollection findBySlackChannelId(string $slack_channel_id) Return ChildPuzzle objects filtered by the slack_channel_id column
- * @method     ChildPuzzle[]|ObjectCollection findByWranglerId(int $wrangler_id) Return ChildPuzzle objects filtered by the wrangler_id column
- * @method     ChildPuzzle[]|ObjectCollection findBySheetModDate(string $sheet_mod_date) Return ChildPuzzle objects filtered by the sheet_mod_date column
- * @method     ChildPuzzle[]|ObjectCollection findByPostCount(int $post_count) Return ChildPuzzle objects filtered by the post_count column
- * @method     ChildPuzzle[]|ObjectCollection findBySolverCount(int $solver_count) Return ChildPuzzle objects filtered by the solver_count column
- * @method     ChildPuzzle[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildPuzzle objects filtered by the created_at column
- * @method     ChildPuzzle[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildPuzzle objects filtered by the updated_at column
- * @method     ChildPuzzle[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildPuzzle[]|Collection find(?ConnectionInterface $con = null) Return ChildPuzzle objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildPuzzle> find(?ConnectionInterface $con = null) Return ChildPuzzle objects based on current ModelCriteria
  *
+ * @method     ChildPuzzle[]|Collection findById(int|array<int> $id) Return ChildPuzzle objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findById(int|array<int> $id) Return ChildPuzzle objects filtered by the id column
+ * @method     ChildPuzzle[]|Collection findByTitle(string|array<string> $title) Return ChildPuzzle objects filtered by the title column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByTitle(string|array<string> $title) Return ChildPuzzle objects filtered by the title column
+ * @method     ChildPuzzle[]|Collection findByUrl(string|array<string> $url) Return ChildPuzzle objects filtered by the url column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByUrl(string|array<string> $url) Return ChildPuzzle objects filtered by the url column
+ * @method     ChildPuzzle[]|Collection findBySpreadsheetId(string|array<string> $spreadsheet_id) Return ChildPuzzle objects filtered by the spreadsheet_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findBySpreadsheetId(string|array<string> $spreadsheet_id) Return ChildPuzzle objects filtered by the spreadsheet_id column
+ * @method     ChildPuzzle[]|Collection findBySolution(string|array<string> $solution) Return ChildPuzzle objects filtered by the solution column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findBySolution(string|array<string> $solution) Return ChildPuzzle objects filtered by the solution column
+ * @method     ChildPuzzle[]|Collection findByStatus(string|array<string> $status) Return ChildPuzzle objects filtered by the status column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByStatus(string|array<string> $status) Return ChildPuzzle objects filtered by the status column
+ * @method     ChildPuzzle[]|Collection findBySlackChannel(string|array<string> $slack_channel) Return ChildPuzzle objects filtered by the slack_channel column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findBySlackChannel(string|array<string> $slack_channel) Return ChildPuzzle objects filtered by the slack_channel column
+ * @method     ChildPuzzle[]|Collection findBySlackChannelId(string|array<string> $slack_channel_id) Return ChildPuzzle objects filtered by the slack_channel_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findBySlackChannelId(string|array<string> $slack_channel_id) Return ChildPuzzle objects filtered by the slack_channel_id column
+ * @method     ChildPuzzle[]|Collection findByWranglerId(int|array<int> $wrangler_id) Return ChildPuzzle objects filtered by the wrangler_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByWranglerId(int|array<int> $wrangler_id) Return ChildPuzzle objects filtered by the wrangler_id column
+ * @method     ChildPuzzle[]|Collection findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzle objects filtered by the sheet_mod_date column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzle objects filtered by the sheet_mod_date column
+ * @method     ChildPuzzle[]|Collection findBySolverCount(int|array<int> $solver_count) Return ChildPuzzle objects filtered by the solver_count column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findBySolverCount(int|array<int> $solver_count) Return ChildPuzzle objects filtered by the solver_count column
+ * @method     ChildPuzzle[]|Collection findByCreatedAt(string|array<string> $created_at) Return ChildPuzzle objects filtered by the created_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByCreatedAt(string|array<string> $created_at) Return ChildPuzzle objects filtered by the created_at column
+ * @method     ChildPuzzle[]|Collection findByUpdatedAt(string|array<string> $updated_at) Return ChildPuzzle objects filtered by the updated_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByUpdatedAt(string|array<string> $updated_at) Return ChildPuzzle objects filtered by the updated_at column
+ *
+ * @method     ChildPuzzle[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildPuzzle> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class PuzzleQuery extends ModelCriteria
 {
 
     // archivable behavior
     protected $archiveOnDelete = true;
-protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
+    protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
      * Initializes internal state of \Base\PuzzleQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'palindrome', $modelName = '\\Puzzle', $modelAlias = null)
     {
@@ -207,12 +187,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Returns a new ChildPuzzleQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildPuzzleQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildPuzzleQuery) {
             return $criteria;
@@ -242,7 +222,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @return ChildPuzzle|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -274,8 +254,8 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -283,7 +263,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, post_count, solver_count, created_at, updated_at FROM puzzle WHERE id = :p0';
+        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, solver_count, created_at, updated_at FROM puzzle WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -307,8 +287,8 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildPuzzle|array|mixed the result, formatted by the current formatter
      */
@@ -328,12 +308,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -350,27 +330,31 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_ID, $key, Criteria::EQUAL);
+        $this->addUsingAlias(PuzzleTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_ID, $keys, Criteria::IN);
+        $this->addUsingAlias(PuzzleTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -383,15 +367,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -411,7 +395,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -421,14 +407,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
      * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE title LIKE '%fooValue%'
+     * $query->filterByTitle(['foo', 'bar']); // WHERE title IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $title The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $title The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByTitle($title = null, $comparison = null)
+    public function filterByTitle($title = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($title)) {
@@ -436,7 +423,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_TITLE, $title, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_TITLE, $title, $comparison);
+
+        return $this;
     }
 
     /**
@@ -446,14 +435,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
      * $query->filterByUrl('%fooValue%', Criteria::LIKE); // WHERE url LIKE '%fooValue%'
+     * $query->filterByUrl(['foo', 'bar']); // WHERE url IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $url The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $url The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUrl($url = null, $comparison = null)
+    public function filterByUrl($url = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($url)) {
@@ -461,7 +451,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_URL, $url, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_URL, $url, $comparison);
+
+        return $this;
     }
 
     /**
@@ -471,14 +463,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterBySpreadsheetId('fooValue');   // WHERE spreadsheet_id = 'fooValue'
      * $query->filterBySpreadsheetId('%fooValue%', Criteria::LIKE); // WHERE spreadsheet_id LIKE '%fooValue%'
+     * $query->filterBySpreadsheetId(['foo', 'bar']); // WHERE spreadsheet_id IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $spreadsheetId The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $spreadsheetId The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySpreadsheetId($spreadsheetId = null, $comparison = null)
+    public function filterBySpreadsheetId($spreadsheetId = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($spreadsheetId)) {
@@ -486,7 +479,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_SPREADSHEET_ID, $spreadsheetId, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_SPREADSHEET_ID, $spreadsheetId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -496,14 +491,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterBySolution('fooValue');   // WHERE solution = 'fooValue'
      * $query->filterBySolution('%fooValue%', Criteria::LIKE); // WHERE solution LIKE '%fooValue%'
+     * $query->filterBySolution(['foo', 'bar']); // WHERE solution IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $solution The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $solution The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySolution($solution = null, $comparison = null)
+    public function filterBySolution($solution = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($solution)) {
@@ -511,7 +507,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_SOLUTION, $solution, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_SOLUTION, $solution, $comparison);
+
+        return $this;
     }
 
     /**
@@ -521,14 +519,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterByStatus('fooValue');   // WHERE status = 'fooValue'
      * $query->filterByStatus('%fooValue%', Criteria::LIKE); // WHERE status LIKE '%fooValue%'
+     * $query->filterByStatus(['foo', 'bar']); // WHERE status IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $status The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $status The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByStatus($status = null, $comparison = null)
+    public function filterByStatus($status = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($status)) {
@@ -536,7 +535,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_STATUS, $status, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_STATUS, $status, $comparison);
+
+        return $this;
     }
 
     /**
@@ -546,14 +547,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterBySlackChannel('fooValue');   // WHERE slack_channel = 'fooValue'
      * $query->filterBySlackChannel('%fooValue%', Criteria::LIKE); // WHERE slack_channel LIKE '%fooValue%'
+     * $query->filterBySlackChannel(['foo', 'bar']); // WHERE slack_channel IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $slackChannel The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $slackChannel The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySlackChannel($slackChannel = null, $comparison = null)
+    public function filterBySlackChannel($slackChannel = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($slackChannel)) {
@@ -561,7 +563,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_SLACK_CHANNEL, $slackChannel, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_SLACK_CHANNEL, $slackChannel, $comparison);
+
+        return $this;
     }
 
     /**
@@ -571,14 +575,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * <code>
      * $query->filterBySlackChannelId('fooValue');   // WHERE slack_channel_id = 'fooValue'
      * $query->filterBySlackChannelId('%fooValue%', Criteria::LIKE); // WHERE slack_channel_id LIKE '%fooValue%'
+     * $query->filterBySlackChannelId(['foo', 'bar']); // WHERE slack_channel_id IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $slackChannelId The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $slackChannelId The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySlackChannelId($slackChannelId = null, $comparison = null)
+    public function filterBySlackChannelId($slackChannelId = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($slackChannelId)) {
@@ -586,7 +591,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_SLACK_CHANNEL_ID, $slackChannelId, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_SLACK_CHANNEL_ID, $slackChannelId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -601,15 +608,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @see       filterByWrangler()
      *
-     * @param     mixed $wranglerId The value to use as filter.
+     * @param mixed $wranglerId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByWranglerId($wranglerId = null, $comparison = null)
+    public function filterByWranglerId($wranglerId = null, ?string $comparison = null)
     {
         if (is_array($wranglerId)) {
             $useMinMax = false;
@@ -629,7 +636,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_WRANGLER_ID, $wranglerId, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_WRANGLER_ID, $wranglerId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -642,17 +651,17 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * $query->filterBySheetModDate(array('max' => 'yesterday')); // WHERE sheet_mod_date > '2011-03-13'
      * </code>
      *
-     * @param     mixed $sheetModDate The value to use as filter.
+     * @param mixed $sheetModDate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySheetModDate($sheetModDate = null, $comparison = null)
+    public function filterBySheetModDate($sheetModDate = null, ?string $comparison = null)
     {
         if (is_array($sheetModDate)) {
             $useMinMax = false;
@@ -672,48 +681,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_SHEET_MOD_DATE, $sheetModDate, $comparison);
-    }
+        $this->addUsingAlias(PuzzleTableMap::COL_SHEET_MOD_DATE, $sheetModDate, $comparison);
 
-    /**
-     * Filter the query on the post_count column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPostCount(1234); // WHERE post_count = 1234
-     * $query->filterByPostCount(array(12, 34)); // WHERE post_count IN (12, 34)
-     * $query->filterByPostCount(array('min' => 12)); // WHERE post_count > 12
-     * </code>
-     *
-     * @param     mixed $postCount The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
-     */
-    public function filterByPostCount($postCount = null, $comparison = null)
-    {
-        if (is_array($postCount)) {
-            $useMinMax = false;
-            if (isset($postCount['min'])) {
-                $this->addUsingAlias(PuzzleTableMap::COL_POST_COUNT, $postCount['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($postCount['max'])) {
-                $this->addUsingAlias(PuzzleTableMap::COL_POST_COUNT, $postCount['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PuzzleTableMap::COL_POST_COUNT, $postCount, $comparison);
+        return $this;
     }
 
     /**
@@ -726,15 +696,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * $query->filterBySolverCount(array('min' => 12)); // WHERE solver_count > 12
      * </code>
      *
-     * @param     mixed $solverCount The value to use as filter.
+     * @param mixed $solverCount The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySolverCount($solverCount = null, $comparison = null)
+    public function filterBySolverCount($solverCount = null, ?string $comparison = null)
     {
         if (is_array($solverCount)) {
             $useMinMax = false;
@@ -754,7 +724,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_SOLVER_COUNT, $solverCount, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_SOLVER_COUNT, $solverCount, $comparison);
+
+        return $this;
     }
 
     /**
@@ -767,17 +739,17 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $createdAt The value to use as filter.
+     * @param mixed $createdAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    public function filterByCreatedAt($createdAt = null, ?string $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
@@ -797,7 +769,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_CREATED_AT, $createdAt, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_CREATED_AT, $createdAt, $comparison);
+
+        return $this;
     }
 
     /**
@@ -810,17 +784,17 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updatedAt The value to use as filter.
+     * @param mixed $updatedAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    public function filterByUpdatedAt($updatedAt = null, ?string $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
@@ -840,20 +814,22 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
             }
         }
 
-        return $this->addUsingAlias(PuzzleTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+        $this->addUsingAlias(PuzzleTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \Member object
      *
      * @param \Member|ObjectCollection $member The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByWrangler($member, $comparison = null)
+    public function filterByWrangler($member, ?string $comparison = null)
     {
         if ($member instanceof \Member) {
             return $this
@@ -863,8 +839,10 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(PuzzleTableMap::COL_WRANGLER_ID, $member->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByWrangler() only accepts arguments of type \Member or Collection');
         }
@@ -873,12 +851,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Adds a JOIN clause to the query using the Wrangler relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinWrangler($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinWrangler(?string $relationAlias = null, ?string $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Wrangler');
@@ -907,9 +885,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \MemberQuery A secondary query class using the current class as primary query
      */
@@ -921,169 +899,123 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
-     * Filter the query by a related \TagAlert object
+     * Use the Wrangler relation Member object
      *
-     * @param \TagAlert|ObjectCollection $tagAlert the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param callable(\MemberQuery):\MemberQuery $callable A function working on the related query
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
      */
-    public function filterByTagAlert($tagAlert, $comparison = null)
-    {
-        if ($tagAlert instanceof \TagAlert) {
-            return $this
-                ->addUsingAlias(PuzzleTableMap::COL_ID, $tagAlert->getPuzzleId(), $comparison);
-        } elseif ($tagAlert instanceof ObjectCollection) {
-            return $this
-                ->useTagAlertQuery()
-                ->filterByPrimaryKeys($tagAlert->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByTagAlert() only accepts arguments of type \TagAlert or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the TagAlert relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
-     */
-    public function joinTagAlert($relationAlias = null, $joinType = Criteria::INNER_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('TagAlert');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'TagAlert');
-        }
+    public function withWranglerQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::LEFT_JOIN
+    ) {
+        $relatedQuery = $this->useWranglerQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
 
         return $this;
     }
 
     /**
-     * Use the TagAlert relation TagAlert object
+     * Use the Wrangler relation to the Member table for an EXISTS query.
      *
-     * @see useQuery()
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
      *
-     * @return \TagAlertQuery A secondary query class using the current class as primary query
+     * @return \MemberQuery The inner query object of the EXISTS statement
      */
-    public function useTagAlertQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useWranglerExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
     {
-        return $this
-            ->joinTagAlert($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'TagAlert', '\TagAlertQuery');
+        /** @var $q \MemberQuery */
+        $q = $this->useExistsQuery('Wrangler', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
     }
 
     /**
-     * Filter the query by a related \Note object
+     * Use the Wrangler relation to the Member table for a NOT EXISTS query.
      *
-     * @param \Note|ObjectCollection $note the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @see useWranglerExistsQuery()
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \MemberQuery The inner query object of the NOT EXISTS statement
      */
-    public function filterByNote($note, $comparison = null)
+    public function useWranglerNotExistsQuery($modelAlias = null, $queryClass = null)
     {
-        if ($note instanceof \Note) {
-            return $this
-                ->addUsingAlias(PuzzleTableMap::COL_ID, $note->getPuzzleId(), $comparison);
-        } elseif ($note instanceof ObjectCollection) {
-            return $this
-                ->useNoteQuery()
-                ->filterByPrimaryKeys($note->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNote() only accepts arguments of type \Note or Collection');
-        }
+        /** @var $q \MemberQuery */
+        $q = $this->useExistsQuery('Wrangler', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
     }
 
     /**
-     * Adds a JOIN clause to the query using the Note relation
+     * Use the Wrangler relation to the Member table for an IN query.
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \MemberQuery The inner query object of the IN statement
      */
-    public function joinNote($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useInWranglerQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('Note');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'Note');
-        }
-
-        return $this;
+        /** @var $q \MemberQuery */
+        $q = $this->useInQuery('Wrangler', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
     }
 
     /**
-     * Use the Note relation Note object
+     * Use the Wrangler relation to the Member table for a NOT IN query.
      *
-     * @see useQuery()
+     * @see useWranglerInQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
      *
-     * @return \NoteQuery A secondary query class using the current class as primary query
+     * @return \MemberQuery The inner query object of the NOT IN statement
      */
-    public function useNoteQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useNotInWranglerQuery($modelAlias = null, $queryClass = null)
     {
-        return $this
-            ->joinNote($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Note', '\NoteQuery');
+        /** @var $q \MemberQuery */
+        $q = $this->useInQuery('Wrangler', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
     }
 
     /**
      * Filter the query by a related \PuzzleMember object
      *
      * @param \PuzzleMember|ObjectCollection $puzzleMember the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPuzzleMember($puzzleMember, $comparison = null)
+    public function filterByPuzzleMember($puzzleMember, ?string $comparison = null)
     {
         if ($puzzleMember instanceof \PuzzleMember) {
-            return $this
+            $this
                 ->addUsingAlias(PuzzleTableMap::COL_ID, $puzzleMember->getPuzzleId(), $comparison);
+
+            return $this;
         } elseif ($puzzleMember instanceof ObjectCollection) {
-            return $this
+            $this
                 ->usePuzzleMemberQuery()
                 ->filterByPrimaryKeys($puzzleMember->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByPuzzleMember() only accepts arguments of type \PuzzleMember or Collection');
         }
@@ -1092,12 +1024,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Adds a JOIN clause to the query using the PuzzleMember relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinPuzzleMember($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPuzzleMember(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PuzzleMember');
@@ -1126,9 +1058,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \PuzzleMemberQuery A secondary query class using the current class as primary query
      */
@@ -1140,23 +1072,123 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
+     * Use the PuzzleMember relation PuzzleMember object
+     *
+     * @param callable(\PuzzleMemberQuery):\PuzzleMemberQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withPuzzleMemberQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->usePuzzleMemberQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to PuzzleMember table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \PuzzleMemberQuery The inner query object of the EXISTS statement
+     */
+    public function usePuzzleMemberExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \PuzzleMemberQuery */
+        $q = $this->useExistsQuery('PuzzleMember', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to PuzzleMember table for a NOT EXISTS query.
+     *
+     * @see usePuzzleMemberExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleMemberQuery The inner query object of the NOT EXISTS statement
+     */
+    public function usePuzzleMemberNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleMemberQuery */
+        $q = $this->useExistsQuery('PuzzleMember', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to PuzzleMember table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \PuzzleMemberQuery The inner query object of the IN statement
+     */
+    public function useInPuzzleMemberQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \PuzzleMemberQuery */
+        $q = $this->useInQuery('PuzzleMember', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to PuzzleMember table for a NOT IN query.
+     *
+     * @see usePuzzleMemberInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleMemberQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInPuzzleMemberQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleMemberQuery */
+        $q = $this->useInQuery('PuzzleMember', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \PuzzlePuzzle object
      *
      * @param \PuzzlePuzzle|ObjectCollection $puzzlePuzzle the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPuzzleParent($puzzlePuzzle, $comparison = null)
+    public function filterByPuzzleParent($puzzlePuzzle, ?string $comparison = null)
     {
         if ($puzzlePuzzle instanceof \PuzzlePuzzle) {
-            return $this
+            $this
                 ->addUsingAlias(PuzzleTableMap::COL_ID, $puzzlePuzzle->getPuzzleId(), $comparison);
+
+            return $this;
         } elseif ($puzzlePuzzle instanceof ObjectCollection) {
-            return $this
+            $this
                 ->usePuzzleParentQuery()
                 ->filterByPrimaryKeys($puzzlePuzzle->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByPuzzleParent() only accepts arguments of type \PuzzlePuzzle or Collection');
         }
@@ -1165,12 +1197,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Adds a JOIN clause to the query using the PuzzleParent relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinPuzzleParent($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPuzzleParent(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PuzzleParent');
@@ -1199,9 +1231,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \PuzzlePuzzleQuery A secondary query class using the current class as primary query
      */
@@ -1213,23 +1245,123 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
+     * Use the PuzzleParent relation PuzzlePuzzle object
+     *
+     * @param callable(\PuzzlePuzzleQuery):\PuzzlePuzzleQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withPuzzleParentQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->usePuzzleParentQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the PuzzleParent relation to the PuzzlePuzzle table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the EXISTS statement
+     */
+    public function usePuzzleParentExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useExistsQuery('PuzzleParent', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the PuzzleParent relation to the PuzzlePuzzle table for a NOT EXISTS query.
+     *
+     * @see usePuzzleParentExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the NOT EXISTS statement
+     */
+    public function usePuzzleParentNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useExistsQuery('PuzzleParent', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the PuzzleParent relation to the PuzzlePuzzle table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the IN statement
+     */
+    public function useInPuzzleParentQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useInQuery('PuzzleParent', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the PuzzleParent relation to the PuzzlePuzzle table for a NOT IN query.
+     *
+     * @see usePuzzleParentInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInPuzzleParentQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useInQuery('PuzzleParent', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \PuzzlePuzzle object
      *
      * @param \PuzzlePuzzle|ObjectCollection $puzzlePuzzle the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPuzzleChild($puzzlePuzzle, $comparison = null)
+    public function filterByPuzzleChild($puzzlePuzzle, ?string $comparison = null)
     {
         if ($puzzlePuzzle instanceof \PuzzlePuzzle) {
-            return $this
+            $this
                 ->addUsingAlias(PuzzleTableMap::COL_ID, $puzzlePuzzle->getParentId(), $comparison);
+
+            return $this;
         } elseif ($puzzlePuzzle instanceof ObjectCollection) {
-            return $this
+            $this
                 ->usePuzzleChildQuery()
                 ->filterByPrimaryKeys($puzzlePuzzle->getPrimaryKeys())
                 ->endUse();
+
+            return $this;
         } else {
             throw new PropelException('filterByPuzzleChild() only accepts arguments of type \PuzzlePuzzle or Collection');
         }
@@ -1238,12 +1370,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Adds a JOIN clause to the query using the PuzzleChild relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinPuzzleChild($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPuzzleChild(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('PuzzleChild');
@@ -1272,9 +1404,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \PuzzlePuzzleQuery A secondary query class using the current class as primary query
      */
@@ -1286,93 +1418,99 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     }
 
     /**
-     * Filter the query by a related \News object
+     * Use the PuzzleChild relation PuzzlePuzzle object
      *
-     * @param \News|ObjectCollection $news the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param callable(\PuzzlePuzzleQuery):\PuzzlePuzzleQuery $callable A function working on the related query
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
      */
-    public function filterByNews($news, $comparison = null)
-    {
-        if ($news instanceof \News) {
-            return $this
-                ->addUsingAlias(PuzzleTableMap::COL_ID, $news->getPuzzleId(), $comparison);
-        } elseif ($news instanceof ObjectCollection) {
-            return $this
-                ->useNewsQuery()
-                ->filterByPrimaryKeys($news->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNews() only accepts arguments of type \News or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the News relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
-     */
-    public function joinNews($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('News');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'News');
-        }
+    public function withPuzzleChildQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->usePuzzleChildQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
 
         return $this;
     }
 
     /**
-     * Use the News relation News object
+     * Use the PuzzleChild relation to the PuzzlePuzzle table for an EXISTS query.
      *
-     * @see useQuery()
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
      *
-     * @return \NewsQuery A secondary query class using the current class as primary query
+     * @return \PuzzlePuzzleQuery The inner query object of the EXISTS statement
      */
-    public function useNewsQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function usePuzzleChildExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
     {
-        return $this
-            ->joinNews($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'News', '\NewsQuery');
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useExistsQuery('PuzzleChild', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
     }
 
     /**
-     * Filter the query by a related Tag object
-     * using the tag_alert table as cross reference
+     * Use the PuzzleChild relation to the PuzzlePuzzle table for a NOT EXISTS query.
      *
-     * @param Tag $tag the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @see usePuzzleChildExistsQuery()
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the NOT EXISTS statement
      */
-    public function filterByTag($tag, $comparison = Criteria::EQUAL)
+    public function usePuzzleChildNotExistsQuery($modelAlias = null, $queryClass = null)
     {
-        return $this
-            ->useTagAlertQuery()
-            ->filterByTag($tag, $comparison)
-            ->endUse();
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useExistsQuery('PuzzleChild', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the PuzzleChild relation to the PuzzlePuzzle table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the IN statement
+     */
+    public function useInPuzzleChildQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useInQuery('PuzzleChild', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the PuzzleChild relation to the PuzzlePuzzle table for a NOT IN query.
+     *
+     * @see usePuzzleChildInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzlePuzzleQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInPuzzleChildQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzlePuzzleQuery */
+        $q = $this->useInQuery('PuzzleChild', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
     }
 
     /**
@@ -1380,16 +1518,18 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * using the solver table as cross reference
      *
      * @param Member $member the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL and Criteria::IN for queries
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByMember($member, $comparison = Criteria::EQUAL)
+    public function filterByMember($member, string $comparison = null)
     {
-        return $this
+        $this
             ->usePuzzleMemberQuery()
             ->filterByMember($member, $comparison)
             ->endUse();
+
+        return $this;
     }
 
     /**
@@ -1397,16 +1537,18 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * using the relationship table as cross reference
      *
      * @param Puzzle $puzzle the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL and Criteria::IN for queries
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByParent($puzzle, $comparison = Criteria::EQUAL)
+    public function filterByParent($puzzle, string $comparison = null)
     {
-        return $this
+        $this
             ->usePuzzleParentQuery()
             ->filterByParent($puzzle, $comparison)
             ->endUse();
+
+        return $this;
     }
 
     /**
@@ -1414,24 +1556,26 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * using the relationship table as cross reference
      *
      * @param Puzzle $puzzle the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL and Criteria::IN for queries
      *
-     * @return ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByChild($puzzle, $comparison = Criteria::EQUAL)
+    public function filterByChild($puzzle, string $comparison = null)
     {
-        return $this
+        $this
             ->usePuzzleChildQuery()
             ->filterByChild($puzzle, $comparison)
             ->endUse();
+
+        return $this;
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildPuzzle $puzzle Object to remove from the list of results
+     * @param ChildPuzzle $puzzle Object to remove from the list of results
      *
-     * @return $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($puzzle = null)
     {
@@ -1445,9 +1589,10 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Code to execute before every DELETE statement
      *
-     * @param     ConnectionInterface $con The connection object used by the query
+     * @param ConnectionInterface $con The connection object used by the query
+     * @return int|null
      */
-    protected function basePreDelete(ConnectionInterface $con)
+    protected function basePreDelete(ConnectionInterface $con): ?int
     {
         // archivable behavior
 
@@ -1467,7 +1612,7 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleTableMap::DATABASE_NAME);
@@ -1492,12 +1637,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleTableMap::DATABASE_NAME);
@@ -1527,65 +1672,77 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Filter by the latest updated
      *
-     * @param      int $nbDays Maximum age of the latest update in days
+     * @param int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PuzzleTableMap::COL_UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(PuzzleTableMap::COL_UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PuzzleTableMap::COL_UPDATED_AT);
+        $this->addDescendingOrderByColumn(PuzzleTableMap::COL_UPDATED_AT);
+
+        return $this;
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PuzzleTableMap::COL_UPDATED_AT);
+        $this->addAscendingOrderByColumn(PuzzleTableMap::COL_UPDATED_AT);
+
+        return $this;
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PuzzleTableMap::COL_CREATED_AT);
+        $this->addDescendingOrderByColumn(PuzzleTableMap::COL_CREATED_AT);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PuzzleTableMap::COL_CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(PuzzleTableMap::COL_CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildPuzzleQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PuzzleTableMap::COL_CREATED_AT);
+        $this->addAscendingOrderByColumn(PuzzleTableMap::COL_CREATED_AT);
+
+        return $this;
     }
 
     // archivable behavior
@@ -1597,12 +1754,12 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
      * is updated and not duplicated.
      * Warning: This termination methods issues 2n+1 queries.
      *
-     * @param      ConnectionInterface $con    Connection to use.
-     * @param      Boolean $useLittleMemory    Whether or not to use OnDemandFormatter to retrieve objects.
+     * @param ConnectionInterface|null $con    Connection to use.
+     * @param bool $useLittleMemory Whether to use OnDemandFormatter to retrieve objects.
      *               Set to false if the identity map matters.
      *               Set to true (default) to use less memory.
      *
-     * @return     int the number of archived objects
+     * @return int the number of archived objects
      */
     public function archive($con = null, $useLittleMemory = true)
     {
@@ -1632,9 +1789,9 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Enable/disable auto-archiving on delete for the next query.
      *
-     * @param boolean True if the query must archive deleted objects, false otherwise.
+     * @param bool True if the query must archive deleted objects, false otherwise.
      */
-    public function setArchiveOnDelete($archiveOnDelete)
+    public function setArchiveOnDelete(bool $archiveOnDelete)
     {
         $this->archiveOnDelete = $archiveOnDelete;
     }
@@ -1642,11 +1799,11 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Delete records matching the current query without archiving them.
      *
-     * @param      ConnectionInterface $con    Connection to use.
+     * @param ConnectionInterface|null $con    Connection to use.
      *
-     * @return integer the number of deleted rows
+     * @return int The number of deleted rows
      */
-    public function deleteWithoutArchive($con = null)
+    public function deleteWithoutArchive($con = null): int
     {
         $this->archiveOnDelete = false;
 
@@ -1656,15 +1813,15 @@ protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityN
     /**
      * Delete all records without archiving them.
      *
-     * @param      ConnectionInterface $con    Connection to use.
+     * @param ConnectionInterface|null $con    Connection to use.
      *
-     * @return integer the number of deleted rows
+     * @return int The number of deleted rows
      */
-    public function deleteAllWithoutArchive($con = null)
+    public function deleteAllWithoutArchive($con = null): int
     {
         $this->archiveOnDelete = false;
 
         return $this->deleteAll($con);
     }
 
-} // PuzzleQuery
+}

@@ -14,15 +14,11 @@
         <foreign-key foreignTable="member" phpName="Wrangler" refPhpName="WrangledPuzzle" onDelete="SETNULL">
             <reference local="wrangler_id" foreign="id"/>
         </foreign-key>
-        <behavior name="aggregate_column">
-            <parameter name="name" value="post_count" />
-            <parameter name="expression" value="COUNT(id)" />
-        </behavior>
         <behavior name="aggregate_column" id="solver_count">
             <parameter name="name" value="solver_count" />
             <parameter name="foreign_table" value="solver" />
             <parameter name="expression" value="COUNT(member_id)" />
-        </behavior>
+        </behavior> 
         <unique>
             <unique-column name="title" />
         </unique>

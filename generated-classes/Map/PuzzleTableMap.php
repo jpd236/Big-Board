@@ -24,7 +24,6 @@ use Propel\Runtime\Map\TableMapTrait;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class PuzzleTableMap extends TableMap
 {
@@ -34,154 +33,260 @@ class PuzzleTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.PuzzleTableMap';
+    public const CLASS_NAME = '.Map.PuzzleTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'palindrome';
+    public const DATABASE_NAME = 'palindrome';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'puzzle';
+    public const TABLE_NAME = 'puzzle';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'Puzzle';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Puzzle';
+    public const OM_CLASS = '\\Puzzle';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Puzzle';
+    public const CLASS_DEFAULT = 'Puzzle';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 14;
+    public const NUM_COLUMNS = 13;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 14;
+    public const NUM_HYDRATE_COLUMNS = 13;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'puzzle.id';
+    public const COL_ID = 'puzzle.id';
 
     /**
      * the column name for the title field
      */
-    const COL_TITLE = 'puzzle.title';
+    public const COL_TITLE = 'puzzle.title';
 
     /**
      * the column name for the url field
      */
-    const COL_URL = 'puzzle.url';
+    public const COL_URL = 'puzzle.url';
 
     /**
      * the column name for the spreadsheet_id field
      */
-    const COL_SPREADSHEET_ID = 'puzzle.spreadsheet_id';
+    public const COL_SPREADSHEET_ID = 'puzzle.spreadsheet_id';
 
     /**
      * the column name for the solution field
      */
-    const COL_SOLUTION = 'puzzle.solution';
+    public const COL_SOLUTION = 'puzzle.solution';
 
     /**
      * the column name for the status field
      */
-    const COL_STATUS = 'puzzle.status';
+    public const COL_STATUS = 'puzzle.status';
 
     /**
      * the column name for the slack_channel field
      */
-    const COL_SLACK_CHANNEL = 'puzzle.slack_channel';
+    public const COL_SLACK_CHANNEL = 'puzzle.slack_channel';
 
     /**
      * the column name for the slack_channel_id field
      */
-    const COL_SLACK_CHANNEL_ID = 'puzzle.slack_channel_id';
+    public const COL_SLACK_CHANNEL_ID = 'puzzle.slack_channel_id';
 
     /**
      * the column name for the wrangler_id field
      */
-    const COL_WRANGLER_ID = 'puzzle.wrangler_id';
+    public const COL_WRANGLER_ID = 'puzzle.wrangler_id';
 
     /**
      * the column name for the sheet_mod_date field
      */
-    const COL_SHEET_MOD_DATE = 'puzzle.sheet_mod_date';
-
-    /**
-     * the column name for the post_count field
-     */
-    const COL_POST_COUNT = 'puzzle.post_count';
+    public const COL_SHEET_MOD_DATE = 'puzzle.sheet_mod_date';
 
     /**
      * the column name for the solver_count field
      */
-    const COL_SOLVER_COUNT = 'puzzle.solver_count';
+    public const COL_SOLVER_COUNT = 'puzzle.solver_count';
 
     /**
      * the column name for the created_at field
      */
-    const COL_CREATED_AT = 'puzzle.created_at';
+    public const COL_CREATED_AT = 'puzzle.created_at';
 
     /**
      * the column name for the updated_at field
      */
-    const COL_UPDATED_AT = 'puzzle.updated_at';
+    public const COL_UPDATED_AT = 'puzzle.updated_at';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Title', 'Url', 'SpreadsheetId', 'Solution', 'Status', 'SlackChannel', 'SlackChannelId', 'WranglerId', 'SheetModDate', 'PostCount', 'SolverCount', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_CAMELNAME     => array('id', 'title', 'url', 'spreadsheetId', 'solution', 'status', 'slackChannel', 'slackChannelId', 'wranglerId', 'sheetModDate', 'postCount', 'solverCount', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(PuzzleTableMap::COL_ID, PuzzleTableMap::COL_TITLE, PuzzleTableMap::COL_URL, PuzzleTableMap::COL_SPREADSHEET_ID, PuzzleTableMap::COL_SOLUTION, PuzzleTableMap::COL_STATUS, PuzzleTableMap::COL_SLACK_CHANNEL, PuzzleTableMap::COL_SLACK_CHANNEL_ID, PuzzleTableMap::COL_WRANGLER_ID, PuzzleTableMap::COL_SHEET_MOD_DATE, PuzzleTableMap::COL_POST_COUNT, PuzzleTableMap::COL_SOLVER_COUNT, PuzzleTableMap::COL_CREATED_AT, PuzzleTableMap::COL_UPDATED_AT, ),
-        self::TYPE_FIELDNAME     => array('id', 'title', 'url', 'spreadsheet_id', 'solution', 'status', 'slack_channel', 'slack_channel_id', 'wrangler_id', 'sheet_mod_date', 'post_count', 'solver_count', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'Title', 'Url', 'SpreadsheetId', 'Solution', 'Status', 'SlackChannel', 'SlackChannelId', 'WranglerId', 'SheetModDate', 'SolverCount', 'CreatedAt', 'UpdatedAt', ],
+        self::TYPE_CAMELNAME     => ['id', 'title', 'url', 'spreadsheetId', 'solution', 'status', 'slackChannel', 'slackChannelId', 'wranglerId', 'sheetModDate', 'solverCount', 'createdAt', 'updatedAt', ],
+        self::TYPE_COLNAME       => [PuzzleTableMap::COL_ID, PuzzleTableMap::COL_TITLE, PuzzleTableMap::COL_URL, PuzzleTableMap::COL_SPREADSHEET_ID, PuzzleTableMap::COL_SOLUTION, PuzzleTableMap::COL_STATUS, PuzzleTableMap::COL_SLACK_CHANNEL, PuzzleTableMap::COL_SLACK_CHANNEL_ID, PuzzleTableMap::COL_WRANGLER_ID, PuzzleTableMap::COL_SHEET_MOD_DATE, PuzzleTableMap::COL_SOLVER_COUNT, PuzzleTableMap::COL_CREATED_AT, PuzzleTableMap::COL_UPDATED_AT, ],
+        self::TYPE_FIELDNAME     => ['id', 'title', 'url', 'spreadsheet_id', 'solution', 'status', 'slack_channel', 'slack_channel_id', 'wrangler_id', 'sheet_mod_date', 'solver_count', 'created_at', 'updated_at', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Title' => 1, 'Url' => 2, 'SpreadsheetId' => 3, 'Solution' => 4, 'Status' => 5, 'SlackChannel' => 6, 'SlackChannelId' => 7, 'WranglerId' => 8, 'SheetModDate' => 9, 'PostCount' => 10, 'SolverCount' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'title' => 1, 'url' => 2, 'spreadsheetId' => 3, 'solution' => 4, 'status' => 5, 'slackChannel' => 6, 'slackChannelId' => 7, 'wranglerId' => 8, 'sheetModDate' => 9, 'postCount' => 10, 'solverCount' => 11, 'createdAt' => 12, 'updatedAt' => 13, ),
-        self::TYPE_COLNAME       => array(PuzzleTableMap::COL_ID => 0, PuzzleTableMap::COL_TITLE => 1, PuzzleTableMap::COL_URL => 2, PuzzleTableMap::COL_SPREADSHEET_ID => 3, PuzzleTableMap::COL_SOLUTION => 4, PuzzleTableMap::COL_STATUS => 5, PuzzleTableMap::COL_SLACK_CHANNEL => 6, PuzzleTableMap::COL_SLACK_CHANNEL_ID => 7, PuzzleTableMap::COL_WRANGLER_ID => 8, PuzzleTableMap::COL_SHEET_MOD_DATE => 9, PuzzleTableMap::COL_POST_COUNT => 10, PuzzleTableMap::COL_SOLVER_COUNT => 11, PuzzleTableMap::COL_CREATED_AT => 12, PuzzleTableMap::COL_UPDATED_AT => 13, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title' => 1, 'url' => 2, 'spreadsheet_id' => 3, 'solution' => 4, 'status' => 5, 'slack_channel' => 6, 'slack_channel_id' => 7, 'wrangler_id' => 8, 'sheet_mod_date' => 9, 'post_count' => 10, 'solver_count' => 11, 'created_at' => 12, 'updated_at' => 13, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'Title' => 1, 'Url' => 2, 'SpreadsheetId' => 3, 'Solution' => 4, 'Status' => 5, 'SlackChannel' => 6, 'SlackChannelId' => 7, 'WranglerId' => 8, 'SheetModDate' => 9, 'SolverCount' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheetId' => 3, 'solution' => 4, 'status' => 5, 'slackChannel' => 6, 'slackChannelId' => 7, 'wranglerId' => 8, 'sheetModDate' => 9, 'solverCount' => 10, 'createdAt' => 11, 'updatedAt' => 12, ],
+        self::TYPE_COLNAME       => [PuzzleTableMap::COL_ID => 0, PuzzleTableMap::COL_TITLE => 1, PuzzleTableMap::COL_URL => 2, PuzzleTableMap::COL_SPREADSHEET_ID => 3, PuzzleTableMap::COL_SOLUTION => 4, PuzzleTableMap::COL_STATUS => 5, PuzzleTableMap::COL_SLACK_CHANNEL => 6, PuzzleTableMap::COL_SLACK_CHANNEL_ID => 7, PuzzleTableMap::COL_WRANGLER_ID => 8, PuzzleTableMap::COL_SHEET_MOD_DATE => 9, PuzzleTableMap::COL_SOLVER_COUNT => 10, PuzzleTableMap::COL_CREATED_AT => 11, PuzzleTableMap::COL_UPDATED_AT => 12, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheet_id' => 3, 'solution' => 4, 'status' => 5, 'slack_channel' => 6, 'slack_channel_id' => 7, 'wrangler_id' => 8, 'sheet_mod_date' => 9, 'solver_count' => 10, 'created_at' => 11, 'updated_at' => 12, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'Puzzle.Id' => 'ID',
+        'id' => 'ID',
+        'puzzle.id' => 'ID',
+        'PuzzleTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'Title' => 'TITLE',
+        'Puzzle.Title' => 'TITLE',
+        'title' => 'TITLE',
+        'puzzle.title' => 'TITLE',
+        'PuzzleTableMap::COL_TITLE' => 'TITLE',
+        'COL_TITLE' => 'TITLE',
+        'Url' => 'URL',
+        'Puzzle.Url' => 'URL',
+        'url' => 'URL',
+        'puzzle.url' => 'URL',
+        'PuzzleTableMap::COL_URL' => 'URL',
+        'COL_URL' => 'URL',
+        'SpreadsheetId' => 'SPREADSHEET_ID',
+        'Puzzle.SpreadsheetId' => 'SPREADSHEET_ID',
+        'spreadsheetId' => 'SPREADSHEET_ID',
+        'puzzle.spreadsheetId' => 'SPREADSHEET_ID',
+        'PuzzleTableMap::COL_SPREADSHEET_ID' => 'SPREADSHEET_ID',
+        'COL_SPREADSHEET_ID' => 'SPREADSHEET_ID',
+        'spreadsheet_id' => 'SPREADSHEET_ID',
+        'puzzle.spreadsheet_id' => 'SPREADSHEET_ID',
+        'Solution' => 'SOLUTION',
+        'Puzzle.Solution' => 'SOLUTION',
+        'solution' => 'SOLUTION',
+        'puzzle.solution' => 'SOLUTION',
+        'PuzzleTableMap::COL_SOLUTION' => 'SOLUTION',
+        'COL_SOLUTION' => 'SOLUTION',
+        'Status' => 'STATUS',
+        'Puzzle.Status' => 'STATUS',
+        'status' => 'STATUS',
+        'puzzle.status' => 'STATUS',
+        'PuzzleTableMap::COL_STATUS' => 'STATUS',
+        'COL_STATUS' => 'STATUS',
+        'SlackChannel' => 'SLACK_CHANNEL',
+        'Puzzle.SlackChannel' => 'SLACK_CHANNEL',
+        'slackChannel' => 'SLACK_CHANNEL',
+        'puzzle.slackChannel' => 'SLACK_CHANNEL',
+        'PuzzleTableMap::COL_SLACK_CHANNEL' => 'SLACK_CHANNEL',
+        'COL_SLACK_CHANNEL' => 'SLACK_CHANNEL',
+        'slack_channel' => 'SLACK_CHANNEL',
+        'puzzle.slack_channel' => 'SLACK_CHANNEL',
+        'SlackChannelId' => 'SLACK_CHANNEL_ID',
+        'Puzzle.SlackChannelId' => 'SLACK_CHANNEL_ID',
+        'slackChannelId' => 'SLACK_CHANNEL_ID',
+        'puzzle.slackChannelId' => 'SLACK_CHANNEL_ID',
+        'PuzzleTableMap::COL_SLACK_CHANNEL_ID' => 'SLACK_CHANNEL_ID',
+        'COL_SLACK_CHANNEL_ID' => 'SLACK_CHANNEL_ID',
+        'slack_channel_id' => 'SLACK_CHANNEL_ID',
+        'puzzle.slack_channel_id' => 'SLACK_CHANNEL_ID',
+        'WranglerId' => 'WRANGLER_ID',
+        'Puzzle.WranglerId' => 'WRANGLER_ID',
+        'wranglerId' => 'WRANGLER_ID',
+        'puzzle.wranglerId' => 'WRANGLER_ID',
+        'PuzzleTableMap::COL_WRANGLER_ID' => 'WRANGLER_ID',
+        'COL_WRANGLER_ID' => 'WRANGLER_ID',
+        'wrangler_id' => 'WRANGLER_ID',
+        'puzzle.wrangler_id' => 'WRANGLER_ID',
+        'SheetModDate' => 'SHEET_MOD_DATE',
+        'Puzzle.SheetModDate' => 'SHEET_MOD_DATE',
+        'sheetModDate' => 'SHEET_MOD_DATE',
+        'puzzle.sheetModDate' => 'SHEET_MOD_DATE',
+        'PuzzleTableMap::COL_SHEET_MOD_DATE' => 'SHEET_MOD_DATE',
+        'COL_SHEET_MOD_DATE' => 'SHEET_MOD_DATE',
+        'sheet_mod_date' => 'SHEET_MOD_DATE',
+        'puzzle.sheet_mod_date' => 'SHEET_MOD_DATE',
+        'SolverCount' => 'SOLVER_COUNT',
+        'Puzzle.SolverCount' => 'SOLVER_COUNT',
+        'solverCount' => 'SOLVER_COUNT',
+        'puzzle.solverCount' => 'SOLVER_COUNT',
+        'PuzzleTableMap::COL_SOLVER_COUNT' => 'SOLVER_COUNT',
+        'COL_SOLVER_COUNT' => 'SOLVER_COUNT',
+        'solver_count' => 'SOLVER_COUNT',
+        'puzzle.solver_count' => 'SOLVER_COUNT',
+        'CreatedAt' => 'CREATED_AT',
+        'Puzzle.CreatedAt' => 'CREATED_AT',
+        'createdAt' => 'CREATED_AT',
+        'puzzle.createdAt' => 'CREATED_AT',
+        'PuzzleTableMap::COL_CREATED_AT' => 'CREATED_AT',
+        'COL_CREATED_AT' => 'CREATED_AT',
+        'created_at' => 'CREATED_AT',
+        'puzzle.created_at' => 'CREATED_AT',
+        'UpdatedAt' => 'UPDATED_AT',
+        'Puzzle.UpdatedAt' => 'UPDATED_AT',
+        'updatedAt' => 'UPDATED_AT',
+        'puzzle.updatedAt' => 'UPDATED_AT',
+        'PuzzleTableMap::COL_UPDATED_AT' => 'UPDATED_AT',
+        'COL_UPDATED_AT' => 'UPDATED_AT',
+        'updated_at' => 'UPDATED_AT',
+        'puzzle.updated_at' => 'UPDATED_AT',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('puzzle');
@@ -201,16 +306,17 @@ class PuzzleTableMap extends TableMap
         $this->addColumn('slack_channel_id', 'SlackChannelId', 'VARCHAR', false, 24, null);
         $this->addForeignKey('wrangler_id', 'WranglerId', 'INTEGER', 'member', 'id', false, null, null);
         $this->addColumn('sheet_mod_date', 'SheetModDate', 'TIMESTAMP', false, null, null);
-        $this->addColumn('post_count', 'PostCount', 'INTEGER', false, null, null);
         $this->addColumn('solver_count', 'SolverCount', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
         $this->addRelation('Wrangler', '\\Member', RelationMap::MANY_TO_ONE, array (
   0 =>
@@ -219,20 +325,6 @@ class PuzzleTableMap extends TableMap
     1 => ':id',
   ),
 ), 'SET NULL', null, null, false);
-        $this->addRelation('TagAlert', '\\TagAlert', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':puzzle_id',
-    1 => ':id',
-  ),
-), 'CASCADE', null, 'TagAlerts', false);
-        $this->addRelation('Note', '\\Note', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':puzzle_id',
-    1 => ':id',
-  ),
-), 'SET NULL', null, 'Notes', false);
         $this->addRelation('PuzzleMember', '\\PuzzleMember', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -254,46 +346,35 @@ class PuzzleTableMap extends TableMap
     1 => ':id',
   ),
 ), 'CASCADE', null, 'Puzzlechildren', false);
-        $this->addRelation('News', '\\News', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':puzzle_id',
-    1 => ':id',
-  ),
-), 'CASCADE', null, 'News', false);
-        $this->addRelation('Tag', '\\Tag', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Tags');
         $this->addRelation('Member', '\\Member', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Members');
         $this->addRelation('Parent', '\\Puzzle', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Parents');
         $this->addRelation('Child', '\\Puzzle', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Children');
-    } // buildRelations()
+    }
 
     /**
      *
      * Gets the list of behaviors registered for this table
      *
-     * @return array Associative array (name => parameters) of behaviors
+     * @return array<string, array> Associative array (name => parameters) of behaviors
      */
-    public function getBehaviors()
+    public function getBehaviors(): array
     {
-        return array(
-            'aggregate_column' => array('name' => 'post_count', 'expression' => 'COUNT(id)', 'condition' => '', 'foreign_table' => 'note', 'foreign_schema' => '', ),
-            'solver_count' => array('name' => 'solver_count', 'expression' => 'COUNT(member_id)', 'condition' => '', 'foreign_table' => 'solver', 'foreign_schema' => '', ),
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', 'disable_created_at' => 'false', 'disable_updated_at' => 'false', ),
-            'archivable' => array('archive_table' => '', 'archive_phpname' => '', 'archive_class' => '', 'log_archived_at' => 'true', 'archived_at_column' => 'archived_at', 'archive_on_insert' => 'false', 'archive_on_update' => 'false', 'archive_on_delete' => 'true', ),
-        );
-    } // getBehaviors()
+        return [
+            'solver_count' => ['name' => 'solver_count', 'expression' => 'COUNT(member_id)', 'condition' => NULL, 'foreign_table' => 'solver', 'foreign_schema' => NULL],
+            'timestampable' => ['create_column' => 'created_at', 'update_column' => 'updated_at', 'disable_created_at' => 'false', 'disable_updated_at' => 'false'],
+            'archivable' => ['archive_table' => '', 'archive_phpname' => NULL, 'archive_class' => '', 'sync' => 'false', 'inherit_foreign_key_relations' => 'false', 'inherit_foreign_key_constraints' => 'false', 'foreign_keys' => NULL, 'log_archived_at' => 'true', 'archived_at_column' => 'archived_at', 'archive_on_insert' => 'false', 'archive_on_update' => 'false', 'archive_on_delete' => 'true'],
+        ];
+    }
+
     /**
      * Method to invalidate the instance pool of all tables related to puzzle     * by a foreign key with ON DELETE CASCADE
      */
-    public static function clearRelatedInstancePool()
+    public static function clearRelatedInstancePool(): void
     {
         // Invalidate objects in related instance pools,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        TagAlertTableMap::clearInstancePool();
-        NoteTableMap::clearInstancePool();
         PuzzleMemberTableMap::clearInstancePool();
         PuzzlePuzzleTableMap::clearInstancePool();
-        NewsTableMap::clearInstancePool();
     }
 
     /**
@@ -302,14 +383,14 @@ class PuzzleTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -324,14 +405,14 @@ class PuzzleTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -348,10 +429,10 @@ class PuzzleTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? PuzzleTableMap::CLASS_DEFAULT : PuzzleTableMap::OM_CLASS;
     }
@@ -359,17 +440,17 @@ class PuzzleTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Puzzle object, last column rank)
+     * @return array (Puzzle object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = PuzzleTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = PuzzleTableMap::getInstanceFromPool($key))) {
@@ -385,7 +466,7 @@ class PuzzleTableMap extends TableMap
             PuzzleTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -393,13 +474,13 @@ class PuzzleTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -429,12 +510,13 @@ class PuzzleTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PuzzleTableMap::COL_ID);
@@ -447,7 +529,6 @@ class PuzzleTableMap extends TableMap
             $criteria->addSelectColumn(PuzzleTableMap::COL_SLACK_CHANNEL_ID);
             $criteria->addSelectColumn(PuzzleTableMap::COL_WRANGLER_ID);
             $criteria->addSelectColumn(PuzzleTableMap::COL_SHEET_MOD_DATE);
-            $criteria->addSelectColumn(PuzzleTableMap::COL_POST_COUNT);
             $criteria->addSelectColumn(PuzzleTableMap::COL_SOLVER_COUNT);
             $criteria->addSelectColumn(PuzzleTableMap::COL_CREATED_AT);
             $criteria->addSelectColumn(PuzzleTableMap::COL_UPDATED_AT);
@@ -462,7 +543,6 @@ class PuzzleTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.slack_channel_id');
             $criteria->addSelectColumn($alias . '.wrangler_id');
             $criteria->addSelectColumn($alias . '.sheet_mod_date');
-            $criteria->addSelectColumn($alias . '.post_count');
             $criteria->addSelectColumn($alias . '.solver_count');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
@@ -470,40 +550,74 @@ class PuzzleTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_ID);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_TITLE);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_URL);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SPREADSHEET_ID);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SOLUTION);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_STATUS);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SLACK_CHANNEL);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SLACK_CHANNEL_ID);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_WRANGLER_ID);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SHEET_MOD_DATE);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SOLVER_COUNT);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_CREATED_AT);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_UPDATED_AT);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.title');
+            $criteria->removeSelectColumn($alias . '.url');
+            $criteria->removeSelectColumn($alias . '.spreadsheet_id');
+            $criteria->removeSelectColumn($alias . '.solution');
+            $criteria->removeSelectColumn($alias . '.status');
+            $criteria->removeSelectColumn($alias . '.slack_channel');
+            $criteria->removeSelectColumn($alias . '.slack_channel_id');
+            $criteria->removeSelectColumn($alias . '.wrangler_id');
+            $criteria->removeSelectColumn($alias . '.sheet_mod_date');
+            $criteria->removeSelectColumn($alias . '.solver_count');
+            $criteria->removeSelectColumn($alias . '.created_at');
+            $criteria->removeSelectColumn($alias . '.updated_at');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(PuzzleTableMap::DATABASE_NAME)->getTable(PuzzleTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(PuzzleTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(PuzzleTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new PuzzleTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a Puzzle or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Puzzle object or primary key or array of primary keys
+     * @param mixed $values Criteria or Puzzle object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleTableMap::DATABASE_NAME);
@@ -539,7 +653,7 @@ class PuzzleTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return PuzzleQuery::create()->doDeleteAll($con);
     }
@@ -547,13 +661,13 @@ class PuzzleTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a Puzzle or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Puzzle object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or Puzzle object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleTableMap::DATABASE_NAME);
@@ -580,7 +694,4 @@ class PuzzleTableMap extends TableMap
         });
     }
 
-} // PuzzleTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-PuzzleTableMap::buildTableMap();
+}

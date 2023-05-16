@@ -10,14 +10,12 @@ use Map\LinkTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\Collection\ObjectCollection;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'link' table.
- *
- *
+ * Base class that represents a query for the `link` table.
  *
  * @method     ChildLinkQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildLinkQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -37,29 +35,36 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildLinkQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildLinkQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildLink findOne(ConnectionInterface $con = null) Return the first ChildLink matching the query
- * @method     ChildLink findOneOrCreate(ConnectionInterface $con = null) Return the first ChildLink matching the query, or a new ChildLink object populated from the query conditions when no match is found
+ * @method     ChildLink|null findOne(?ConnectionInterface $con = null) Return the first ChildLink matching the query
+ * @method     ChildLink findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildLink matching the query, or a new ChildLink object populated from the query conditions when no match is found
  *
- * @method     ChildLink findOneById(int $id) Return the first ChildLink filtered by the id column
- * @method     ChildLink findOneByTitle(string $title) Return the first ChildLink filtered by the title column
- * @method     ChildLink findOneByUrl(string $url) Return the first ChildLink filtered by the url column
- * @method     ChildLink findOneByExternal(boolean $external) Return the first ChildLink filtered by the external column *
-
- * @method     ChildLink requirePk($key, ConnectionInterface $con = null) Return the ChildLink by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildLink requireOne(ConnectionInterface $con = null) Return the first ChildLink matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLink|null findOneById(int $id) Return the first ChildLink filtered by the id column
+ * @method     ChildLink|null findOneByTitle(string $title) Return the first ChildLink filtered by the title column
+ * @method     ChildLink|null findOneByUrl(string $url) Return the first ChildLink filtered by the url column
+ * @method     ChildLink|null findOneByExternal(boolean $external) Return the first ChildLink filtered by the external column
+ *
+ * @method     ChildLink requirePk($key, ?ConnectionInterface $con = null) Return the ChildLink by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildLink requireOne(?ConnectionInterface $con = null) Return the first ChildLink matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildLink requireOneById(int $id) Return the first ChildLink filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLink requireOneByTitle(string $title) Return the first ChildLink filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLink requireOneByUrl(string $url) Return the first ChildLink filtered by the url column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildLink requireOneByExternal(boolean $external) Return the first ChildLink filtered by the external column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildLink[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildLink objects based on current ModelCriteria
- * @method     ChildLink[]|ObjectCollection findById(int $id) Return ChildLink objects filtered by the id column
- * @method     ChildLink[]|ObjectCollection findByTitle(string $title) Return ChildLink objects filtered by the title column
- * @method     ChildLink[]|ObjectCollection findByUrl(string $url) Return ChildLink objects filtered by the url column
- * @method     ChildLink[]|ObjectCollection findByExternal(boolean $external) Return ChildLink objects filtered by the external column
- * @method     ChildLink[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildLink[]|Collection find(?ConnectionInterface $con = null) Return ChildLink objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildLink> find(?ConnectionInterface $con = null) Return ChildLink objects based on current ModelCriteria
  *
+ * @method     ChildLink[]|Collection findById(int|array<int> $id) Return ChildLink objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildLink> findById(int|array<int> $id) Return ChildLink objects filtered by the id column
+ * @method     ChildLink[]|Collection findByTitle(string|array<string> $title) Return ChildLink objects filtered by the title column
+ * @psalm-method Collection&\Traversable<ChildLink> findByTitle(string|array<string> $title) Return ChildLink objects filtered by the title column
+ * @method     ChildLink[]|Collection findByUrl(string|array<string> $url) Return ChildLink objects filtered by the url column
+ * @psalm-method Collection&\Traversable<ChildLink> findByUrl(string|array<string> $url) Return ChildLink objects filtered by the url column
+ * @method     ChildLink[]|Collection findByExternal(boolean|array<boolean> $external) Return ChildLink objects filtered by the external column
+ * @psalm-method Collection&\Traversable<ChildLink> findByExternal(boolean|array<boolean> $external) Return ChildLink objects filtered by the external column
+ *
+ * @method     ChildLink[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildLink> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class LinkQuery extends ModelCriteria
 {
@@ -68,9 +73,9 @@ abstract class LinkQuery extends ModelCriteria
     /**
      * Initializes internal state of \Base\LinkQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'palindrome', $modelName = '\\Link', $modelAlias = null)
     {
@@ -80,12 +85,12 @@ abstract class LinkQuery extends ModelCriteria
     /**
      * Returns a new ChildLinkQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildLinkQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildLinkQuery) {
             return $criteria;
@@ -115,7 +120,7 @@ abstract class LinkQuery extends ModelCriteria
      *
      * @return ChildLink|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -147,8 +152,8 @@ abstract class LinkQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -180,8 +185,8 @@ abstract class LinkQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildLink|array|mixed the result, formatted by the current formatter
      */
@@ -201,12 +206,12 @@ abstract class LinkQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -223,27 +228,31 @@ abstract class LinkQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(LinkTableMap::COL_ID, $key, Criteria::EQUAL);
+        $this->addUsingAlias(LinkTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(LinkTableMap::COL_ID, $keys, Criteria::IN);
+        $this->addUsingAlias(LinkTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -256,15 +265,15 @@ abstract class LinkQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -284,7 +293,9 @@ abstract class LinkQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LinkTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(LinkTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -294,14 +305,15 @@ abstract class LinkQuery extends ModelCriteria
      * <code>
      * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
      * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE title LIKE '%fooValue%'
+     * $query->filterByTitle(['foo', 'bar']); // WHERE title IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $title The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $title The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByTitle($title = null, $comparison = null)
+    public function filterByTitle($title = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($title)) {
@@ -309,7 +321,9 @@ abstract class LinkQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LinkTableMap::COL_TITLE, $title, $comparison);
+        $this->addUsingAlias(LinkTableMap::COL_TITLE, $title, $comparison);
+
+        return $this;
     }
 
     /**
@@ -319,14 +333,15 @@ abstract class LinkQuery extends ModelCriteria
      * <code>
      * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
      * $query->filterByUrl('%fooValue%', Criteria::LIKE); // WHERE url LIKE '%fooValue%'
+     * $query->filterByUrl(['foo', 'bar']); // WHERE url IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $url The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $url The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUrl($url = null, $comparison = null)
+    public function filterByUrl($url = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($url)) {
@@ -334,7 +349,9 @@ abstract class LinkQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(LinkTableMap::COL_URL, $url, $comparison);
+        $this->addUsingAlias(LinkTableMap::COL_URL, $url, $comparison);
+
+        return $this;
     }
 
     /**
@@ -346,30 +363,32 @@ abstract class LinkQuery extends ModelCriteria
      * $query->filterByExternal('yes'); // WHERE external = true
      * </code>
      *
-     * @param     boolean|string $external The value to use as filter.
+     * @param bool|string $external The value to use as filter.
      *              Non-boolean arguments are converted using the following rules:
      *                * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
      *                * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
      *              Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByExternal($external = null, $comparison = null)
+    public function filterByExternal($external = null, ?string $comparison = null)
     {
         if (is_string($external)) {
-            $external = in_array(strtolower($external), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
+            $external = in_array(strtolower($external), array('false', 'off', '-', 'no', 'n', '0', ''), true) ? false : true;
         }
 
-        return $this->addUsingAlias(LinkTableMap::COL_EXTERNAL, $external, $comparison);
+        $this->addUsingAlias(LinkTableMap::COL_EXTERNAL, $external, $comparison);
+
+        return $this;
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildLink $link Object to remove from the list of results
+     * @param ChildLink $link Object to remove from the list of results
      *
-     * @return $this|ChildLinkQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($link = null)
     {
@@ -386,7 +405,7 @@ abstract class LinkQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(LinkTableMap::DATABASE_NAME);
@@ -411,12 +430,12 @@ abstract class LinkQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(LinkTableMap::DATABASE_NAME);
@@ -441,4 +460,4 @@ abstract class LinkQuery extends ModelCriteria
         });
     }
 
-} // LinkQuery
+}

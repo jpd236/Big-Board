@@ -10,14 +10,12 @@ use Map\PuzzleArchiveTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Propel\Runtime\Collection\ObjectCollection;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'puzzle_archive' table.
- *
- *
+ * Base class that represents a query for the `puzzle_archive` table.
  *
  * @method     ChildPuzzleArchiveQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildPuzzleArchiveQuery orderByTitle($order = Criteria::ASC) Order by the title column
@@ -29,7 +27,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchiveQuery orderBySlackChannelId($order = Criteria::ASC) Order by the slack_channel_id column
  * @method     ChildPuzzleArchiveQuery orderByWranglerId($order = Criteria::ASC) Order by the wrangler_id column
  * @method     ChildPuzzleArchiveQuery orderBySheetModDate($order = Criteria::ASC) Order by the sheet_mod_date column
- * @method     ChildPuzzleArchiveQuery orderByPostCount($order = Criteria::ASC) Order by the post_count column
  * @method     ChildPuzzleArchiveQuery orderBySolverCount($order = Criteria::ASC) Order by the solver_count column
  * @method     ChildPuzzleArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildPuzzleArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -45,7 +42,6 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchiveQuery groupBySlackChannelId() Group by the slack_channel_id column
  * @method     ChildPuzzleArchiveQuery groupByWranglerId() Group by the wrangler_id column
  * @method     ChildPuzzleArchiveQuery groupBySheetModDate() Group by the sheet_mod_date column
- * @method     ChildPuzzleArchiveQuery groupByPostCount() Group by the post_count column
  * @method     ChildPuzzleArchiveQuery groupBySolverCount() Group by the solver_count column
  * @method     ChildPuzzleArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildPuzzleArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -59,27 +55,26 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchiveQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildPuzzleArchiveQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildPuzzleArchive findOne(ConnectionInterface $con = null) Return the first ChildPuzzleArchive matching the query
- * @method     ChildPuzzleArchive findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPuzzleArchive matching the query, or a new ChildPuzzleArchive object populated from the query conditions when no match is found
+ * @method     ChildPuzzleArchive|null findOne(?ConnectionInterface $con = null) Return the first ChildPuzzleArchive matching the query
+ * @method     ChildPuzzleArchive findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildPuzzleArchive matching the query, or a new ChildPuzzleArchive object populated from the query conditions when no match is found
  *
- * @method     ChildPuzzleArchive findOneById(int $id) Return the first ChildPuzzleArchive filtered by the id column
- * @method     ChildPuzzleArchive findOneByTitle(string $title) Return the first ChildPuzzleArchive filtered by the title column
- * @method     ChildPuzzleArchive findOneByUrl(string $url) Return the first ChildPuzzleArchive filtered by the url column
- * @method     ChildPuzzleArchive findOneBySpreadsheetId(string $spreadsheet_id) Return the first ChildPuzzleArchive filtered by the spreadsheet_id column
- * @method     ChildPuzzleArchive findOneBySolution(string $solution) Return the first ChildPuzzleArchive filtered by the solution column
- * @method     ChildPuzzleArchive findOneByStatus(string $status) Return the first ChildPuzzleArchive filtered by the status column
- * @method     ChildPuzzleArchive findOneBySlackChannel(string $slack_channel) Return the first ChildPuzzleArchive filtered by the slack_channel column
- * @method     ChildPuzzleArchive findOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzleArchive filtered by the slack_channel_id column
- * @method     ChildPuzzleArchive findOneByWranglerId(int $wrangler_id) Return the first ChildPuzzleArchive filtered by the wrangler_id column
- * @method     ChildPuzzleArchive findOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzleArchive filtered by the sheet_mod_date column
- * @method     ChildPuzzleArchive findOneByPostCount(int $post_count) Return the first ChildPuzzleArchive filtered by the post_count column
- * @method     ChildPuzzleArchive findOneBySolverCount(int $solver_count) Return the first ChildPuzzleArchive filtered by the solver_count column
- * @method     ChildPuzzleArchive findOneByCreatedAt(string $created_at) Return the first ChildPuzzleArchive filtered by the created_at column
- * @method     ChildPuzzleArchive findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleArchive filtered by the updated_at column
- * @method     ChildPuzzleArchive findOneByArchivedAt(string $archived_at) Return the first ChildPuzzleArchive filtered by the archived_at column *
-
- * @method     ChildPuzzleArchive requirePk($key, ConnectionInterface $con = null) Return the ChildPuzzleArchive by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPuzzleArchive requireOne(ConnectionInterface $con = null) Return the first ChildPuzzleArchive matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzleArchive|null findOneById(int $id) Return the first ChildPuzzleArchive filtered by the id column
+ * @method     ChildPuzzleArchive|null findOneByTitle(string $title) Return the first ChildPuzzleArchive filtered by the title column
+ * @method     ChildPuzzleArchive|null findOneByUrl(string $url) Return the first ChildPuzzleArchive filtered by the url column
+ * @method     ChildPuzzleArchive|null findOneBySpreadsheetId(string $spreadsheet_id) Return the first ChildPuzzleArchive filtered by the spreadsheet_id column
+ * @method     ChildPuzzleArchive|null findOneBySolution(string $solution) Return the first ChildPuzzleArchive filtered by the solution column
+ * @method     ChildPuzzleArchive|null findOneByStatus(string $status) Return the first ChildPuzzleArchive filtered by the status column
+ * @method     ChildPuzzleArchive|null findOneBySlackChannel(string $slack_channel) Return the first ChildPuzzleArchive filtered by the slack_channel column
+ * @method     ChildPuzzleArchive|null findOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzleArchive filtered by the slack_channel_id column
+ * @method     ChildPuzzleArchive|null findOneByWranglerId(int $wrangler_id) Return the first ChildPuzzleArchive filtered by the wrangler_id column
+ * @method     ChildPuzzleArchive|null findOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzleArchive filtered by the sheet_mod_date column
+ * @method     ChildPuzzleArchive|null findOneBySolverCount(int $solver_count) Return the first ChildPuzzleArchive filtered by the solver_count column
+ * @method     ChildPuzzleArchive|null findOneByCreatedAt(string $created_at) Return the first ChildPuzzleArchive filtered by the created_at column
+ * @method     ChildPuzzleArchive|null findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleArchive filtered by the updated_at column
+ * @method     ChildPuzzleArchive|null findOneByArchivedAt(string $archived_at) Return the first ChildPuzzleArchive filtered by the archived_at column
+ *
+ * @method     ChildPuzzleArchive requirePk($key, ?ConnectionInterface $con = null) Return the ChildPuzzleArchive by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzleArchive requireOne(?ConnectionInterface $con = null) Return the first ChildPuzzleArchive matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPuzzleArchive requireOneById(int $id) Return the first ChildPuzzleArchive filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByTitle(string $title) Return the first ChildPuzzleArchive filtered by the title column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -91,30 +86,45 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchive requireOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzleArchive filtered by the slack_channel_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByWranglerId(int $wrangler_id) Return the first ChildPuzzleArchive filtered by the wrangler_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzleArchive filtered by the sheet_mod_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPuzzleArchive requireOneByPostCount(int $post_count) Return the first ChildPuzzleArchive filtered by the post_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneBySolverCount(int $solver_count) Return the first ChildPuzzleArchive filtered by the solver_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByCreatedAt(string $created_at) Return the first ChildPuzzleArchive filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleArchive filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByArchivedAt(string $archived_at) Return the first ChildPuzzleArchive filtered by the archived_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPuzzleArchive[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPuzzleArchive objects based on current ModelCriteria
- * @method     ChildPuzzleArchive[]|ObjectCollection findById(int $id) Return ChildPuzzleArchive objects filtered by the id column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByTitle(string $title) Return ChildPuzzleArchive objects filtered by the title column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByUrl(string $url) Return ChildPuzzleArchive objects filtered by the url column
- * @method     ChildPuzzleArchive[]|ObjectCollection findBySpreadsheetId(string $spreadsheet_id) Return ChildPuzzleArchive objects filtered by the spreadsheet_id column
- * @method     ChildPuzzleArchive[]|ObjectCollection findBySolution(string $solution) Return ChildPuzzleArchive objects filtered by the solution column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByStatus(string $status) Return ChildPuzzleArchive objects filtered by the status column
- * @method     ChildPuzzleArchive[]|ObjectCollection findBySlackChannel(string $slack_channel) Return ChildPuzzleArchive objects filtered by the slack_channel column
- * @method     ChildPuzzleArchive[]|ObjectCollection findBySlackChannelId(string $slack_channel_id) Return ChildPuzzleArchive objects filtered by the slack_channel_id column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByWranglerId(int $wrangler_id) Return ChildPuzzleArchive objects filtered by the wrangler_id column
- * @method     ChildPuzzleArchive[]|ObjectCollection findBySheetModDate(string $sheet_mod_date) Return ChildPuzzleArchive objects filtered by the sheet_mod_date column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByPostCount(int $post_count) Return ChildPuzzleArchive objects filtered by the post_count column
- * @method     ChildPuzzleArchive[]|ObjectCollection findBySolverCount(int $solver_count) Return ChildPuzzleArchive objects filtered by the solver_count column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildPuzzleArchive objects filtered by the created_at column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildPuzzleArchive objects filtered by the updated_at column
- * @method     ChildPuzzleArchive[]|ObjectCollection findByArchivedAt(string $archived_at) Return ChildPuzzleArchive objects filtered by the archived_at column
- * @method     ChildPuzzleArchive[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildPuzzleArchive[]|Collection find(?ConnectionInterface $con = null) Return ChildPuzzleArchive objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> find(?ConnectionInterface $con = null) Return ChildPuzzleArchive objects based on current ModelCriteria
  *
+ * @method     ChildPuzzleArchive[]|Collection findById(int|array<int> $id) Return ChildPuzzleArchive objects filtered by the id column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findById(int|array<int> $id) Return ChildPuzzleArchive objects filtered by the id column
+ * @method     ChildPuzzleArchive[]|Collection findByTitle(string|array<string> $title) Return ChildPuzzleArchive objects filtered by the title column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByTitle(string|array<string> $title) Return ChildPuzzleArchive objects filtered by the title column
+ * @method     ChildPuzzleArchive[]|Collection findByUrl(string|array<string> $url) Return ChildPuzzleArchive objects filtered by the url column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByUrl(string|array<string> $url) Return ChildPuzzleArchive objects filtered by the url column
+ * @method     ChildPuzzleArchive[]|Collection findBySpreadsheetId(string|array<string> $spreadsheet_id) Return ChildPuzzleArchive objects filtered by the spreadsheet_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySpreadsheetId(string|array<string> $spreadsheet_id) Return ChildPuzzleArchive objects filtered by the spreadsheet_id column
+ * @method     ChildPuzzleArchive[]|Collection findBySolution(string|array<string> $solution) Return ChildPuzzleArchive objects filtered by the solution column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySolution(string|array<string> $solution) Return ChildPuzzleArchive objects filtered by the solution column
+ * @method     ChildPuzzleArchive[]|Collection findByStatus(string|array<string> $status) Return ChildPuzzleArchive objects filtered by the status column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByStatus(string|array<string> $status) Return ChildPuzzleArchive objects filtered by the status column
+ * @method     ChildPuzzleArchive[]|Collection findBySlackChannel(string|array<string> $slack_channel) Return ChildPuzzleArchive objects filtered by the slack_channel column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySlackChannel(string|array<string> $slack_channel) Return ChildPuzzleArchive objects filtered by the slack_channel column
+ * @method     ChildPuzzleArchive[]|Collection findBySlackChannelId(string|array<string> $slack_channel_id) Return ChildPuzzleArchive objects filtered by the slack_channel_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySlackChannelId(string|array<string> $slack_channel_id) Return ChildPuzzleArchive objects filtered by the slack_channel_id column
+ * @method     ChildPuzzleArchive[]|Collection findByWranglerId(int|array<int> $wrangler_id) Return ChildPuzzleArchive objects filtered by the wrangler_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByWranglerId(int|array<int> $wrangler_id) Return ChildPuzzleArchive objects filtered by the wrangler_id column
+ * @method     ChildPuzzleArchive[]|Collection findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzleArchive objects filtered by the sheet_mod_date column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzleArchive objects filtered by the sheet_mod_date column
+ * @method     ChildPuzzleArchive[]|Collection findBySolverCount(int|array<int> $solver_count) Return ChildPuzzleArchive objects filtered by the solver_count column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySolverCount(int|array<int> $solver_count) Return ChildPuzzleArchive objects filtered by the solver_count column
+ * @method     ChildPuzzleArchive[]|Collection findByCreatedAt(string|array<string> $created_at) Return ChildPuzzleArchive objects filtered by the created_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByCreatedAt(string|array<string> $created_at) Return ChildPuzzleArchive objects filtered by the created_at column
+ * @method     ChildPuzzleArchive[]|Collection findByUpdatedAt(string|array<string> $updated_at) Return ChildPuzzleArchive objects filtered by the updated_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByUpdatedAt(string|array<string> $updated_at) Return ChildPuzzleArchive objects filtered by the updated_at column
+ * @method     ChildPuzzleArchive[]|Collection findByArchivedAt(string|array<string> $archived_at) Return ChildPuzzleArchive objects filtered by the archived_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByArchivedAt(string|array<string> $archived_at) Return ChildPuzzleArchive objects filtered by the archived_at column
+ *
+ * @method     ChildPuzzleArchive[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildPuzzleArchive> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class PuzzleArchiveQuery extends ModelCriteria
 {
@@ -123,9 +133,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
     /**
      * Initializes internal state of \Base\PuzzleArchiveQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'palindrome', $modelName = '\\PuzzleArchive', $modelAlias = null)
     {
@@ -135,12 +145,12 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
     /**
      * Returns a new ChildPuzzleArchiveQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildPuzzleArchiveQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildPuzzleArchiveQuery) {
             return $criteria;
@@ -170,7 +180,7 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      *
      * @return ChildPuzzleArchive|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -202,8 +212,8 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -211,7 +221,7 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, post_count, solver_count, created_at, updated_at, archived_at FROM puzzle_archive WHERE id = :p0';
+        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, solver_count, created_at, updated_at, archived_at FROM puzzle_archive WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -235,8 +245,8 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildPuzzleArchive|array|mixed the result, formatted by the current formatter
      */
@@ -256,12 +266,12 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -278,27 +288,31 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_ID, $key, Criteria::EQUAL);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_ID, $key, Criteria::EQUAL);
+
+        return $this;
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_ID, $keys, Criteria::IN);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_ID, $keys, Criteria::IN);
+
+        return $this;
     }
 
     /**
@@ -311,15 +325,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param     mixed $id The value to use as filter.
+     * @param mixed $id The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterById($id = null, $comparison = null)
+    public function filterById($id = null, ?string $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
@@ -339,7 +353,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_ID, $id, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_ID, $id, $comparison);
+
+        return $this;
     }
 
     /**
@@ -349,14 +365,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByTitle('fooValue');   // WHERE title = 'fooValue'
      * $query->filterByTitle('%fooValue%', Criteria::LIKE); // WHERE title LIKE '%fooValue%'
+     * $query->filterByTitle(['foo', 'bar']); // WHERE title IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $title The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $title The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByTitle($title = null, $comparison = null)
+    public function filterByTitle($title = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($title)) {
@@ -364,7 +381,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_TITLE, $title, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_TITLE, $title, $comparison);
+
+        return $this;
     }
 
     /**
@@ -374,14 +393,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByUrl('fooValue');   // WHERE url = 'fooValue'
      * $query->filterByUrl('%fooValue%', Criteria::LIKE); // WHERE url LIKE '%fooValue%'
+     * $query->filterByUrl(['foo', 'bar']); // WHERE url IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $url The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $url The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUrl($url = null, $comparison = null)
+    public function filterByUrl($url = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($url)) {
@@ -389,7 +409,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_URL, $url, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_URL, $url, $comparison);
+
+        return $this;
     }
 
     /**
@@ -399,14 +421,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterBySpreadsheetId('fooValue');   // WHERE spreadsheet_id = 'fooValue'
      * $query->filterBySpreadsheetId('%fooValue%', Criteria::LIKE); // WHERE spreadsheet_id LIKE '%fooValue%'
+     * $query->filterBySpreadsheetId(['foo', 'bar']); // WHERE spreadsheet_id IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $spreadsheetId The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $spreadsheetId The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySpreadsheetId($spreadsheetId = null, $comparison = null)
+    public function filterBySpreadsheetId($spreadsheetId = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($spreadsheetId)) {
@@ -414,7 +437,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_SPREADSHEET_ID, $spreadsheetId, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SPREADSHEET_ID, $spreadsheetId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -424,14 +449,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterBySolution('fooValue');   // WHERE solution = 'fooValue'
      * $query->filterBySolution('%fooValue%', Criteria::LIKE); // WHERE solution LIKE '%fooValue%'
+     * $query->filterBySolution(['foo', 'bar']); // WHERE solution IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $solution The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $solution The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySolution($solution = null, $comparison = null)
+    public function filterBySolution($solution = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($solution)) {
@@ -439,7 +465,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_SOLUTION, $solution, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SOLUTION, $solution, $comparison);
+
+        return $this;
     }
 
     /**
@@ -449,14 +477,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterByStatus('fooValue');   // WHERE status = 'fooValue'
      * $query->filterByStatus('%fooValue%', Criteria::LIKE); // WHERE status LIKE '%fooValue%'
+     * $query->filterByStatus(['foo', 'bar']); // WHERE status IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $status The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $status The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByStatus($status = null, $comparison = null)
+    public function filterByStatus($status = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($status)) {
@@ -464,7 +493,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_STATUS, $status, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_STATUS, $status, $comparison);
+
+        return $this;
     }
 
     /**
@@ -474,14 +505,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterBySlackChannel('fooValue');   // WHERE slack_channel = 'fooValue'
      * $query->filterBySlackChannel('%fooValue%', Criteria::LIKE); // WHERE slack_channel LIKE '%fooValue%'
+     * $query->filterBySlackChannel(['foo', 'bar']); // WHERE slack_channel IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $slackChannel The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $slackChannel The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySlackChannel($slackChannel = null, $comparison = null)
+    public function filterBySlackChannel($slackChannel = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($slackChannel)) {
@@ -489,7 +521,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_SLACK_CHANNEL, $slackChannel, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SLACK_CHANNEL, $slackChannel, $comparison);
+
+        return $this;
     }
 
     /**
@@ -499,14 +533,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * <code>
      * $query->filterBySlackChannelId('fooValue');   // WHERE slack_channel_id = 'fooValue'
      * $query->filterBySlackChannelId('%fooValue%', Criteria::LIKE); // WHERE slack_channel_id LIKE '%fooValue%'
+     * $query->filterBySlackChannelId(['foo', 'bar']); // WHERE slack_channel_id IN ('foo', 'bar')
      * </code>
      *
-     * @param     string $slackChannelId The value to use as filter.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|string[] $slackChannelId The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySlackChannelId($slackChannelId = null, $comparison = null)
+    public function filterBySlackChannelId($slackChannelId = null, ?string $comparison = null)
     {
         if (null === $comparison) {
             if (is_array($slackChannelId)) {
@@ -514,7 +549,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_SLACK_CHANNEL_ID, $slackChannelId, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SLACK_CHANNEL_ID, $slackChannelId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -527,15 +564,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterByWranglerId(array('min' => 12)); // WHERE wrangler_id > 12
      * </code>
      *
-     * @param     mixed $wranglerId The value to use as filter.
+     * @param mixed $wranglerId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByWranglerId($wranglerId = null, $comparison = null)
+    public function filterByWranglerId($wranglerId = null, ?string $comparison = null)
     {
         if (is_array($wranglerId)) {
             $useMinMax = false;
@@ -555,7 +592,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_WRANGLER_ID, $wranglerId, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_WRANGLER_ID, $wranglerId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -568,17 +607,17 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterBySheetModDate(array('max' => 'yesterday')); // WHERE sheet_mod_date > '2011-03-13'
      * </code>
      *
-     * @param     mixed $sheetModDate The value to use as filter.
+     * @param mixed $sheetModDate The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySheetModDate($sheetModDate = null, $comparison = null)
+    public function filterBySheetModDate($sheetModDate = null, ?string $comparison = null)
     {
         if (is_array($sheetModDate)) {
             $useMinMax = false;
@@ -598,48 +637,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_SHEET_MOD_DATE, $sheetModDate, $comparison);
-    }
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SHEET_MOD_DATE, $sheetModDate, $comparison);
 
-    /**
-     * Filter the query on the post_count column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByPostCount(1234); // WHERE post_count = 1234
-     * $query->filterByPostCount(array(12, 34)); // WHERE post_count IN (12, 34)
-     * $query->filterByPostCount(array('min' => 12)); // WHERE post_count > 12
-     * </code>
-     *
-     * @param     mixed $postCount The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
-     */
-    public function filterByPostCount($postCount = null, $comparison = null)
-    {
-        if (is_array($postCount)) {
-            $useMinMax = false;
-            if (isset($postCount['min'])) {
-                $this->addUsingAlias(PuzzleArchiveTableMap::COL_POST_COUNT, $postCount['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($postCount['max'])) {
-                $this->addUsingAlias(PuzzleArchiveTableMap::COL_POST_COUNT, $postCount['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_POST_COUNT, $postCount, $comparison);
+        return $this;
     }
 
     /**
@@ -652,15 +652,15 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterBySolverCount(array('min' => 12)); // WHERE solver_count > 12
      * </code>
      *
-     * @param     mixed $solverCount The value to use as filter.
+     * @param mixed $solverCount The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterBySolverCount($solverCount = null, $comparison = null)
+    public function filterBySolverCount($solverCount = null, ?string $comparison = null)
     {
         if (is_array($solverCount)) {
             $useMinMax = false;
@@ -680,7 +680,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_SOLVER_COUNT, $solverCount, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SOLVER_COUNT, $solverCount, $comparison);
+
+        return $this;
     }
 
     /**
@@ -693,17 +695,17 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $createdAt The value to use as filter.
+     * @param mixed $createdAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    public function filterByCreatedAt($createdAt = null, ?string $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
@@ -723,7 +725,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_CREATED_AT, $createdAt, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_CREATED_AT, $createdAt, $comparison);
+
+        return $this;
     }
 
     /**
@@ -736,17 +740,17 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updatedAt The value to use as filter.
+     * @param mixed $updatedAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    public function filterByUpdatedAt($updatedAt = null, ?string $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
@@ -766,7 +770,9 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+
+        return $this;
     }
 
     /**
@@ -779,17 +785,17 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * $query->filterByArchivedAt(array('max' => 'yesterday')); // WHERE archived_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $archivedAt The value to use as filter.
+     * @param mixed $archivedAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByArchivedAt($archivedAt = null, $comparison = null)
+    public function filterByArchivedAt($archivedAt = null, ?string $comparison = null)
     {
         if (is_array($archivedAt)) {
             $useMinMax = false;
@@ -809,15 +815,17 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleArchiveTableMap::COL_ARCHIVED_AT, $archivedAt, $comparison);
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_ARCHIVED_AT, $archivedAt, $comparison);
+
+        return $this;
     }
 
     /**
      * Exclude object from result
      *
-     * @param   ChildPuzzleArchive $puzzleArchive Object to remove from the list of results
+     * @param ChildPuzzleArchive $puzzleArchive Object to remove from the list of results
      *
-     * @return $this|ChildPuzzleArchiveQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($puzzleArchive = null)
     {
@@ -834,7 +842,7 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleArchiveTableMap::DATABASE_NAME);
@@ -859,12 +867,12 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleArchiveTableMap::DATABASE_NAME);
@@ -889,4 +897,4 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
         });
     }
 
-} // PuzzleArchiveQuery
+}

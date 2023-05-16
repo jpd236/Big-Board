@@ -24,7 +24,6 @@ use Propel\Runtime\Map\TableMapTrait;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class PuzzlePuzzleTableMap extends TableMap
 {
@@ -34,94 +33,127 @@ class PuzzlePuzzleTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.PuzzlePuzzleTableMap';
+    public const CLASS_NAME = '.Map.PuzzlePuzzleTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'palindrome';
+    public const DATABASE_NAME = 'palindrome';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'relationship';
+    public const TABLE_NAME = 'relationship';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'PuzzlePuzzle';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\PuzzlePuzzle';
+    public const OM_CLASS = '\\PuzzlePuzzle';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'PuzzlePuzzle';
+    public const CLASS_DEFAULT = 'PuzzlePuzzle';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    public const NUM_COLUMNS = 2;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    public const NUM_HYDRATE_COLUMNS = 2;
 
     /**
      * the column name for the puzzle_id field
      */
-    const COL_PUZZLE_ID = 'relationship.puzzle_id';
+    public const COL_PUZZLE_ID = 'relationship.puzzle_id';
 
     /**
      * the column name for the parent_id field
      */
-    const COL_PARENT_ID = 'relationship.parent_id';
+    public const COL_PARENT_ID = 'relationship.parent_id';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('PuzzleId', 'ParentId', ),
-        self::TYPE_CAMELNAME     => array('puzzleId', 'parentId', ),
-        self::TYPE_COLNAME       => array(PuzzlePuzzleTableMap::COL_PUZZLE_ID, PuzzlePuzzleTableMap::COL_PARENT_ID, ),
-        self::TYPE_FIELDNAME     => array('puzzle_id', 'parent_id', ),
-        self::TYPE_NUM           => array(0, 1, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['PuzzleId', 'ParentId', ],
+        self::TYPE_CAMELNAME     => ['puzzleId', 'parentId', ],
+        self::TYPE_COLNAME       => [PuzzlePuzzleTableMap::COL_PUZZLE_ID, PuzzlePuzzleTableMap::COL_PARENT_ID, ],
+        self::TYPE_FIELDNAME     => ['puzzle_id', 'parent_id', ],
+        self::TYPE_NUM           => [0, 1, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('PuzzleId' => 0, 'ParentId' => 1, ),
-        self::TYPE_CAMELNAME     => array('puzzleId' => 0, 'parentId' => 1, ),
-        self::TYPE_COLNAME       => array(PuzzlePuzzleTableMap::COL_PUZZLE_ID => 0, PuzzlePuzzleTableMap::COL_PARENT_ID => 1, ),
-        self::TYPE_FIELDNAME     => array('puzzle_id' => 0, 'parent_id' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['PuzzleId' => 0, 'ParentId' => 1, ],
+        self::TYPE_CAMELNAME     => ['puzzleId' => 0, 'parentId' => 1, ],
+        self::TYPE_COLNAME       => [PuzzlePuzzleTableMap::COL_PUZZLE_ID => 0, PuzzlePuzzleTableMap::COL_PARENT_ID => 1, ],
+        self::TYPE_FIELDNAME     => ['puzzle_id' => 0, 'parent_id' => 1, ],
+        self::TYPE_NUM           => [0, 1, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'PuzzleId' => 'PUZZLE_ID',
+        'PuzzlePuzzle.PuzzleId' => 'PUZZLE_ID',
+        'puzzleId' => 'PUZZLE_ID',
+        'puzzlePuzzle.puzzleId' => 'PUZZLE_ID',
+        'PuzzlePuzzleTableMap::COL_PUZZLE_ID' => 'PUZZLE_ID',
+        'COL_PUZZLE_ID' => 'PUZZLE_ID',
+        'puzzle_id' => 'PUZZLE_ID',
+        'relationship.puzzle_id' => 'PUZZLE_ID',
+        'ParentId' => 'PARENT_ID',
+        'PuzzlePuzzle.ParentId' => 'PARENT_ID',
+        'parentId' => 'PARENT_ID',
+        'puzzlePuzzle.parentId' => 'PARENT_ID',
+        'PuzzlePuzzleTableMap::COL_PARENT_ID' => 'PARENT_ID',
+        'COL_PARENT_ID' => 'PARENT_ID',
+        'parent_id' => 'PARENT_ID',
+        'relationship.parent_id' => 'PARENT_ID',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('relationship');
@@ -134,12 +166,14 @@ class PuzzlePuzzleTableMap extends TableMap
         // columns
         $this->addForeignPrimaryKey('puzzle_id', 'PuzzleId', 'INTEGER' , 'puzzle', 'id', true, null, null);
         $this->addForeignPrimaryKey('parent_id', 'ParentId', 'INTEGER' , 'puzzle', 'id', true, null, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
         $this->addRelation('Child', '\\Puzzle', RelationMap::MANY_TO_ONE, array (
   0 =>
@@ -155,7 +189,7 @@ class PuzzlePuzzleTableMap extends TableMap
     1 => ':id',
   ),
 ), 'CASCADE', null, null, false);
-    } // buildRelations()
+    }
 
     /**
      * Adds an object to the instance pool.
@@ -166,9 +200,11 @@ class PuzzlePuzzleTableMap extends TableMap
      * and findPk*() calls.
      *
      * @param \PuzzlePuzzle $obj A \PuzzlePuzzle object.
-     * @param string $key             (optional) key to use for instance map (for performance boost if key was already calculated externally).
+     * @param string|null $key Key (optional) to use for instance map (for performance boost if key was already calculated externally).
+     *
+     * @return void
      */
-    public static function addInstanceToPool($obj, $key = null)
+    public static function addInstanceToPool(PuzzlePuzzle $obj, ?string $key = null): void
     {
         if (Propel::isInstancePoolingEnabled()) {
             if (null === $key) {
@@ -187,8 +223,10 @@ class PuzzlePuzzleTableMap extends TableMap
      * from the cache in order to prevent returning objects that no longer exist.
      *
      * @param mixed $value A \PuzzlePuzzle object or a primary key value.
+     *
+     * @return void
      */
-    public static function removeInstanceFromPool($value)
+    public static function removeInstanceFromPool($value): void
     {
         if (Propel::isInstancePoolingEnabled() && null !== $value) {
             if (is_object($value) && $value instanceof \PuzzlePuzzle) {
@@ -216,14 +254,14 @@ class PuzzlePuzzleTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PuzzleId', TableMap::TYPE_PHPNAME, $indexType)] === null && $row[TableMap::TYPE_NUM == $indexType ? 1 + $offset : static::translateFieldName('ParentId', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -238,14 +276,14 @@ class PuzzlePuzzleTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
             $pks = [];
 
@@ -271,10 +309,10 @@ class PuzzlePuzzleTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? PuzzlePuzzleTableMap::CLASS_DEFAULT : PuzzlePuzzleTableMap::OM_CLASS;
     }
@@ -282,17 +320,17 @@ class PuzzlePuzzleTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (PuzzlePuzzle object, last column rank)
+     * @return array (PuzzlePuzzle object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = PuzzlePuzzleTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = PuzzlePuzzleTableMap::getInstanceFromPool($key))) {
@@ -308,7 +346,7 @@ class PuzzlePuzzleTableMap extends TableMap
             PuzzlePuzzleTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -316,13 +354,13 @@ class PuzzlePuzzleTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -352,12 +390,13 @@ class PuzzlePuzzleTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(PuzzlePuzzleTableMap::COL_PUZZLE_ID);
@@ -369,40 +408,52 @@ class PuzzlePuzzleTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(PuzzlePuzzleTableMap::COL_PUZZLE_ID);
+            $criteria->removeSelectColumn(PuzzlePuzzleTableMap::COL_PARENT_ID);
+        } else {
+            $criteria->removeSelectColumn($alias . '.puzzle_id');
+            $criteria->removeSelectColumn($alias . '.parent_id');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(PuzzlePuzzleTableMap::DATABASE_NAME)->getTable(PuzzlePuzzleTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(PuzzlePuzzleTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(PuzzlePuzzleTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new PuzzlePuzzleTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a PuzzlePuzzle or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or PuzzlePuzzle object or primary key or array of primary keys
+     * @param mixed $values Criteria or PuzzlePuzzle object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzlePuzzleTableMap::DATABASE_NAME);
@@ -420,7 +471,7 @@ class PuzzlePuzzleTableMap extends TableMap
             // the primary key passed to be an array of pkey values
             if (count($values) == count($values, COUNT_RECURSIVE)) {
                 // array is not multi-dimensional
-                $values = array($values);
+                $values = [$values];
             }
             foreach ($values as $value) {
                 $criterion = $criteria->getNewCriterion(PuzzlePuzzleTableMap::COL_PUZZLE_ID, $value[0]);
@@ -448,7 +499,7 @@ class PuzzlePuzzleTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return PuzzlePuzzleQuery::create()->doDeleteAll($con);
     }
@@ -456,13 +507,13 @@ class PuzzlePuzzleTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a PuzzlePuzzle or Criteria object.
      *
-     * @param mixed               $criteria Criteria or PuzzlePuzzle object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or PuzzlePuzzle object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzlePuzzleTableMap::DATABASE_NAME);
@@ -485,7 +536,4 @@ class PuzzlePuzzleTableMap extends TableMap
         });
     }
 
-} // PuzzlePuzzleTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-PuzzlePuzzleTableMap::buildTableMap();
+}

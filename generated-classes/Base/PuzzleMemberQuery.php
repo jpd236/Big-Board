@@ -11,14 +11,13 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
 
 /**
- * Base class that represents a query for the 'solver' table.
- *
- *
+ * Base class that represents a query for the `solver` table.
  *
  * @method     ChildPuzzleMemberQuery orderByPuzzleId($order = Criteria::ASC) Order by the puzzle_id column
  * @method     ChildPuzzleMemberQuery orderByMemberId($order = Criteria::ASC) Order by the member_id column
@@ -60,29 +59,36 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     \PuzzleQuery|\MemberQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
- * @method     ChildPuzzleMember findOne(ConnectionInterface $con = null) Return the first ChildPuzzleMember matching the query
- * @method     ChildPuzzleMember findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPuzzleMember matching the query, or a new ChildPuzzleMember object populated from the query conditions when no match is found
+ * @method     ChildPuzzleMember|null findOne(?ConnectionInterface $con = null) Return the first ChildPuzzleMember matching the query
+ * @method     ChildPuzzleMember findOneOrCreate(?ConnectionInterface $con = null) Return the first ChildPuzzleMember matching the query, or a new ChildPuzzleMember object populated from the query conditions when no match is found
  *
- * @method     ChildPuzzleMember findOneByPuzzleId(int $puzzle_id) Return the first ChildPuzzleMember filtered by the puzzle_id column
- * @method     ChildPuzzleMember findOneByMemberId(int $member_id) Return the first ChildPuzzleMember filtered by the member_id column
- * @method     ChildPuzzleMember findOneByCreatedAt(string $created_at) Return the first ChildPuzzleMember filtered by the created_at column
- * @method     ChildPuzzleMember findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleMember filtered by the updated_at column *
-
- * @method     ChildPuzzleMember requirePk($key, ConnectionInterface $con = null) Return the ChildPuzzleMember by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPuzzleMember requireOne(ConnectionInterface $con = null) Return the first ChildPuzzleMember matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzleMember|null findOneByPuzzleId(int $puzzle_id) Return the first ChildPuzzleMember filtered by the puzzle_id column
+ * @method     ChildPuzzleMember|null findOneByMemberId(int $member_id) Return the first ChildPuzzleMember filtered by the member_id column
+ * @method     ChildPuzzleMember|null findOneByCreatedAt(string $created_at) Return the first ChildPuzzleMember filtered by the created_at column
+ * @method     ChildPuzzleMember|null findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleMember filtered by the updated_at column
+ *
+ * @method     ChildPuzzleMember requirePk($key, ?ConnectionInterface $con = null) Return the ChildPuzzleMember by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzleMember requireOne(?ConnectionInterface $con = null) Return the first ChildPuzzleMember matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPuzzleMember requireOneByPuzzleId(int $puzzle_id) Return the first ChildPuzzleMember filtered by the puzzle_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleMember requireOneByMemberId(int $member_id) Return the first ChildPuzzleMember filtered by the member_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleMember requireOneByCreatedAt(string $created_at) Return the first ChildPuzzleMember filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleMember requireOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleMember filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPuzzleMember[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPuzzleMember objects based on current ModelCriteria
- * @method     ChildPuzzleMember[]|ObjectCollection findByPuzzleId(int $puzzle_id) Return ChildPuzzleMember objects filtered by the puzzle_id column
- * @method     ChildPuzzleMember[]|ObjectCollection findByMemberId(int $member_id) Return ChildPuzzleMember objects filtered by the member_id column
- * @method     ChildPuzzleMember[]|ObjectCollection findByCreatedAt(string $created_at) Return ChildPuzzleMember objects filtered by the created_at column
- * @method     ChildPuzzleMember[]|ObjectCollection findByUpdatedAt(string $updated_at) Return ChildPuzzleMember objects filtered by the updated_at column
- * @method     ChildPuzzleMember[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @method     ChildPuzzleMember[]|Collection find(?ConnectionInterface $con = null) Return ChildPuzzleMember objects based on current ModelCriteria
+ * @psalm-method Collection&\Traversable<ChildPuzzleMember> find(?ConnectionInterface $con = null) Return ChildPuzzleMember objects based on current ModelCriteria
  *
+ * @method     ChildPuzzleMember[]|Collection findByPuzzleId(int|array<int> $puzzle_id) Return ChildPuzzleMember objects filtered by the puzzle_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzleMember> findByPuzzleId(int|array<int> $puzzle_id) Return ChildPuzzleMember objects filtered by the puzzle_id column
+ * @method     ChildPuzzleMember[]|Collection findByMemberId(int|array<int> $member_id) Return ChildPuzzleMember objects filtered by the member_id column
+ * @psalm-method Collection&\Traversable<ChildPuzzleMember> findByMemberId(int|array<int> $member_id) Return ChildPuzzleMember objects filtered by the member_id column
+ * @method     ChildPuzzleMember[]|Collection findByCreatedAt(string|array<string> $created_at) Return ChildPuzzleMember objects filtered by the created_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzleMember> findByCreatedAt(string|array<string> $created_at) Return ChildPuzzleMember objects filtered by the created_at column
+ * @method     ChildPuzzleMember[]|Collection findByUpdatedAt(string|array<string> $updated_at) Return ChildPuzzleMember objects filtered by the updated_at column
+ * @psalm-method Collection&\Traversable<ChildPuzzleMember> findByUpdatedAt(string|array<string> $updated_at) Return ChildPuzzleMember objects filtered by the updated_at column
+ *
+ * @method     ChildPuzzleMember[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
+ * @psalm-method \Propel\Runtime\Util\PropelModelPager&\Traversable<ChildPuzzleMember> paginate($page = 1, $maxPerPage = 10, ?ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  */
 abstract class PuzzleMemberQuery extends ModelCriteria
 {
@@ -91,9 +97,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Initializes internal state of \Base\PuzzleMemberQuery object.
      *
-     * @param     string $dbName The database name
-     * @param     string $modelName The phpName of a model, e.g. 'Book'
-     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param string $dbName The database name
+     * @param string $modelName The phpName of a model, e.g. 'Book'
+     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'palindrome', $modelName = '\\PuzzleMember', $modelAlias = null)
     {
@@ -103,12 +109,12 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Returns a new ChildPuzzleMemberQuery object.
      *
-     * @param     string $modelAlias The alias of a model in the query
-     * @param     Criteria $criteria Optional Criteria to build the query from
+     * @param string $modelAlias The alias of a model in the query
+     * @param Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildPuzzleMemberQuery
      */
-    public static function create($modelAlias = null, Criteria $criteria = null)
+    public static function create(?string $modelAlias = null, ?Criteria $criteria = null): Criteria
     {
         if ($criteria instanceof ChildPuzzleMemberQuery) {
             return $criteria;
@@ -138,7 +144,7 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      *
      * @return ChildPuzzleMember|array|mixed the result, formatted by the current formatter
      */
-    public function findPk($key, ConnectionInterface $con = null)
+    public function findPk($key, ?ConnectionInterface $con = null)
     {
         if ($key === null) {
             return null;
@@ -170,8 +176,8 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
@@ -204,8 +210,8 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
+     * @param mixed $key Primary key to use for the query
+     * @param ConnectionInterface $con A connection object
      *
      * @return ChildPuzzleMember|array|mixed the result, formatted by the current formatter
      */
@@ -225,12 +231,12 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
      * </code>
-     * @param     array $keys Primary keys to use for the query
-     * @param     ConnectionInterface $con an optional connection object
+     * @param array $keys Primary keys to use for the query
+     * @param ConnectionInterface $con an optional connection object
      *
-     * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
+     * @return Collection|array|mixed the list of results, formatted by the current formatter
      */
-    public function findPks($keys, ConnectionInterface $con = null)
+    public function findPks($keys, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
@@ -247,9 +253,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param     mixed $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
@@ -262,14 +268,16 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Filter the query by a list of primary keys
      *
-     * @param     array $keys The list of primary key to use for the query
+     * @param array|int $keys The list of primary key to use for the query
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
         if (empty($keys)) {
-            return $this->add(null, '1<>1', Criteria::CUSTOM);
+            $this->add(null, '1<>1', Criteria::CUSTOM);
+
+            return $this;
         }
         foreach ($keys as $key) {
             $cton0 = $this->getNewCriterion(PuzzleMemberTableMap::COL_PUZZLE_ID, $key[0], Criteria::EQUAL);
@@ -293,15 +301,15 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      *
      * @see       filterByPuzzle()
      *
-     * @param     mixed $puzzleId The value to use as filter.
+     * @param mixed $puzzleId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPuzzleId($puzzleId = null, $comparison = null)
+    public function filterByPuzzleId($puzzleId = null, ?string $comparison = null)
     {
         if (is_array($puzzleId)) {
             $useMinMax = false;
@@ -321,7 +329,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleMemberTableMap::COL_PUZZLE_ID, $puzzleId, $comparison);
+        $this->addUsingAlias(PuzzleMemberTableMap::COL_PUZZLE_ID, $puzzleId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -336,15 +346,15 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      *
      * @see       filterByMember()
      *
-     * @param     mixed $memberId The value to use as filter.
+     * @param mixed $memberId The value to use as filter.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByMemberId($memberId = null, $comparison = null)
+    public function filterByMemberId($memberId = null, ?string $comparison = null)
     {
         if (is_array($memberId)) {
             $useMinMax = false;
@@ -364,7 +374,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleMemberTableMap::COL_MEMBER_ID, $memberId, $comparison);
+        $this->addUsingAlias(PuzzleMemberTableMap::COL_MEMBER_ID, $memberId, $comparison);
+
+        return $this;
     }
 
     /**
@@ -377,17 +389,17 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $createdAt The value to use as filter.
+     * @param mixed $createdAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    public function filterByCreatedAt($createdAt = null, ?string $comparison = null)
     {
         if (is_array($createdAt)) {
             $useMinMax = false;
@@ -407,7 +419,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleMemberTableMap::COL_CREATED_AT, $createdAt, $comparison);
+        $this->addUsingAlias(PuzzleMemberTableMap::COL_CREATED_AT, $createdAt, $comparison);
+
+        return $this;
     }
 
     /**
@@ -420,17 +434,17 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
      * </code>
      *
-     * @param     mixed $updatedAt The value to use as filter.
+     * @param mixed $updatedAt The value to use as filter.
      *              Values can be integers (unix timestamps), DateTime objects, or strings.
      *              Empty strings are treated as NULL.
      *              Use scalar values for equality.
      *              Use array values for in_array() equivalent.
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
+    public function filterByUpdatedAt($updatedAt = null, ?string $comparison = null)
     {
         if (is_array($updatedAt)) {
             $useMinMax = false;
@@ -450,20 +464,22 @@ abstract class PuzzleMemberQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(PuzzleMemberTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+        $this->addUsingAlias(PuzzleMemberTableMap::COL_UPDATED_AT, $updatedAt, $comparison);
+
+        return $this;
     }
 
     /**
      * Filter the query by a related \Puzzle object
      *
      * @param \Puzzle|ObjectCollection $puzzle The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByPuzzle($puzzle, $comparison = null)
+    public function filterByPuzzle($puzzle, ?string $comparison = null)
     {
         if ($puzzle instanceof \Puzzle) {
             return $this
@@ -473,8 +489,10 @@ abstract class PuzzleMemberQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(PuzzleMemberTableMap::COL_PUZZLE_ID, $puzzle->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByPuzzle() only accepts arguments of type \Puzzle or Collection');
         }
@@ -483,12 +501,12 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Puzzle relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinPuzzle($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinPuzzle(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Puzzle');
@@ -517,9 +535,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \PuzzleQuery A secondary query class using the current class as primary query
      */
@@ -531,16 +549,112 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     }
 
     /**
+     * Use the Puzzle relation Puzzle object
+     *
+     * @param callable(\PuzzleQuery):\PuzzleQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withPuzzleQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->usePuzzleQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Puzzle table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \PuzzleQuery The inner query object of the EXISTS statement
+     */
+    public function usePuzzleExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useExistsQuery('Puzzle', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Puzzle table for a NOT EXISTS query.
+     *
+     * @see usePuzzleExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleQuery The inner query object of the NOT EXISTS statement
+     */
+    public function usePuzzleNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useExistsQuery('Puzzle', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Puzzle table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \PuzzleQuery The inner query object of the IN statement
+     */
+    public function useInPuzzleQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useInQuery('Puzzle', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Puzzle table for a NOT IN query.
+     *
+     * @see usePuzzleInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \PuzzleQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInPuzzleQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \PuzzleQuery */
+        $q = $this->useInQuery('Puzzle', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Filter the query by a related \Member object
      *
      * @param \Member|ObjectCollection $member The related object(s) to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @throws \Propel\Runtime\Exception\PropelException
      *
-     * @return ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function filterByMember($member, $comparison = null)
+    public function filterByMember($member, ?string $comparison = null)
     {
         if ($member instanceof \Member) {
             return $this
@@ -550,8 +664,10 @@ abstract class PuzzleMemberQuery extends ModelCriteria
                 $comparison = Criteria::IN;
             }
 
-            return $this
+            $this
                 ->addUsingAlias(PuzzleMemberTableMap::COL_MEMBER_ID, $member->toKeyValue('PrimaryKey', 'Id'), $comparison);
+
+            return $this;
         } else {
             throw new PropelException('filterByMember() only accepts arguments of type \Member or Collection');
         }
@@ -560,12 +676,12 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Member relation
      *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string|null $relationAlias Optional alias for the relation
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
-    public function joinMember($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinMember(?string $relationAlias = null, ?string $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Member');
@@ -594,9 +710,9 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param     string $relationAlias optional alias for the relation,
+     * @param string $relationAlias optional alias for the relation,
      *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return \MemberQuery A secondary query class using the current class as primary query
      */
@@ -608,11 +724,107 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     }
 
     /**
+     * Use the Member relation Member object
+     *
+     * @param callable(\MemberQuery):\MemberQuery $callable A function working on the related query
+     *
+     * @param string|null $relationAlias optional alias for the relation
+     *
+     * @param string|null $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return $this
+     */
+    public function withMemberQuery(
+        callable $callable,
+        string $relationAlias = null,
+        ?string $joinType = Criteria::INNER_JOIN
+    ) {
+        $relatedQuery = $this->useMemberQuery(
+            $relationAlias,
+            $joinType
+        );
+        $callable($relatedQuery);
+        $relatedQuery->endUse();
+
+        return $this;
+    }
+
+    /**
+     * Use the relation to Member table for an EXISTS query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     * @param string $typeOfExists Either ExistsQueryCriterion::TYPE_EXISTS or ExistsQueryCriterion::TYPE_NOT_EXISTS
+     *
+     * @return \MemberQuery The inner query object of the EXISTS statement
+     */
+    public function useMemberExistsQuery($modelAlias = null, $queryClass = null, $typeOfExists = 'EXISTS')
+    {
+        /** @var $q \MemberQuery */
+        $q = $this->useExistsQuery('Member', $modelAlias, $queryClass, $typeOfExists);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Member table for a NOT EXISTS query.
+     *
+     * @see useMemberExistsQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the exists query, like ExtendedBookQuery::class
+     *
+     * @return \MemberQuery The inner query object of the NOT EXISTS statement
+     */
+    public function useMemberNotExistsQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \MemberQuery */
+        $q = $this->useExistsQuery('Member', $modelAlias, $queryClass, 'NOT EXISTS');
+        return $q;
+    }
+
+    /**
+     * Use the relation to Member table for an IN query.
+     *
+     * @see \Propel\Runtime\ActiveQuery\ModelCriteria::useInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the IN query, like ExtendedBookQuery::class
+     * @param string $typeOfIn Criteria::IN or Criteria::NOT_IN
+     *
+     * @return \MemberQuery The inner query object of the IN statement
+     */
+    public function useInMemberQuery($modelAlias = null, $queryClass = null, $typeOfIn = 'IN')
+    {
+        /** @var $q \MemberQuery */
+        $q = $this->useInQuery('Member', $modelAlias, $queryClass, $typeOfIn);
+        return $q;
+    }
+
+    /**
+     * Use the relation to Member table for a NOT IN query.
+     *
+     * @see useMemberInQuery()
+     *
+     * @param string|null $modelAlias sets an alias for the nested query
+     * @param string|null $queryClass Allows to use a custom query class for the NOT IN query, like ExtendedBookQuery::class
+     *
+     * @return \MemberQuery The inner query object of the NOT IN statement
+     */
+    public function useNotInMemberQuery($modelAlias = null, $queryClass = null)
+    {
+        /** @var $q \MemberQuery */
+        $q = $this->useInQuery('Member', $modelAlias, $queryClass, 'NOT IN');
+        return $q;
+    }
+
+    /**
      * Exclude object from result
      *
-     * @param   ChildPuzzleMember $puzzleMember Object to remove from the list of results
+     * @param ChildPuzzleMember $puzzleMember Object to remove from the list of results
      *
-     * @return $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function prune($puzzleMember = null)
     {
@@ -628,9 +840,10 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Code to execute before every DELETE statement
      *
-     * @param     ConnectionInterface $con The connection object used by the query
+     * @param ConnectionInterface $con The connection object used by the query
+     * @return int|null
      */
-    protected function basePreDelete(ConnectionInterface $con)
+    protected function basePreDelete(ConnectionInterface $con): ?int
     {
         // aggregate_column_relation_solver_count behavior
         $this->findRelatedPuzzleSolverCounts($con);
@@ -641,10 +854,11 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Code to execute after every DELETE statement
      *
-     * @param     int $affectedRows the number of deleted rows
-     * @param     ConnectionInterface $con The connection object used by the query
+     * @param int $affectedRows the number of deleted rows
+     * @param ConnectionInterface $con The connection object used by the query
+     * @return int|null
      */
-    protected function basePostDelete($affectedRows, ConnectionInterface $con)
+    protected function basePostDelete(int $affectedRows, ConnectionInterface $con): ?int
     {
         // aggregate_column_relation_solver_count behavior
         $this->updateRelatedPuzzleSolverCounts($con);
@@ -655,11 +869,13 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Code to execute before every UPDATE statement
      *
-     * @param     array $values The associative array of columns and values for the update
-     * @param     ConnectionInterface $con The connection object used by the query
-     * @param     boolean $forceIndividualSaves If false (default), the resulting call is a Criteria::doUpdate(), otherwise it is a series of save() calls on all the found objects
+     * @param array $values The associative array of columns and values for the update
+     * @param ConnectionInterface $con The connection object used by the query
+     * @param bool $forceIndividualSaves If false (default), the resulting call is a Criteria::doUpdate(), otherwise it is a series of save() calls on all the found objects
+     *
+     * @return int|null
      */
-    protected function basePreUpdate(&$values, ConnectionInterface $con, $forceIndividualSaves = false)
+    protected function basePreUpdate(&$values, ConnectionInterface $con, $forceIndividualSaves = false): ?int
     {
         // aggregate_column_relation_solver_count behavior
         $this->findRelatedPuzzleSolverCounts($con);
@@ -670,10 +886,12 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Code to execute after every UPDATE statement
      *
-     * @param     int $affectedRows the number of updated rows
-     * @param     ConnectionInterface $con The connection object used by the query
+     * @param int $affectedRows the number of updated rows
+     * @param ConnectionInterface $con The connection object used by the query
+     *
+     * @return int|null
      */
-    protected function basePostUpdate($affectedRows, ConnectionInterface $con)
+    protected function basePostUpdate($affectedRows, ConnectionInterface $con): ?int
     {
         // aggregate_column_relation_solver_count behavior
         $this->updateRelatedPuzzleSolverCounts($con);
@@ -687,7 +905,7 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public function doDeleteAll(ConnectionInterface $con = null)
+    public function doDeleteAll(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleMemberTableMap::DATABASE_NAME);
@@ -712,12 +930,12 @@ abstract class PuzzleMemberQuery extends ModelCriteria
      * Performs a DELETE on the database based on the current ModelCriteria
      *
      * @param ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public function delete(ConnectionInterface $con = null)
+    public function delete(?ConnectionInterface $con = null): int
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(PuzzleMemberTableMap::DATABASE_NAME);
@@ -747,65 +965,77 @@ abstract class PuzzleMemberQuery extends ModelCriteria
     /**
      * Filter by the latest updated
      *
-     * @param      int $nbDays Maximum age of the latest update in days
+     * @param int $nbDays Maximum age of the latest update in days
      *
-     * @return     $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyUpdated($nbDays = 7)
     {
-        return $this->addUsingAlias(PuzzleMemberTableMap::COL_UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(PuzzleMemberTableMap::COL_UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by update date desc
      *
-     * @return     $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastUpdatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PuzzleMemberTableMap::COL_UPDATED_AT);
+        $this->addDescendingOrderByColumn(PuzzleMemberTableMap::COL_UPDATED_AT);
+
+        return $this;
     }
 
     /**
      * Order by update date asc
      *
-     * @return     $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstUpdatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PuzzleMemberTableMap::COL_UPDATED_AT);
+        $this->addAscendingOrderByColumn(PuzzleMemberTableMap::COL_UPDATED_AT);
+
+        return $this;
     }
 
     /**
      * Order by create date desc
      *
-     * @return     $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function lastCreatedFirst()
     {
-        return $this->addDescendingOrderByColumn(PuzzleMemberTableMap::COL_CREATED_AT);
+        $this->addDescendingOrderByColumn(PuzzleMemberTableMap::COL_CREATED_AT);
+
+        return $this;
     }
 
     /**
      * Filter by the latest created
      *
-     * @param      int $nbDays Maximum age of in days
+     * @param int $nbDays Maximum age of in days
      *
-     * @return     $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function recentlyCreated($nbDays = 7)
     {
-        return $this->addUsingAlias(PuzzleMemberTableMap::COL_CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+        $this->addUsingAlias(PuzzleMemberTableMap::COL_CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+
+        return $this;
     }
 
     /**
      * Order by create date asc
      *
-     * @return     $this|ChildPuzzleMemberQuery The current query, for fluid interface
+     * @return $this The current query, for fluid interface
      */
     public function firstCreatedFirst()
     {
-        return $this->addAscendingOrderByColumn(PuzzleMemberTableMap::COL_CREATED_AT);
+        $this->addAscendingOrderByColumn(PuzzleMemberTableMap::COL_CREATED_AT);
+
+        return $this;
     }
 
     // aggregate_column_relation_solver_count behavior
@@ -835,7 +1065,7 @@ abstract class PuzzleMemberQuery extends ModelCriteria
         foreach ($this->puzzleSolverCounts as $puzzleSolverCount) {
             $puzzleSolverCount->updateSolverCount($con);
         }
-        $this->puzzleSolverCounts = array();
+        $this->puzzleSolverCounts = [];
     }
 
-} // PuzzleMemberQuery
+}

@@ -24,7 +24,6 @@ use Propel\Runtime\Map\TableMapTrait;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class MemberTableMap extends TableMap
 {
@@ -34,134 +33,223 @@ class MemberTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.MemberTableMap';
+    public const CLASS_NAME = '.Map.MemberTableMap';
 
     /**
      * The default database name for this class
      */
-    const DATABASE_NAME = 'palindrome';
+    public const DATABASE_NAME = 'palindrome';
 
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'member';
+    public const TABLE_NAME = 'member';
+
+    /**
+     * The PHP name of this class (PascalCase)
+     */
+    public const TABLE_PHP_NAME = 'Member';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Member';
+    public const OM_CLASS = '\\Member';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Member';
+    public const CLASS_DEFAULT = 'Member';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 10;
+    public const NUM_COLUMNS = 10;
 
     /**
      * The number of lazy-loaded columns
      */
-    const NUM_LAZY_LOAD_COLUMNS = 0;
+    public const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 10;
+    public const NUM_HYDRATE_COLUMNS = 10;
 
     /**
      * the column name for the id field
      */
-    const COL_ID = 'member.id';
+    public const COL_ID = 'member.id';
 
     /**
      * the column name for the full_name field
      */
-    const COL_FULL_NAME = 'member.full_name';
+    public const COL_FULL_NAME = 'member.full_name';
 
     /**
      * the column name for the google_id field
      */
-    const COL_GOOGLE_ID = 'member.google_id';
+    public const COL_GOOGLE_ID = 'member.google_id';
 
     /**
      * the column name for the google_refresh field
      */
-    const COL_GOOGLE_REFRESH = 'member.google_refresh';
+    public const COL_GOOGLE_REFRESH = 'member.google_refresh';
 
     /**
      * the column name for the slack_id field
      */
-    const COL_SLACK_ID = 'member.slack_id';
+    public const COL_SLACK_ID = 'member.slack_id';
 
     /**
      * the column name for the slack_handle field
      */
-    const COL_SLACK_HANDLE = 'member.slack_handle';
+    public const COL_SLACK_HANDLE = 'member.slack_handle';
 
     /**
      * the column name for the strengths field
      */
-    const COL_STRENGTHS = 'member.strengths';
+    public const COL_STRENGTHS = 'member.strengths';
 
     /**
      * the column name for the avatar field
      */
-    const COL_AVATAR = 'member.avatar';
+    public const COL_AVATAR = 'member.avatar';
 
     /**
      * the column name for the phone_number field
      */
-    const COL_PHONE_NUMBER = 'member.phone_number';
+    public const COL_PHONE_NUMBER = 'member.phone_number';
 
     /**
      * the column name for the location field
      */
-    const COL_LOCATION = 'member.location';
+    public const COL_LOCATION = 'member.location';
 
     /**
      * The default string format for model objects of the related table
      */
-    const DEFAULT_STRING_FORMAT = 'YAML';
+    public const DEFAULT_STRING_FORMAT = 'YAML';
 
     /**
      * holds an array of fieldnames
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'FullName', 'GoogleId', 'GoogleRefresh', 'SlackId', 'SlackHandle', 'Strengths', 'Avatar', 'PhoneNumber', 'Location', ),
-        self::TYPE_CAMELNAME     => array('id', 'fullName', 'googleId', 'googleRefresh', 'slackId', 'slackHandle', 'strengths', 'avatar', 'phoneNumber', 'location', ),
-        self::TYPE_COLNAME       => array(MemberTableMap::COL_ID, MemberTableMap::COL_FULL_NAME, MemberTableMap::COL_GOOGLE_ID, MemberTableMap::COL_GOOGLE_REFRESH, MemberTableMap::COL_SLACK_ID, MemberTableMap::COL_SLACK_HANDLE, MemberTableMap::COL_STRENGTHS, MemberTableMap::COL_AVATAR, MemberTableMap::COL_PHONE_NUMBER, MemberTableMap::COL_LOCATION, ),
-        self::TYPE_FIELDNAME     => array('id', 'full_name', 'google_id', 'google_refresh', 'slack_id', 'slack_handle', 'strengths', 'avatar', 'phone_number', 'location', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
-    );
+    protected static $fieldNames = [
+        self::TYPE_PHPNAME       => ['Id', 'FullName', 'GoogleId', 'GoogleRefresh', 'SlackId', 'SlackHandle', 'Strengths', 'Avatar', 'PhoneNumber', 'Location', ],
+        self::TYPE_CAMELNAME     => ['id', 'fullName', 'googleId', 'googleRefresh', 'slackId', 'slackHandle', 'strengths', 'avatar', 'phoneNumber', 'location', ],
+        self::TYPE_COLNAME       => [MemberTableMap::COL_ID, MemberTableMap::COL_FULL_NAME, MemberTableMap::COL_GOOGLE_ID, MemberTableMap::COL_GOOGLE_REFRESH, MemberTableMap::COL_SLACK_ID, MemberTableMap::COL_SLACK_HANDLE, MemberTableMap::COL_STRENGTHS, MemberTableMap::COL_AVATAR, MemberTableMap::COL_PHONE_NUMBER, MemberTableMap::COL_LOCATION, ],
+        self::TYPE_FIELDNAME     => ['id', 'full_name', 'google_id', 'google_refresh', 'slack_id', 'slack_handle', 'strengths', 'avatar', 'phone_number', 'location', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ]
+    ];
 
     /**
      * holds an array of keys for quick access to the fieldnames array
      *
      * first dimension keys are the type constants
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
+     *
+     * @var array<string, mixed>
      */
-    protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'FullName' => 1, 'GoogleId' => 2, 'GoogleRefresh' => 3, 'SlackId' => 4, 'SlackHandle' => 5, 'Strengths' => 6, 'Avatar' => 7, 'PhoneNumber' => 8, 'Location' => 9, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'fullName' => 1, 'googleId' => 2, 'googleRefresh' => 3, 'slackId' => 4, 'slackHandle' => 5, 'strengths' => 6, 'avatar' => 7, 'phoneNumber' => 8, 'location' => 9, ),
-        self::TYPE_COLNAME       => array(MemberTableMap::COL_ID => 0, MemberTableMap::COL_FULL_NAME => 1, MemberTableMap::COL_GOOGLE_ID => 2, MemberTableMap::COL_GOOGLE_REFRESH => 3, MemberTableMap::COL_SLACK_ID => 4, MemberTableMap::COL_SLACK_HANDLE => 5, MemberTableMap::COL_STRENGTHS => 6, MemberTableMap::COL_AVATAR => 7, MemberTableMap::COL_PHONE_NUMBER => 8, MemberTableMap::COL_LOCATION => 9, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'full_name' => 1, 'google_id' => 2, 'google_refresh' => 3, 'slack_id' => 4, 'slack_handle' => 5, 'strengths' => 6, 'avatar' => 7, 'phone_number' => 8, 'location' => 9, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
-    );
+    protected static $fieldKeys = [
+        self::TYPE_PHPNAME       => ['Id' => 0, 'FullName' => 1, 'GoogleId' => 2, 'GoogleRefresh' => 3, 'SlackId' => 4, 'SlackHandle' => 5, 'Strengths' => 6, 'Avatar' => 7, 'PhoneNumber' => 8, 'Location' => 9, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'fullName' => 1, 'googleId' => 2, 'googleRefresh' => 3, 'slackId' => 4, 'slackHandle' => 5, 'strengths' => 6, 'avatar' => 7, 'phoneNumber' => 8, 'location' => 9, ],
+        self::TYPE_COLNAME       => [MemberTableMap::COL_ID => 0, MemberTableMap::COL_FULL_NAME => 1, MemberTableMap::COL_GOOGLE_ID => 2, MemberTableMap::COL_GOOGLE_REFRESH => 3, MemberTableMap::COL_SLACK_ID => 4, MemberTableMap::COL_SLACK_HANDLE => 5, MemberTableMap::COL_STRENGTHS => 6, MemberTableMap::COL_AVATAR => 7, MemberTableMap::COL_PHONE_NUMBER => 8, MemberTableMap::COL_LOCATION => 9, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'full_name' => 1, 'google_id' => 2, 'google_refresh' => 3, 'slack_id' => 4, 'slack_handle' => 5, 'strengths' => 6, 'avatar' => 7, 'phone_number' => 8, 'location' => 9, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ]
+    ];
+
+    /**
+     * Holds a list of column names and their normalized version.
+     *
+     * @var array<string>
+     */
+    protected $normalizedColumnNameMap = [
+        'Id' => 'ID',
+        'Member.Id' => 'ID',
+        'id' => 'ID',
+        'member.id' => 'ID',
+        'MemberTableMap::COL_ID' => 'ID',
+        'COL_ID' => 'ID',
+        'FullName' => 'FULL_NAME',
+        'Member.FullName' => 'FULL_NAME',
+        'fullName' => 'FULL_NAME',
+        'member.fullName' => 'FULL_NAME',
+        'MemberTableMap::COL_FULL_NAME' => 'FULL_NAME',
+        'COL_FULL_NAME' => 'FULL_NAME',
+        'full_name' => 'FULL_NAME',
+        'member.full_name' => 'FULL_NAME',
+        'GoogleId' => 'GOOGLE_ID',
+        'Member.GoogleId' => 'GOOGLE_ID',
+        'googleId' => 'GOOGLE_ID',
+        'member.googleId' => 'GOOGLE_ID',
+        'MemberTableMap::COL_GOOGLE_ID' => 'GOOGLE_ID',
+        'COL_GOOGLE_ID' => 'GOOGLE_ID',
+        'google_id' => 'GOOGLE_ID',
+        'member.google_id' => 'GOOGLE_ID',
+        'GoogleRefresh' => 'GOOGLE_REFRESH',
+        'Member.GoogleRefresh' => 'GOOGLE_REFRESH',
+        'googleRefresh' => 'GOOGLE_REFRESH',
+        'member.googleRefresh' => 'GOOGLE_REFRESH',
+        'MemberTableMap::COL_GOOGLE_REFRESH' => 'GOOGLE_REFRESH',
+        'COL_GOOGLE_REFRESH' => 'GOOGLE_REFRESH',
+        'google_refresh' => 'GOOGLE_REFRESH',
+        'member.google_refresh' => 'GOOGLE_REFRESH',
+        'SlackId' => 'SLACK_ID',
+        'Member.SlackId' => 'SLACK_ID',
+        'slackId' => 'SLACK_ID',
+        'member.slackId' => 'SLACK_ID',
+        'MemberTableMap::COL_SLACK_ID' => 'SLACK_ID',
+        'COL_SLACK_ID' => 'SLACK_ID',
+        'slack_id' => 'SLACK_ID',
+        'member.slack_id' => 'SLACK_ID',
+        'SlackHandle' => 'SLACK_HANDLE',
+        'Member.SlackHandle' => 'SLACK_HANDLE',
+        'slackHandle' => 'SLACK_HANDLE',
+        'member.slackHandle' => 'SLACK_HANDLE',
+        'MemberTableMap::COL_SLACK_HANDLE' => 'SLACK_HANDLE',
+        'COL_SLACK_HANDLE' => 'SLACK_HANDLE',
+        'slack_handle' => 'SLACK_HANDLE',
+        'member.slack_handle' => 'SLACK_HANDLE',
+        'Strengths' => 'STRENGTHS',
+        'Member.Strengths' => 'STRENGTHS',
+        'strengths' => 'STRENGTHS',
+        'member.strengths' => 'STRENGTHS',
+        'MemberTableMap::COL_STRENGTHS' => 'STRENGTHS',
+        'COL_STRENGTHS' => 'STRENGTHS',
+        'Avatar' => 'AVATAR',
+        'Member.Avatar' => 'AVATAR',
+        'avatar' => 'AVATAR',
+        'member.avatar' => 'AVATAR',
+        'MemberTableMap::COL_AVATAR' => 'AVATAR',
+        'COL_AVATAR' => 'AVATAR',
+        'PhoneNumber' => 'PHONE_NUMBER',
+        'Member.PhoneNumber' => 'PHONE_NUMBER',
+        'phoneNumber' => 'PHONE_NUMBER',
+        'member.phoneNumber' => 'PHONE_NUMBER',
+        'MemberTableMap::COL_PHONE_NUMBER' => 'PHONE_NUMBER',
+        'COL_PHONE_NUMBER' => 'PHONE_NUMBER',
+        'phone_number' => 'PHONE_NUMBER',
+        'member.phone_number' => 'PHONE_NUMBER',
+        'Location' => 'LOCATION',
+        'Member.Location' => 'LOCATION',
+        'location' => 'LOCATION',
+        'member.location' => 'LOCATION',
+        'MemberTableMap::COL_LOCATION' => 'LOCATION',
+        'COL_LOCATION' => 'LOCATION',
+    ];
 
     /**
      * Initialize the table attributes and columns
      * Relations are not initialized by this method since they are lazy loaded
      *
      * @return void
-     * @throws PropelException
+     * @throws \Propel\Runtime\Exception\PropelException
      */
-    public function initialize()
+    public function initialize(): void
     {
         // attributes
         $this->setName('member');
@@ -181,12 +269,14 @@ class MemberTableMap extends TableMap
         $this->addColumn('avatar', 'Avatar', 'VARCHAR', false, 200, null);
         $this->addColumn('phone_number', 'PhoneNumber', 'VARCHAR', false, 24, null);
         $this->addColumn('location', 'Location', 'VARCHAR', false, 24, null);
-    } // initialize()
+    }
 
     /**
      * Build the RelationMap objects for this table relationships
+     *
+     * @return void
      */
-    public function buildRelations()
+    public function buildRelations(): void
     {
         $this->addRelation('WrangledPuzzle', '\\Puzzle', RelationMap::ONE_TO_MANY, array (
   0 =>
@@ -195,13 +285,6 @@ class MemberTableMap extends TableMap
     1 => ':id',
   ),
 ), 'SET NULL', null, 'WrangledPuzzles', false);
-        $this->addRelation('Note', '\\Note', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':member_id',
-    1 => ':id',
-  ),
-), 'SET NULL', null, 'Notes', false);
         $this->addRelation('PuzzleMember', '\\PuzzleMember', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
@@ -209,26 +292,18 @@ class MemberTableMap extends TableMap
     1 => ':id',
   ),
 ), 'CASCADE', null, 'PuzzleMembers', false);
-        $this->addRelation('News', '\\News', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':member_id',
-    1 => ':id',
-  ),
-), 'SET NULL', null, 'News', false);
         $this->addRelation('Puzzle', '\\Puzzle', RelationMap::MANY_TO_MANY, array(), 'CASCADE', null, 'Puzzles');
-    } // buildRelations()
+    }
+
     /**
      * Method to invalidate the instance pool of all tables related to member     * by a foreign key with ON DELETE CASCADE
      */
-    public static function clearRelatedInstancePool()
+    public static function clearRelatedInstancePool(): void
     {
         // Invalidate objects in related instance pools,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
         PuzzleTableMap::clearInstancePool();
-        NoteTableMap::clearInstancePool();
         PuzzleMemberTableMap::clearInstancePool();
-        NewsTableMap::clearInstancePool();
     }
 
     /**
@@ -237,14 +312,14 @@ class MemberTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, a serialize()d version of the primary key will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
-     * @return string The primary key hash of the row
+     * @return string|null The primary key hash of the row
      */
-    public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyHashFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): ?string
     {
         // If the PK cannot be derived from the row, return NULL.
         if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)] === null) {
@@ -259,14 +334,14 @@ class MemberTableMap extends TableMap
      * For tables with a single-column primary key, that simple pkey value will be returned.  For tables with
      * a multi-column primary key, an array of the primary key columns will be returned.
      *
-     * @param array  $row       resultset row.
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Resultset row.
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
-    public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function getPrimaryKeyFromRow(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM)
     {
         return (int) $row[
             $indexType == TableMap::TYPE_NUM
@@ -283,10 +358,10 @@ class MemberTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @param bool $withPrefix Whether to return the path with the class name
      * @return string path.to.ClassName
      */
-    public static function getOMClass($withPrefix = true)
+    public static function getOMClass(bool $withPrefix = true): string
     {
         return $withPrefix ? MemberTableMap::CLASS_DEFAULT : MemberTableMap::OM_CLASS;
     }
@@ -294,17 +369,17 @@ class MemberTableMap extends TableMap
     /**
      * Populates an object of the default type or an object that inherit from the default.
      *
-     * @param array  $row       row returned by DataFetcher->fetch().
-     * @param int    $offset    The 0-based offset for reading from the resultset row.
+     * @param array $row Row returned by DataFetcher->fetch().
+     * @param int $offset The 0-based offset for reading from the resultset row.
      * @param string $indexType The index type of $row. Mostly DataFetcher->getIndexType().
                                  One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_CAMELNAME
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Member object, last column rank)
+     * @return array (Member object, last column rank)
      */
-    public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
+    public static function populateObject(array $row, int $offset = 0, string $indexType = TableMap::TYPE_NUM): array
     {
         $key = MemberTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
         if (null !== ($obj = MemberTableMap::getInstanceFromPool($key))) {
@@ -320,7 +395,7 @@ class MemberTableMap extends TableMap
             MemberTableMap::addInstanceToPool($obj, $key);
         }
 
-        return array($obj, $col);
+        return [$obj, $col];
     }
 
     /**
@@ -328,13 +403,13 @@ class MemberTableMap extends TableMap
      * objects that inherit from the default.
      *
      * @param DataFetcherInterface $dataFetcher
-     * @return array
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return array<object>
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function populateObjects(DataFetcherInterface $dataFetcher)
+    public static function populateObjects(DataFetcherInterface $dataFetcher): array
     {
-        $results = array();
+        $results = [];
 
         // set the class once to avoid overhead in the loop
         $cls = static::getOMClass(false);
@@ -364,12 +439,13 @@ class MemberTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param Criteria $criteria object containing the columns to add.
-     * @param string   $alias    optional table alias
-     * @throws PropelException Any exceptions caught during processing will be
+     * @param Criteria $criteria Object containing the columns to add.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
+     * @return void
      */
-    public static function addSelectColumns(Criteria $criteria, $alias = null)
+    public static function addSelectColumns(Criteria $criteria, ?string $alias = null): void
     {
         if (null === $alias) {
             $criteria->addSelectColumn(MemberTableMap::COL_ID);
@@ -397,40 +473,68 @@ class MemberTableMap extends TableMap
     }
 
     /**
+     * Remove all the columns needed to create a new object.
+     *
+     * Note: any columns that were marked with lazyLoad="true" in the
+     * XML schema will not be removed as they are only loaded on demand.
+     *
+     * @param Criteria $criteria Object containing the columns to remove.
+     * @param string|null $alias Optional table alias
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
+     *                         rethrown wrapped into a PropelException.
+     * @return void
+     */
+    public static function removeSelectColumns(Criteria $criteria, ?string $alias = null): void
+    {
+        if (null === $alias) {
+            $criteria->removeSelectColumn(MemberTableMap::COL_ID);
+            $criteria->removeSelectColumn(MemberTableMap::COL_FULL_NAME);
+            $criteria->removeSelectColumn(MemberTableMap::COL_GOOGLE_ID);
+            $criteria->removeSelectColumn(MemberTableMap::COL_GOOGLE_REFRESH);
+            $criteria->removeSelectColumn(MemberTableMap::COL_SLACK_ID);
+            $criteria->removeSelectColumn(MemberTableMap::COL_SLACK_HANDLE);
+            $criteria->removeSelectColumn(MemberTableMap::COL_STRENGTHS);
+            $criteria->removeSelectColumn(MemberTableMap::COL_AVATAR);
+            $criteria->removeSelectColumn(MemberTableMap::COL_PHONE_NUMBER);
+            $criteria->removeSelectColumn(MemberTableMap::COL_LOCATION);
+        } else {
+            $criteria->removeSelectColumn($alias . '.id');
+            $criteria->removeSelectColumn($alias . '.full_name');
+            $criteria->removeSelectColumn($alias . '.google_id');
+            $criteria->removeSelectColumn($alias . '.google_refresh');
+            $criteria->removeSelectColumn($alias . '.slack_id');
+            $criteria->removeSelectColumn($alias . '.slack_handle');
+            $criteria->removeSelectColumn($alias . '.strengths');
+            $criteria->removeSelectColumn($alias . '.avatar');
+            $criteria->removeSelectColumn($alias . '.phone_number');
+            $criteria->removeSelectColumn($alias . '.location');
+        }
+    }
+
+    /**
      * Returns the TableMap related to this object.
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function getTableMap()
+    public static function getTableMap(): TableMap
     {
         return Propel::getServiceContainer()->getDatabaseMap(MemberTableMap::DATABASE_NAME)->getTable(MemberTableMap::TABLE_NAME);
     }
 
     /**
-     * Add a TableMap instance to the database for this tableMap class.
-     */
-    public static function buildTableMap()
-    {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(MemberTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(MemberTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new MemberTableMap());
-        }
-    }
-
-    /**
      * Performs a DELETE on the database, given a Member or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Member object or primary key or array of primary keys
+     * @param mixed $values Criteria or Member object or primary key or array of primary keys
      *              which is used to create the DELETE statement
-     * @param  ConnectionInterface $con the connection to use
-     * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
      *                         if supported by native driver or if emulated using Propel.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-     public static function doDelete($values, ConnectionInterface $con = null)
+     public static function doDelete($values, ?ConnectionInterface $con = null): int
      {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(MemberTableMap::DATABASE_NAME);
@@ -466,7 +570,7 @@ class MemberTableMap extends TableMap
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
-    public static function doDeleteAll(ConnectionInterface $con = null)
+    public static function doDeleteAll(?ConnectionInterface $con = null): int
     {
         return MemberQuery::create()->doDeleteAll($con);
     }
@@ -474,13 +578,13 @@ class MemberTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a Member or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Member object containing data that is used to create the INSERT statement.
+     * @param mixed $criteria Criteria or Member object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
-     * @return mixed           The new primary key.
-     * @throws PropelException Any exceptions caught during processing will be
+     * @return mixed The new primary key.
+     * @throws \Propel\Runtime\Exception\PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
      */
-    public static function doInsert($criteria, ConnectionInterface $con = null)
+    public static function doInsert($criteria, ?ConnectionInterface $con = null)
     {
         if (null === $con) {
             $con = Propel::getServiceContainer()->getWriteConnection(MemberTableMap::DATABASE_NAME);
@@ -507,7 +611,4 @@ class MemberTableMap extends TableMap
         });
     }
 
-} // MemberTableMap
-// This is the static code needed to register the TableMap for this table with the main Propel class.
-//
-MemberTableMap::buildTableMap();
+}

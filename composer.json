@@ -1,10 +1,4 @@
 {
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/jpd236/Big-Board"
-    }
-  ],
   "require": {
     "php": "~8.2.5",
     "silex/silex": "^2.0.4",
@@ -12,21 +6,22 @@
     "twig/twig": "^2.0",
     "symfony/twig-bridge": "^3",
     "cocur/slugify": "^3.0",
-    "propel/propel": "~2.0@dev",
+    "propel/propel": "~2.0@beta",
     "klein/klein": "^2.1",
     "duzun/hquery": "^1.7",
     "maximebf/debugbar": "^1.14",
     "aptoma/twig-markdown": "^3.0",
     "michelf/php-markdown": "^1.7",
     "guzzlehttp/guzzle": "~6.0",
-    "sentry/sentry": "^1.8",
+    "sentry/sentry": "^3.0",
     "twig/extensions": "^1.5",
     "google/apiclient": "^2.0",
     "predis/predis": "1.0.3",
-    "wrapi/slack": "*"
+    "wrapi/slack": "*",
+    "php-http/guzzle6-adapter": "^2.0",
+    "http-interop/http-factory-guzzle": "^1.2"
   },
   "require-dev": {
-    "composer/composer": "^1.0",
     "deployer/deployer": "^6.0",
     "heroku/heroku-buildpack-php": "*"
   },
@@ -37,5 +32,10 @@
     "classmap": [
       "generated-classes/"
     ]
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
   }
 }
