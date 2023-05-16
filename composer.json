@@ -2,11 +2,11 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/santheo/php-slack"
+      "url": "https://github.com/jpd236/Big-Board"
     }
   ],
   "require": {
-    "php": "~7.1.0",
+    "php": "~8.2.5",
     "silex/silex": "^2.0.4",
     "monolog/monolog": "^1.22",
     "twig/twig": "^2.0",
@@ -26,6 +26,7 @@
     "wrapi/slack": "*"
   },
   "require-dev": {
+    "composer/composer": "^1.0",
     "deployer/deployer": "^6.0",
     "heroku/heroku-buildpack-php": "*"
   },

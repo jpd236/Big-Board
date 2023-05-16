@@ -2,7 +2,7 @@
 
 ## Local requirements
 
-- PHP 7.1
+- PHP 8.2
 - MySQL
 - [Composer](https://getcomposer.org/)
 
@@ -15,27 +15,26 @@ Create a `#big-board` channel.
 ### Slack Bot
 
 1. Go to https://api.slack.com/apps
-2. Click **Create New App**.
-3. _Do_ click the "Interested in the next generation of apps?" link. This will take you to the Developer Previvew page.
-4. Click "Create a developer preview app".
-5. Name it TobyBot and choose your team's workspace.
-6. Allow the following permission scopes:
+1. Click **Create an App**.
+1. Click **From scratch**.
+1. Name it TobyBot and choose your team's workspace.
+1. Allow the following permission scopes:
     - `commands`
     - `channels:history`
     - `channels:read`
-    - `channels:write`
-    - `chat:write:user`
+    - `channels:write.invites`
+    - `channels:write.topic`
+    - `chat:write`
+    - `chat:write.public`
     - `emoji:read`
     - `pins:write`
     - `users.profile:read`
-    - `users.profile:write`
     - `users:read`
     - `users:write`
     - `channels:manage`
     - `channels:join`
-    - `chat:write.public`
 
-7. Click "Slash Commands". Create these seven commands. For each one, define the Request URL as `http://[YOURAPP].herokuapp.com/tobybot`. Include Descriptions and Usage Hints as desired.
+1. Click "Slash Commands". Create these seven commands. For each one, define the Request URL as `http://[YOURAPP].herokuapp.com/tobybot`. Include Descriptions and Usage Hints as desired.
     - `/board`
     - `/solve`
     - `/info`
@@ -47,7 +46,7 @@ Create a `#big-board` channel.
 2. Click "Create credentials". Choose "OAuth client ID".
 3. Add Authorized JavaScript origins
     - `https://[YOURAPP].herokuapp.com`
-4. Add Authorized redirect URIs:
+4. Add Authoriherokuzed redirect URIs:
     - `https://[YOURAPP].herokuapp.com`
     - `https://[YOURAPP].herokuapp.com/oauth`
 5. Note your Client ID and Client secret.
@@ -60,6 +59,10 @@ Create a `#big-board` channel.
 
 ## Set up Heroku instance
 
+Note that Heroku does not have a free tier. Many features can be tested using a local instance. The Slack integration must be tested on Heroku.
+
+The cheapest way to run a test instance is to use a basic dyno when needed and scale it to zero after testing to avoid being billed. This will scale costs to pennies per hour. The eco tier charges up front for a fixed number of hours and only makes sense if you have multiple systems on Heroku or are prepaying for a full month.
+
 Provision a MySQL add-on. I used ClearDB. Create a DB. Note your:
 
 - URL
@@ -67,8 +70,13 @@ Provision a MySQL add-on. I used ClearDB. Create a DB. Note your:
 - username
 - password
 
-Provision Heroku Redis.  `heroku addons:create heroku-redis:hobby-dev -a your-app-name`
-Allow workers on Heroku. `heroku config:add LD_LIBRARY_PATH=/app/php/ext:/app/apache/lib`
+Provision Heroku Redis. At the lowest (mini) tier, this costs $3 per month (prorated to the second).
+
+`heroku addons:create heroku-redis:mini -a your-app-name`
+
+Allow workers on Heroku.
+
+`heroku config:add LD_LIBRARY_PATH=/app/php/ext:/app/apache/lib -a your-app-name`
 
 ## Config variables
 
@@ -90,6 +98,7 @@ Locally - Run mysql and create a database and a user.  host is localhost, the re
 **Google Drive configuration**
 
 - `GOOGLE_APP_ID` - the project number in the google cloud console
+- `GOOGLE_APPLICATION_NAME` - the project name
 - `GOOGLE_CLIENT_ID` - you got this while setting up google credentials earlier
 - `GOOGLE_CLIENT_SECRET` - same
 - `GOOGLE_DEVELOPER_KEY` - the API key you got while setting up google credentials
@@ -99,9 +108,8 @@ Locally - Run mysql and create a database and a user.  host is localhost, the re
 **Slack configuration**
 
 - `SLACK_DOMAIN` - just the id, without any dots or the slack.com domain -- e.g. palindrome2018
-- `TOBYBOT_SLACK_KEY` - OAuth Access token. Starts with `xoxa`.
+- `TOBYBOT_SLACK_KEY` - OAuth Bot Access token. Starts with `xoxb`.
 - `TOBYBOT_VERIFICATION_TOKEN` - Verification Token, listed under Basic Information. 24 characters long.
-- `BIGBOARDBOT_SLACK_KEY` - Bot User OAuth Access Token for a standard bot. Starts with `xoxb`.
 
 **Other**
 
@@ -135,7 +143,7 @@ php -S localhost:8888
 To set up the DB on Heroku, first push, then run:
 
 ```
-heroku run bash
+heroku run bash -a your-app-name
 propel sql:insert
 ```
 
