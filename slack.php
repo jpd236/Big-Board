@@ -127,7 +127,6 @@ function getTobyBotInstructions() {
 	$instructions = [
 		"`/info` returns all links on this puzzle.",
 		"`/solve [text]` sets [text] as the solution to the puzzle.",
-		"`!help` gets you a random puzzle-solving tip.",
 		"`/tobybot` returns this list (in a private message to you).",
 	];
 

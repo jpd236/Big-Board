@@ -35,10 +35,12 @@ Create a `#big-board` channel.
     - `channels:join`
 
 1. Click "Slash Commands". Create these seven commands. For each one, define the Request URL as `http://[YOURAPP].herokuapp.com/tobybot`. Include Descriptions and Usage Hints as desired.
-    - `/board`
-    - `/solve`
-    - `/info`
-    - `/connect`
+    - `/board`: Query for puzzle status
+    - `/solve`: Set the solution for a puzzle
+    - `/info`: Get info for a puzzle
+    - `/connect`: Connect to Big Board
+    - `/avatar`: Refresh your avatar
+    - `/tobybot`: List all commands
 
 ## Set up Google API project
 
@@ -64,7 +66,7 @@ Create a `#big-board` channel.
 
 Note that Heroku does not have a free tier. Many features can be tested using a local instance. The Slack integration must be tested on Heroku.
 
-The cheapest way to run a test instance is to use a basic dyno when needed and scale it to zero after testing to avoid being billed. This will scale costs to pennies per hour. The eco tier charges up front for a fixed number of hours and only makes sense if you have multiple systems on Heroku or are prepaying for a full month.
+The current recommendation for testing is to sign your account up for the "eco" tier, which is $5/month and covers both the web and worker dynos.
 
 Provision a MySQL add-on. I used ClearDB. Create a DB. Note your:
 
@@ -72,6 +74,8 @@ Provision a MySQL add-on. I used ClearDB. Create a DB. Note your:
 - DB name
 - username
 - password
+
+The free (Ignite) tier is fine for testing, but upgrade to the Punch tier ($9.99/month) for the hunt.
 
 Provision Heroku Redis. At the lowest (mini) tier, this costs $3 per month (prorated to the second).
 
