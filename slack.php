@@ -121,6 +121,20 @@ function scrapeAvatar($member) {
 	return $response_body;
 }
 
+// See https://api.slack.com/authentication/verifying-requests-from-slack
+function verifySignature($request) {
+	$timestamp = $request->headers()->get("X-Slack-Request-Timestamp");
+	if (abs(time() - intval($timestamp)) > 60 * 5) {
+		# The request timestamp is more than five minutes from local time.
+		# It could be a replay attack, so let's ignore it.
+		return false;
+	}
+	$sig_basestring = "v0:" . $timestamp . ":" . $request->body();
+	$my_signature = "v0=" . hash_hmac("sha256", $sig_basestring, getenv("TOBYBOT_SIGNING_SECRET"));
+	$signature = $request->headers()->get("X-Slack-Signature");
+	return hash_equals($my_signature, $signature);
+}
+
 // SLACK BOT
 
 function getTobyBotInstructions() {
@@ -154,7 +168,7 @@ class Bot {
 
 		$command = substr($request->command, 1);
 
-		if ($request->token == getenv('TOBYBOT_VERIFICATION_TOKEN') && $user_id) {
+		if (verifySignature($request) && $user_id) {
 			if (!$member) {
 				$payload = ["text" => "Hi there! Before you can use `".$request->command."`, I need to know who you are. Click this link then try the command again: http://".getenv('APP_DOMAIN')."/assign_slack_id/".$user_id];
 			} else {

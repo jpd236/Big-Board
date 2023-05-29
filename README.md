@@ -116,7 +116,7 @@ Locally - Run mysql and create a database and a user.  host is localhost, the re
 
 - `SLACK_DOMAIN` - just the id, without any dots or the slack.com domain -- e.g. palindrome2018
 - `TOBYBOT_SLACK_KEY` - OAuth Bot Access token. Starts with `xoxb`.
-- `TOBYBOT_VERIFICATION_TOKEN` - Verification Token, listed under Basic Information. 24 characters long.
+- `TOBYBOT_SIGNING_SECRET` - Signing secret, listed under Basic Information. 32 characters long.
 
 **Other**
 
