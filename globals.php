@@ -182,7 +182,8 @@ function create_file_from_template($title) {
 				do {
 					try {
 						error_log("Sharing atttempt " . $attempts);
-						$shared_drive->permissions->create($copy['id'], $ownerPermission, array('fields' => '*'));
+						$params = array('fields' => '*', 'sendNotificationEmail' => false, );
+						$shared_drive->permissions->create($copy['id'], $ownerPermission, $params);
 					} catch (Exception $e) {
 						error_log($e->getMessage());
 						$attempts++;
