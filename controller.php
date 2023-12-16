@@ -6,11 +6,11 @@ require_once("globals.php");
 // PUZZLE LISTS
 
 $this->respond('GET', '/', function () {
-		return displayAll();
+		return displayAllByMeta();
 	});
 
-$this->respond('GET', '/bymeta', function () {
-		return displayAllByMeta();
+$this->respond('GET', '/all', function () {
+		return displayAll();
 	});
 
 // DATA API
