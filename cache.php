@@ -6,17 +6,29 @@ class Cache {
     public $default_max_age;
 
     public function __construct() {
-        $this->redis = new Predis\Client(getenv('REDIS_URL'));
+        $redis_url = getenv('REDIS_URL');
+        if ($redis_url !== false) {
+            $this->redis = new Predis\Client($redis_url);
+        } else {
+            error_log("REDIS_URL not defined; cache disabled");
+        }
         $this->default_max_age = getenv("MAX_CACHE_AGE");
     }    
 
     public function add($key, $value) {
+        if (is_null($this->redis)) {
+            return;
+        }
+
         $val = [time(), $value];
         $json_blob = json_encode($val);
         $this->redis->set($key, $json_blob);
     }
 
     public function existsNoOlderThan($key, $max_age) {
+        if (is_null($this->redis)) {
+            return false;
+        }
         if ($max_age < 0) {
             $max_age=$this->default_max_age;
         }
@@ -34,6 +46,10 @@ class Cache {
     }
 
     public function get($key, $callable, $max_age=-1) {
+        if (is_null($this->redis)) {
+            return $callable();
+        }
+
         if ($max_age < 0) {
             $max_age=$this->default_max_age;
         }
