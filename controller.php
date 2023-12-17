@@ -60,6 +60,9 @@ $this->with('/puzzle/[:id]', function () {
 		$this->respond('POST', '/delete/?', function ($request) {
 				return deletePuzzle($request->id, $request);
 			});
+		$this->respond('GET', '/reorder/?', function ($request) {
+				return reorderMeta($request->id, $request);
+			});
 	});
 
 
@@ -280,6 +283,7 @@ function displayAllByMeta() {
 		->leftJoinWith('Wrangler')
 		->where('Puzzle.id = PuzzleChild.parent_id')
 		->where('Puzzle.id = PuzzleChild.puzzle_id')
+		->orderBySortOrder()
 		->orderByStatus('desc')
 		->orderByTitle()
 		->select(['Id', 'Title', 'Status'])
@@ -287,6 +291,21 @@ function displayAllByMeta() {
 		->withColumn('Wrangler.FullName', 'Wrangler')
 		->find()
 		->toArray();
+
+	$solved_metas = array_filter($metas, function($meta) {
+		return $meta['Status'] === "solved";
+	});
+	if (count($solved_metas) > 0) {
+		$metas[array_key_first($solved_metas)]['IsFirst'] = true;
+		$metas[array_key_last($solved_metas)]['IsLast'] = true;
+	}
+	$unsolved_metas = array_filter($metas, function($meta) {
+		return $meta['Status'] !== "solved";
+	});
+	if (count($unsolved_metas) > 0) {
+		$metas[array_key_first($unsolved_metas)]['IsFirst'] = true;
+		$metas[array_key_last($unsolved_metas)]['IsLast'] = true;
+	}
 
 	array_unshift($metas, [
 			"Id"    => "0",
@@ -440,6 +459,48 @@ function changePuzzleStatus($puzzle_id, $request) {
 	redirect('/puzzle/'.$puzzle_id, $alert);
 }
 
+function reorderMeta($puzzle_id, $request) {
+	$this_meta = PuzzleQuery::create()
+		->filterByID($puzzle_id)
+		->findOne();
+
+	$metas = PuzzleQuery::create()
+		->joinWith('PuzzleChild')
+		->where('Puzzle.id = PuzzleChild.parent_id')
+		->where('Puzzle.id = PuzzleChild.puzzle_id')
+		->filterByStatus($this_meta->getStatus())
+		->orderBySortOrder()
+		->orderByTitle()
+		->find();
+
+	foreach ($metas as $i => $meta) {
+		if ($meta->getId() == $puzzle_id) {
+			if ($request->direction == 'up') {
+				if ($i > 0) {
+					$prev = $metas[$i - 1];
+					$prev_sort_order = $prev->getSortOrder();
+					$prev->setSortOrder($meta->getSortOrder());
+					$prev->save();
+					$meta->setSortOrder($prev_sort_order);
+					$meta->save();
+				}
+			} else if ($request->direction == 'down') {
+				if ($i < count($metas) - 1) {
+					$next = $metas[$i + 1];
+					$next_sort_order = $next->getSortOrder();
+					$next->setSortOrder($meta->getSortOrder());
+					$next->save();
+					$meta->setSortOrder($next_sort_order);
+					$meta->save();
+				}
+			}
+			break;
+		}
+	}
+
+	redirect('/');
+}
+
 
 // ADDING PUZZLES
 
@@ -501,6 +562,14 @@ function addPuzzle($request, $response) {
 		$puzzleTitleExists = PuzzleQuery::create()
 			->filterByTitle($puzzleContent['title'])
 			->findOne();
+		$highestSortOrder = PuzzleQuery::create()
+		    ->orderBySortOrder('desc')
+			->findOne();
+
+		$nextSortOrder = 1;
+		if ($highestSortOrder) {
+			$nextSortOrder = $highestSortOrder->getSortOrder() + 1;
+		}
 
 		$slackNameExists = (getSlackChannelID($puzzleContent['slack']) != 0);
 
@@ -532,6 +601,7 @@ function addPuzzle($request, $response) {
 			$newPuzzle->setSlackChannel($slack_channel_name);
 			$newPuzzle->setSlackChannelId($newChannelID);
 			$newPuzzle->setStatus('open');
+			$newPuzzle->setSortOrder($nextSortOrder++);
 			$newPuzzle->save();
 			error_log("puzzle saved");
 

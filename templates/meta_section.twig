@@ -12,6 +12,12 @@
     {% if meta.Id != 0 %}
     <div class="puzzle-metadata row">
         <div class="col-12 add-puzzles-to-meta">
+            {% if not meta.IsFirst %}
+                <a href="/puzzle/{{ meta.Id }}/reorder?direction=up" onclick="return confirm('Reorder meta?\n\nWarning: this will affect all everyone!')">↑ Move up</a> |
+            {% endif %}
+            {% if not meta.IsLast %}
+                <a href="/puzzle/{{ meta.Id }}/reorder?direction=down" onclick="return confirm('Reorder meta?\n\nWarning: this will affect all everyone!')">↓ Move down</a> |
+            {% endif %}
             <a class="add-puzzles-to-meta" href="/add/{{ meta.Id }}">+ Add puzzles</a>
         </div>
     </div>

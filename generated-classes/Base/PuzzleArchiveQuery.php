@@ -27,6 +27,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchiveQuery orderBySlackChannelId($order = Criteria::ASC) Order by the slack_channel_id column
  * @method     ChildPuzzleArchiveQuery orderByWranglerId($order = Criteria::ASC) Order by the wrangler_id column
  * @method     ChildPuzzleArchiveQuery orderBySheetModDate($order = Criteria::ASC) Order by the sheet_mod_date column
+ * @method     ChildPuzzleArchiveQuery orderBySortOrder($order = Criteria::ASC) Order by the sort_order column
  * @method     ChildPuzzleArchiveQuery orderBySolverCount($order = Criteria::ASC) Order by the solver_count column
  * @method     ChildPuzzleArchiveQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildPuzzleArchiveQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -42,6 +43,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchiveQuery groupBySlackChannelId() Group by the slack_channel_id column
  * @method     ChildPuzzleArchiveQuery groupByWranglerId() Group by the wrangler_id column
  * @method     ChildPuzzleArchiveQuery groupBySheetModDate() Group by the sheet_mod_date column
+ * @method     ChildPuzzleArchiveQuery groupBySortOrder() Group by the sort_order column
  * @method     ChildPuzzleArchiveQuery groupBySolverCount() Group by the solver_count column
  * @method     ChildPuzzleArchiveQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildPuzzleArchiveQuery groupByUpdatedAt() Group by the updated_at column
@@ -68,6 +70,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchive|null findOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzleArchive filtered by the slack_channel_id column
  * @method     ChildPuzzleArchive|null findOneByWranglerId(int $wrangler_id) Return the first ChildPuzzleArchive filtered by the wrangler_id column
  * @method     ChildPuzzleArchive|null findOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzleArchive filtered by the sheet_mod_date column
+ * @method     ChildPuzzleArchive|null findOneBySortOrder(int $sort_order) Return the first ChildPuzzleArchive filtered by the sort_order column
  * @method     ChildPuzzleArchive|null findOneBySolverCount(int $solver_count) Return the first ChildPuzzleArchive filtered by the solver_count column
  * @method     ChildPuzzleArchive|null findOneByCreatedAt(string $created_at) Return the first ChildPuzzleArchive filtered by the created_at column
  * @method     ChildPuzzleArchive|null findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleArchive filtered by the updated_at column
@@ -86,6 +89,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleArchive requireOneBySlackChannelId(string $slack_channel_id) Return the first ChildPuzzleArchive filtered by the slack_channel_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByWranglerId(int $wrangler_id) Return the first ChildPuzzleArchive filtered by the wrangler_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzleArchive filtered by the sheet_mod_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzleArchive requireOneBySortOrder(int $sort_order) Return the first ChildPuzzleArchive filtered by the sort_order column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneBySolverCount(int $solver_count) Return the first ChildPuzzleArchive filtered by the solver_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByCreatedAt(string $created_at) Return the first ChildPuzzleArchive filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzleArchive requireOneByUpdatedAt(string $updated_at) Return the first ChildPuzzleArchive filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -114,6 +118,8 @@ use Propel\Runtime\Exception\PropelException;
  * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findByWranglerId(int|array<int> $wrangler_id) Return ChildPuzzleArchive objects filtered by the wrangler_id column
  * @method     ChildPuzzleArchive[]|Collection findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzleArchive objects filtered by the sheet_mod_date column
  * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzleArchive objects filtered by the sheet_mod_date column
+ * @method     ChildPuzzleArchive[]|Collection findBySortOrder(int|array<int> $sort_order) Return ChildPuzzleArchive objects filtered by the sort_order column
+ * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySortOrder(int|array<int> $sort_order) Return ChildPuzzleArchive objects filtered by the sort_order column
  * @method     ChildPuzzleArchive[]|Collection findBySolverCount(int|array<int> $solver_count) Return ChildPuzzleArchive objects filtered by the solver_count column
  * @psalm-method Collection&\Traversable<ChildPuzzleArchive> findBySolverCount(int|array<int> $solver_count) Return ChildPuzzleArchive objects filtered by the solver_count column
  * @method     ChildPuzzleArchive[]|Collection findByCreatedAt(string|array<string> $created_at) Return ChildPuzzleArchive objects filtered by the created_at column
@@ -221,7 +227,7 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, solver_count, created_at, updated_at, archived_at FROM puzzle_archive WHERE id = :p0';
+        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, sort_order, solver_count, created_at, updated_at, archived_at FROM puzzle_archive WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -638,6 +644,49 @@ abstract class PuzzleArchiveQuery extends ModelCriteria
         }
 
         $this->addUsingAlias(PuzzleArchiveTableMap::COL_SHEET_MOD_DATE, $sheetModDate, $comparison);
+
+        return $this;
+    }
+
+    /**
+     * Filter the query on the sort_order column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterBySortOrder(1234); // WHERE sort_order = 1234
+     * $query->filterBySortOrder(array(12, 34)); // WHERE sort_order IN (12, 34)
+     * $query->filterBySortOrder(array('min' => 12)); // WHERE sort_order > 12
+     * </code>
+     *
+     * @param mixed $sortOrder The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this The current query, for fluid interface
+     */
+    public function filterBySortOrder($sortOrder = null, ?string $comparison = null)
+    {
+        if (is_array($sortOrder)) {
+            $useMinMax = false;
+            if (isset($sortOrder['min'])) {
+                $this->addUsingAlias(PuzzleArchiveTableMap::COL_SORT_ORDER, $sortOrder['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($sortOrder['max'])) {
+                $this->addUsingAlias(PuzzleArchiveTableMap::COL_SORT_ORDER, $sortOrder['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        $this->addUsingAlias(PuzzleArchiveTableMap::COL_SORT_ORDER, $sortOrder, $comparison);
 
         return $this;
     }

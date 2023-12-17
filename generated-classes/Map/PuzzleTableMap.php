@@ -63,7 +63,7 @@ class PuzzleTableMap extends TableMap
     /**
      * The total number of columns
      */
-    public const NUM_COLUMNS = 13;
+    public const NUM_COLUMNS = 14;
 
     /**
      * The number of lazy-loaded columns
@@ -73,7 +73,7 @@ class PuzzleTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    public const NUM_HYDRATE_COLUMNS = 13;
+    public const NUM_HYDRATE_COLUMNS = 14;
 
     /**
      * the column name for the id field
@@ -126,6 +126,11 @@ class PuzzleTableMap extends TableMap
     public const COL_SHEET_MOD_DATE = 'puzzle.sheet_mod_date';
 
     /**
+     * the column name for the sort_order field
+     */
+    public const COL_SORT_ORDER = 'puzzle.sort_order';
+
+    /**
      * the column name for the solver_count field
      */
     public const COL_SOLVER_COUNT = 'puzzle.solver_count';
@@ -154,11 +159,11 @@ class PuzzleTableMap extends TableMap
      * @var array<string, mixed>
      */
     protected static $fieldNames = [
-        self::TYPE_PHPNAME       => ['Id', 'Title', 'Url', 'SpreadsheetId', 'Solution', 'Status', 'SlackChannel', 'SlackChannelId', 'WranglerId', 'SheetModDate', 'SolverCount', 'CreatedAt', 'UpdatedAt', ],
-        self::TYPE_CAMELNAME     => ['id', 'title', 'url', 'spreadsheetId', 'solution', 'status', 'slackChannel', 'slackChannelId', 'wranglerId', 'sheetModDate', 'solverCount', 'createdAt', 'updatedAt', ],
-        self::TYPE_COLNAME       => [PuzzleTableMap::COL_ID, PuzzleTableMap::COL_TITLE, PuzzleTableMap::COL_URL, PuzzleTableMap::COL_SPREADSHEET_ID, PuzzleTableMap::COL_SOLUTION, PuzzleTableMap::COL_STATUS, PuzzleTableMap::COL_SLACK_CHANNEL, PuzzleTableMap::COL_SLACK_CHANNEL_ID, PuzzleTableMap::COL_WRANGLER_ID, PuzzleTableMap::COL_SHEET_MOD_DATE, PuzzleTableMap::COL_SOLVER_COUNT, PuzzleTableMap::COL_CREATED_AT, PuzzleTableMap::COL_UPDATED_AT, ],
-        self::TYPE_FIELDNAME     => ['id', 'title', 'url', 'spreadsheet_id', 'solution', 'status', 'slack_channel', 'slack_channel_id', 'wrangler_id', 'sheet_mod_date', 'solver_count', 'created_at', 'updated_at', ],
-        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, ]
+        self::TYPE_PHPNAME       => ['Id', 'Title', 'Url', 'SpreadsheetId', 'Solution', 'Status', 'SlackChannel', 'SlackChannelId', 'WranglerId', 'SheetModDate', 'SortOrder', 'SolverCount', 'CreatedAt', 'UpdatedAt', ],
+        self::TYPE_CAMELNAME     => ['id', 'title', 'url', 'spreadsheetId', 'solution', 'status', 'slackChannel', 'slackChannelId', 'wranglerId', 'sheetModDate', 'sortOrder', 'solverCount', 'createdAt', 'updatedAt', ],
+        self::TYPE_COLNAME       => [PuzzleTableMap::COL_ID, PuzzleTableMap::COL_TITLE, PuzzleTableMap::COL_URL, PuzzleTableMap::COL_SPREADSHEET_ID, PuzzleTableMap::COL_SOLUTION, PuzzleTableMap::COL_STATUS, PuzzleTableMap::COL_SLACK_CHANNEL, PuzzleTableMap::COL_SLACK_CHANNEL_ID, PuzzleTableMap::COL_WRANGLER_ID, PuzzleTableMap::COL_SHEET_MOD_DATE, PuzzleTableMap::COL_SORT_ORDER, PuzzleTableMap::COL_SOLVER_COUNT, PuzzleTableMap::COL_CREATED_AT, PuzzleTableMap::COL_UPDATED_AT, ],
+        self::TYPE_FIELDNAME     => ['id', 'title', 'url', 'spreadsheet_id', 'solution', 'status', 'slack_channel', 'slack_channel_id', 'wrangler_id', 'sheet_mod_date', 'sort_order', 'solver_count', 'created_at', 'updated_at', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, ]
     ];
 
     /**
@@ -170,11 +175,11 @@ class PuzzleTableMap extends TableMap
      * @var array<string, mixed>
      */
     protected static $fieldKeys = [
-        self::TYPE_PHPNAME       => ['Id' => 0, 'Title' => 1, 'Url' => 2, 'SpreadsheetId' => 3, 'Solution' => 4, 'Status' => 5, 'SlackChannel' => 6, 'SlackChannelId' => 7, 'WranglerId' => 8, 'SheetModDate' => 9, 'SolverCount' => 10, 'CreatedAt' => 11, 'UpdatedAt' => 12, ],
-        self::TYPE_CAMELNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheetId' => 3, 'solution' => 4, 'status' => 5, 'slackChannel' => 6, 'slackChannelId' => 7, 'wranglerId' => 8, 'sheetModDate' => 9, 'solverCount' => 10, 'createdAt' => 11, 'updatedAt' => 12, ],
-        self::TYPE_COLNAME       => [PuzzleTableMap::COL_ID => 0, PuzzleTableMap::COL_TITLE => 1, PuzzleTableMap::COL_URL => 2, PuzzleTableMap::COL_SPREADSHEET_ID => 3, PuzzleTableMap::COL_SOLUTION => 4, PuzzleTableMap::COL_STATUS => 5, PuzzleTableMap::COL_SLACK_CHANNEL => 6, PuzzleTableMap::COL_SLACK_CHANNEL_ID => 7, PuzzleTableMap::COL_WRANGLER_ID => 8, PuzzleTableMap::COL_SHEET_MOD_DATE => 9, PuzzleTableMap::COL_SOLVER_COUNT => 10, PuzzleTableMap::COL_CREATED_AT => 11, PuzzleTableMap::COL_UPDATED_AT => 12, ],
-        self::TYPE_FIELDNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheet_id' => 3, 'solution' => 4, 'status' => 5, 'slack_channel' => 6, 'slack_channel_id' => 7, 'wrangler_id' => 8, 'sheet_mod_date' => 9, 'solver_count' => 10, 'created_at' => 11, 'updated_at' => 12, ],
-        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, ]
+        self::TYPE_PHPNAME       => ['Id' => 0, 'Title' => 1, 'Url' => 2, 'SpreadsheetId' => 3, 'Solution' => 4, 'Status' => 5, 'SlackChannel' => 6, 'SlackChannelId' => 7, 'WranglerId' => 8, 'SheetModDate' => 9, 'SortOrder' => 10, 'SolverCount' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheetId' => 3, 'solution' => 4, 'status' => 5, 'slackChannel' => 6, 'slackChannelId' => 7, 'wranglerId' => 8, 'sheetModDate' => 9, 'sortOrder' => 10, 'solverCount' => 11, 'createdAt' => 12, 'updatedAt' => 13, ],
+        self::TYPE_COLNAME       => [PuzzleTableMap::COL_ID => 0, PuzzleTableMap::COL_TITLE => 1, PuzzleTableMap::COL_URL => 2, PuzzleTableMap::COL_SPREADSHEET_ID => 3, PuzzleTableMap::COL_SOLUTION => 4, PuzzleTableMap::COL_STATUS => 5, PuzzleTableMap::COL_SLACK_CHANNEL => 6, PuzzleTableMap::COL_SLACK_CHANNEL_ID => 7, PuzzleTableMap::COL_WRANGLER_ID => 8, PuzzleTableMap::COL_SHEET_MOD_DATE => 9, PuzzleTableMap::COL_SORT_ORDER => 10, PuzzleTableMap::COL_SOLVER_COUNT => 11, PuzzleTableMap::COL_CREATED_AT => 12, PuzzleTableMap::COL_UPDATED_AT => 13, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheet_id' => 3, 'solution' => 4, 'status' => 5, 'slack_channel' => 6, 'slack_channel_id' => 7, 'wrangler_id' => 8, 'sheet_mod_date' => 9, 'sort_order' => 10, 'solver_count' => 11, 'created_at' => 12, 'updated_at' => 13, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, ]
     ];
 
     /**
@@ -253,6 +258,14 @@ class PuzzleTableMap extends TableMap
         'COL_SHEET_MOD_DATE' => 'SHEET_MOD_DATE',
         'sheet_mod_date' => 'SHEET_MOD_DATE',
         'puzzle.sheet_mod_date' => 'SHEET_MOD_DATE',
+        'SortOrder' => 'SORT_ORDER',
+        'Puzzle.SortOrder' => 'SORT_ORDER',
+        'sortOrder' => 'SORT_ORDER',
+        'puzzle.sortOrder' => 'SORT_ORDER',
+        'PuzzleTableMap::COL_SORT_ORDER' => 'SORT_ORDER',
+        'COL_SORT_ORDER' => 'SORT_ORDER',
+        'sort_order' => 'SORT_ORDER',
+        'puzzle.sort_order' => 'SORT_ORDER',
         'SolverCount' => 'SOLVER_COUNT',
         'Puzzle.SolverCount' => 'SOLVER_COUNT',
         'solverCount' => 'SOLVER_COUNT',
@@ -306,6 +319,7 @@ class PuzzleTableMap extends TableMap
         $this->addColumn('slack_channel_id', 'SlackChannelId', 'VARCHAR', false, 24, null);
         $this->addForeignKey('wrangler_id', 'WranglerId', 'INTEGER', 'member', 'id', false, null, null);
         $this->addColumn('sheet_mod_date', 'SheetModDate', 'TIMESTAMP', false, null, null);
+        $this->addColumn('sort_order', 'SortOrder', 'INTEGER', false, null, null);
         $this->addColumn('solver_count', 'SolverCount', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
@@ -529,6 +543,7 @@ class PuzzleTableMap extends TableMap
             $criteria->addSelectColumn(PuzzleTableMap::COL_SLACK_CHANNEL_ID);
             $criteria->addSelectColumn(PuzzleTableMap::COL_WRANGLER_ID);
             $criteria->addSelectColumn(PuzzleTableMap::COL_SHEET_MOD_DATE);
+            $criteria->addSelectColumn(PuzzleTableMap::COL_SORT_ORDER);
             $criteria->addSelectColumn(PuzzleTableMap::COL_SOLVER_COUNT);
             $criteria->addSelectColumn(PuzzleTableMap::COL_CREATED_AT);
             $criteria->addSelectColumn(PuzzleTableMap::COL_UPDATED_AT);
@@ -543,6 +558,7 @@ class PuzzleTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.slack_channel_id');
             $criteria->addSelectColumn($alias . '.wrangler_id');
             $criteria->addSelectColumn($alias . '.sheet_mod_date');
+            $criteria->addSelectColumn($alias . '.sort_order');
             $criteria->addSelectColumn($alias . '.solver_count');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
@@ -574,6 +590,7 @@ class PuzzleTableMap extends TableMap
             $criteria->removeSelectColumn(PuzzleTableMap::COL_SLACK_CHANNEL_ID);
             $criteria->removeSelectColumn(PuzzleTableMap::COL_WRANGLER_ID);
             $criteria->removeSelectColumn(PuzzleTableMap::COL_SHEET_MOD_DATE);
+            $criteria->removeSelectColumn(PuzzleTableMap::COL_SORT_ORDER);
             $criteria->removeSelectColumn(PuzzleTableMap::COL_SOLVER_COUNT);
             $criteria->removeSelectColumn(PuzzleTableMap::COL_CREATED_AT);
             $criteria->removeSelectColumn(PuzzleTableMap::COL_UPDATED_AT);
@@ -588,6 +605,7 @@ class PuzzleTableMap extends TableMap
             $criteria->removeSelectColumn($alias . '.slack_channel_id');
             $criteria->removeSelectColumn($alias . '.wrangler_id');
             $criteria->removeSelectColumn($alias . '.sheet_mod_date');
+            $criteria->removeSelectColumn($alias . '.sort_order');
             $criteria->removeSelectColumn($alias . '.solver_count');
             $criteria->removeSelectColumn($alias . '.created_at');
             $criteria->removeSelectColumn($alias . '.updated_at');
