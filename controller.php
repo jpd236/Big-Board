@@ -359,7 +359,7 @@ function displayPuzzle($puzzle_id, $method = "get") {
         ->groupBy('Parent.Id')
         ->find();
 
-	render($template, 'puzzles', array(
+	render($template, 'bymeta', array(
 			'puzzle_id'     => $puzzle_id,
 			'puzzle'        => $puzzle,
 			'metas_to_show' => $metas_to_show,
