@@ -31,6 +31,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleQuery orderByWranglerId($order = Criteria::ASC) Order by the wrangler_id column
  * @method     ChildPuzzleQuery orderBySheetModDate($order = Criteria::ASC) Order by the sheet_mod_date column
  * @method     ChildPuzzleQuery orderBySortOrder($order = Criteria::ASC) Order by the sort_order column
+ * @method     ChildPuzzleQuery orderByNote($order = Criteria::ASC) Order by the note column
  * @method     ChildPuzzleQuery orderBySolverCount($order = Criteria::ASC) Order by the solver_count column
  * @method     ChildPuzzleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method     ChildPuzzleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
@@ -46,6 +47,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzleQuery groupByWranglerId() Group by the wrangler_id column
  * @method     ChildPuzzleQuery groupBySheetModDate() Group by the sheet_mod_date column
  * @method     ChildPuzzleQuery groupBySortOrder() Group by the sort_order column
+ * @method     ChildPuzzleQuery groupByNote() Group by the note column
  * @method     ChildPuzzleQuery groupBySolverCount() Group by the solver_count column
  * @method     ChildPuzzleQuery groupByCreatedAt() Group by the created_at column
  * @method     ChildPuzzleQuery groupByUpdatedAt() Group by the updated_at column
@@ -114,6 +116,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzle|null findOneByWranglerId(int $wrangler_id) Return the first ChildPuzzle filtered by the wrangler_id column
  * @method     ChildPuzzle|null findOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzle filtered by the sheet_mod_date column
  * @method     ChildPuzzle|null findOneBySortOrder(int $sort_order) Return the first ChildPuzzle filtered by the sort_order column
+ * @method     ChildPuzzle|null findOneByNote(string $note) Return the first ChildPuzzle filtered by the note column
  * @method     ChildPuzzle|null findOneBySolverCount(int $solver_count) Return the first ChildPuzzle filtered by the solver_count column
  * @method     ChildPuzzle|null findOneByCreatedAt(string $created_at) Return the first ChildPuzzle filtered by the created_at column
  * @method     ChildPuzzle|null findOneByUpdatedAt(string $updated_at) Return the first ChildPuzzle filtered by the updated_at column
@@ -132,6 +135,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPuzzle requireOneByWranglerId(int $wrangler_id) Return the first ChildPuzzle filtered by the wrangler_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneBySheetModDate(string $sheet_mod_date) Return the first ChildPuzzle filtered by the sheet_mod_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneBySortOrder(int $sort_order) Return the first ChildPuzzle filtered by the sort_order column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPuzzle requireOneByNote(string $note) Return the first ChildPuzzle filtered by the note column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneBySolverCount(int $solver_count) Return the first ChildPuzzle filtered by the solver_count column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneByCreatedAt(string $created_at) Return the first ChildPuzzle filtered by the created_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPuzzle requireOneByUpdatedAt(string $updated_at) Return the first ChildPuzzle filtered by the updated_at column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -161,6 +165,8 @@ use Propel\Runtime\Exception\PropelException;
  * @psalm-method Collection&\Traversable<ChildPuzzle> findBySheetModDate(string|array<string> $sheet_mod_date) Return ChildPuzzle objects filtered by the sheet_mod_date column
  * @method     ChildPuzzle[]|Collection findBySortOrder(int|array<int> $sort_order) Return ChildPuzzle objects filtered by the sort_order column
  * @psalm-method Collection&\Traversable<ChildPuzzle> findBySortOrder(int|array<int> $sort_order) Return ChildPuzzle objects filtered by the sort_order column
+ * @method     ChildPuzzle[]|Collection findByNote(string|array<string> $note) Return ChildPuzzle objects filtered by the note column
+ * @psalm-method Collection&\Traversable<ChildPuzzle> findByNote(string|array<string> $note) Return ChildPuzzle objects filtered by the note column
  * @method     ChildPuzzle[]|Collection findBySolverCount(int|array<int> $solver_count) Return ChildPuzzle objects filtered by the solver_count column
  * @psalm-method Collection&\Traversable<ChildPuzzle> findBySolverCount(int|array<int> $solver_count) Return ChildPuzzle objects filtered by the solver_count column
  * @method     ChildPuzzle[]|Collection findByCreatedAt(string|array<string> $created_at) Return ChildPuzzle objects filtered by the created_at column
@@ -269,7 +275,7 @@ abstract class PuzzleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, sort_order, solver_count, created_at, updated_at FROM puzzle WHERE id = :p0';
+        $sql = 'SELECT id, title, url, spreadsheet_id, solution, status, slack_channel, slack_channel_id, wrangler_id, sheet_mod_date, sort_order, note, solver_count, created_at, updated_at FROM puzzle WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -731,6 +737,34 @@ abstract class PuzzleQuery extends ModelCriteria
         }
 
         $this->addUsingAlias(PuzzleTableMap::COL_SORT_ORDER, $sortOrder, $comparison);
+
+        return $this;
+    }
+
+    /**
+     * Filter the query on the note column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByNote('fooValue');   // WHERE note = 'fooValue'
+     * $query->filterByNote('%fooValue%', Criteria::LIKE); // WHERE note LIKE '%fooValue%'
+     * $query->filterByNote(['foo', 'bar']); // WHERE note IN ('foo', 'bar')
+     * </code>
+     *
+     * @param string|string[] $note The value to use as filter.
+     * @param string|null $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this The current query, for fluid interface
+     */
+    public function filterByNote($note = null, ?string $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($note)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        $this->addUsingAlias(PuzzleTableMap::COL_NOTE, $note, $comparison);
 
         return $this;
     }

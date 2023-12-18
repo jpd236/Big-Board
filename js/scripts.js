@@ -51,7 +51,7 @@ var loadPuzzleTemplate = function(response, callback, parentListName, parentIDNa
             }
         });
     });
-    $('[data-tooltip]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();
     if (callback) {
         callback();
     }

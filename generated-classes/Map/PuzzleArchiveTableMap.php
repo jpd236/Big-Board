@@ -63,7 +63,7 @@ class PuzzleArchiveTableMap extends TableMap
     /**
      * The total number of columns
      */
-    public const NUM_COLUMNS = 15;
+    public const NUM_COLUMNS = 16;
 
     /**
      * The number of lazy-loaded columns
@@ -73,7 +73,7 @@ class PuzzleArchiveTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    public const NUM_HYDRATE_COLUMNS = 15;
+    public const NUM_HYDRATE_COLUMNS = 16;
 
     /**
      * the column name for the id field
@@ -131,6 +131,11 @@ class PuzzleArchiveTableMap extends TableMap
     public const COL_SORT_ORDER = 'puzzle_archive.sort_order';
 
     /**
+     * the column name for the note field
+     */
+    public const COL_NOTE = 'puzzle_archive.note';
+
+    /**
      * the column name for the solver_count field
      */
     public const COL_SOLVER_COUNT = 'puzzle_archive.solver_count';
@@ -164,11 +169,11 @@ class PuzzleArchiveTableMap extends TableMap
      * @var array<string, mixed>
      */
     protected static $fieldNames = [
-        self::TYPE_PHPNAME       => ['Id', 'Title', 'Url', 'SpreadsheetId', 'Solution', 'Status', 'SlackChannel', 'SlackChannelId', 'WranglerId', 'SheetModDate', 'SortOrder', 'SolverCount', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ],
-        self::TYPE_CAMELNAME     => ['id', 'title', 'url', 'spreadsheetId', 'solution', 'status', 'slackChannel', 'slackChannelId', 'wranglerId', 'sheetModDate', 'sortOrder', 'solverCount', 'createdAt', 'updatedAt', 'archivedAt', ],
-        self::TYPE_COLNAME       => [PuzzleArchiveTableMap::COL_ID, PuzzleArchiveTableMap::COL_TITLE, PuzzleArchiveTableMap::COL_URL, PuzzleArchiveTableMap::COL_SPREADSHEET_ID, PuzzleArchiveTableMap::COL_SOLUTION, PuzzleArchiveTableMap::COL_STATUS, PuzzleArchiveTableMap::COL_SLACK_CHANNEL, PuzzleArchiveTableMap::COL_SLACK_CHANNEL_ID, PuzzleArchiveTableMap::COL_WRANGLER_ID, PuzzleArchiveTableMap::COL_SHEET_MOD_DATE, PuzzleArchiveTableMap::COL_SORT_ORDER, PuzzleArchiveTableMap::COL_SOLVER_COUNT, PuzzleArchiveTableMap::COL_CREATED_AT, PuzzleArchiveTableMap::COL_UPDATED_AT, PuzzleArchiveTableMap::COL_ARCHIVED_AT, ],
-        self::TYPE_FIELDNAME     => ['id', 'title', 'url', 'spreadsheet_id', 'solution', 'status', 'slack_channel', 'slack_channel_id', 'wrangler_id', 'sheet_mod_date', 'sort_order', 'solver_count', 'created_at', 'updated_at', 'archived_at', ],
-        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ]
+        self::TYPE_PHPNAME       => ['Id', 'Title', 'Url', 'SpreadsheetId', 'Solution', 'Status', 'SlackChannel', 'SlackChannelId', 'WranglerId', 'SheetModDate', 'SortOrder', 'Note', 'SolverCount', 'CreatedAt', 'UpdatedAt', 'ArchivedAt', ],
+        self::TYPE_CAMELNAME     => ['id', 'title', 'url', 'spreadsheetId', 'solution', 'status', 'slackChannel', 'slackChannelId', 'wranglerId', 'sheetModDate', 'sortOrder', 'note', 'solverCount', 'createdAt', 'updatedAt', 'archivedAt', ],
+        self::TYPE_COLNAME       => [PuzzleArchiveTableMap::COL_ID, PuzzleArchiveTableMap::COL_TITLE, PuzzleArchiveTableMap::COL_URL, PuzzleArchiveTableMap::COL_SPREADSHEET_ID, PuzzleArchiveTableMap::COL_SOLUTION, PuzzleArchiveTableMap::COL_STATUS, PuzzleArchiveTableMap::COL_SLACK_CHANNEL, PuzzleArchiveTableMap::COL_SLACK_CHANNEL_ID, PuzzleArchiveTableMap::COL_WRANGLER_ID, PuzzleArchiveTableMap::COL_SHEET_MOD_DATE, PuzzleArchiveTableMap::COL_SORT_ORDER, PuzzleArchiveTableMap::COL_NOTE, PuzzleArchiveTableMap::COL_SOLVER_COUNT, PuzzleArchiveTableMap::COL_CREATED_AT, PuzzleArchiveTableMap::COL_UPDATED_AT, PuzzleArchiveTableMap::COL_ARCHIVED_AT, ],
+        self::TYPE_FIELDNAME     => ['id', 'title', 'url', 'spreadsheet_id', 'solution', 'status', 'slack_channel', 'slack_channel_id', 'wrangler_id', 'sheet_mod_date', 'sort_order', 'note', 'solver_count', 'created_at', 'updated_at', 'archived_at', ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ]
     ];
 
     /**
@@ -180,11 +185,11 @@ class PuzzleArchiveTableMap extends TableMap
      * @var array<string, mixed>
      */
     protected static $fieldKeys = [
-        self::TYPE_PHPNAME       => ['Id' => 0, 'Title' => 1, 'Url' => 2, 'SpreadsheetId' => 3, 'Solution' => 4, 'Status' => 5, 'SlackChannel' => 6, 'SlackChannelId' => 7, 'WranglerId' => 8, 'SheetModDate' => 9, 'SortOrder' => 10, 'SolverCount' => 11, 'CreatedAt' => 12, 'UpdatedAt' => 13, 'ArchivedAt' => 14, ],
-        self::TYPE_CAMELNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheetId' => 3, 'solution' => 4, 'status' => 5, 'slackChannel' => 6, 'slackChannelId' => 7, 'wranglerId' => 8, 'sheetModDate' => 9, 'sortOrder' => 10, 'solverCount' => 11, 'createdAt' => 12, 'updatedAt' => 13, 'archivedAt' => 14, ],
-        self::TYPE_COLNAME       => [PuzzleArchiveTableMap::COL_ID => 0, PuzzleArchiveTableMap::COL_TITLE => 1, PuzzleArchiveTableMap::COL_URL => 2, PuzzleArchiveTableMap::COL_SPREADSHEET_ID => 3, PuzzleArchiveTableMap::COL_SOLUTION => 4, PuzzleArchiveTableMap::COL_STATUS => 5, PuzzleArchiveTableMap::COL_SLACK_CHANNEL => 6, PuzzleArchiveTableMap::COL_SLACK_CHANNEL_ID => 7, PuzzleArchiveTableMap::COL_WRANGLER_ID => 8, PuzzleArchiveTableMap::COL_SHEET_MOD_DATE => 9, PuzzleArchiveTableMap::COL_SORT_ORDER => 10, PuzzleArchiveTableMap::COL_SOLVER_COUNT => 11, PuzzleArchiveTableMap::COL_CREATED_AT => 12, PuzzleArchiveTableMap::COL_UPDATED_AT => 13, PuzzleArchiveTableMap::COL_ARCHIVED_AT => 14, ],
-        self::TYPE_FIELDNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheet_id' => 3, 'solution' => 4, 'status' => 5, 'slack_channel' => 6, 'slack_channel_id' => 7, 'wrangler_id' => 8, 'sheet_mod_date' => 9, 'sort_order' => 10, 'solver_count' => 11, 'created_at' => 12, 'updated_at' => 13, 'archived_at' => 14, ],
-        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, ]
+        self::TYPE_PHPNAME       => ['Id' => 0, 'Title' => 1, 'Url' => 2, 'SpreadsheetId' => 3, 'Solution' => 4, 'Status' => 5, 'SlackChannel' => 6, 'SlackChannelId' => 7, 'WranglerId' => 8, 'SheetModDate' => 9, 'SortOrder' => 10, 'Note' => 11, 'SolverCount' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, 'ArchivedAt' => 15, ],
+        self::TYPE_CAMELNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheetId' => 3, 'solution' => 4, 'status' => 5, 'slackChannel' => 6, 'slackChannelId' => 7, 'wranglerId' => 8, 'sheetModDate' => 9, 'sortOrder' => 10, 'note' => 11, 'solverCount' => 12, 'createdAt' => 13, 'updatedAt' => 14, 'archivedAt' => 15, ],
+        self::TYPE_COLNAME       => [PuzzleArchiveTableMap::COL_ID => 0, PuzzleArchiveTableMap::COL_TITLE => 1, PuzzleArchiveTableMap::COL_URL => 2, PuzzleArchiveTableMap::COL_SPREADSHEET_ID => 3, PuzzleArchiveTableMap::COL_SOLUTION => 4, PuzzleArchiveTableMap::COL_STATUS => 5, PuzzleArchiveTableMap::COL_SLACK_CHANNEL => 6, PuzzleArchiveTableMap::COL_SLACK_CHANNEL_ID => 7, PuzzleArchiveTableMap::COL_WRANGLER_ID => 8, PuzzleArchiveTableMap::COL_SHEET_MOD_DATE => 9, PuzzleArchiveTableMap::COL_SORT_ORDER => 10, PuzzleArchiveTableMap::COL_NOTE => 11, PuzzleArchiveTableMap::COL_SOLVER_COUNT => 12, PuzzleArchiveTableMap::COL_CREATED_AT => 13, PuzzleArchiveTableMap::COL_UPDATED_AT => 14, PuzzleArchiveTableMap::COL_ARCHIVED_AT => 15, ],
+        self::TYPE_FIELDNAME     => ['id' => 0, 'title' => 1, 'url' => 2, 'spreadsheet_id' => 3, 'solution' => 4, 'status' => 5, 'slack_channel' => 6, 'slack_channel_id' => 7, 'wrangler_id' => 8, 'sheet_mod_date' => 9, 'sort_order' => 10, 'note' => 11, 'solver_count' => 12, 'created_at' => 13, 'updated_at' => 14, 'archived_at' => 15, ],
+        self::TYPE_NUM           => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ]
     ];
 
     /**
@@ -276,6 +281,13 @@ class PuzzleArchiveTableMap extends TableMap
         'COL_SORT_ORDER' => 'SORT_ORDER',
         'sort_order' => 'SORT_ORDER',
         'puzzle_archive.sort_order' => 'SORT_ORDER',
+        'Note' => 'NOTE',
+        'PuzzleArchive.Note' => 'NOTE',
+        'note' => 'NOTE',
+        'puzzleArchive.note' => 'NOTE',
+        'PuzzleArchiveTableMap::COL_NOTE' => 'NOTE',
+        'COL_NOTE' => 'NOTE',
+        'puzzle_archive.note' => 'NOTE',
         'SolverCount' => 'SOLVER_COUNT',
         'PuzzleArchive.SolverCount' => 'SOLVER_COUNT',
         'solverCount' => 'SOLVER_COUNT',
@@ -338,6 +350,7 @@ class PuzzleArchiveTableMap extends TableMap
         $this->addColumn('wrangler_id', 'WranglerId', 'INTEGER', false, null, null);
         $this->addColumn('sheet_mod_date', 'SheetModDate', 'TIMESTAMP', false, null, null);
         $this->addColumn('sort_order', 'SortOrder', 'INTEGER', false, null, null);
+        $this->addColumn('note', 'Note', 'VARCHAR', false, 255, null);
         $this->addColumn('solver_count', 'SolverCount', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
@@ -506,6 +519,7 @@ class PuzzleArchiveTableMap extends TableMap
             $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_WRANGLER_ID);
             $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_SHEET_MOD_DATE);
             $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_SORT_ORDER);
+            $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_NOTE);
             $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_SOLVER_COUNT);
             $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_CREATED_AT);
             $criteria->addSelectColumn(PuzzleArchiveTableMap::COL_UPDATED_AT);
@@ -522,6 +536,7 @@ class PuzzleArchiveTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.wrangler_id');
             $criteria->addSelectColumn($alias . '.sheet_mod_date');
             $criteria->addSelectColumn($alias . '.sort_order');
+            $criteria->addSelectColumn($alias . '.note');
             $criteria->addSelectColumn($alias . '.solver_count');
             $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
@@ -555,6 +570,7 @@ class PuzzleArchiveTableMap extends TableMap
             $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_WRANGLER_ID);
             $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_SHEET_MOD_DATE);
             $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_SORT_ORDER);
+            $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_NOTE);
             $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_SOLVER_COUNT);
             $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_CREATED_AT);
             $criteria->removeSelectColumn(PuzzleArchiveTableMap::COL_UPDATED_AT);
@@ -571,6 +587,7 @@ class PuzzleArchiveTableMap extends TableMap
             $criteria->removeSelectColumn($alias . '.wrangler_id');
             $criteria->removeSelectColumn($alias . '.sheet_mod_date');
             $criteria->removeSelectColumn($alias . '.sort_order');
+            $criteria->removeSelectColumn($alias . '.note');
             $criteria->removeSelectColumn($alias . '.solver_count');
             $criteria->removeSelectColumn($alias . '.created_at');
             $criteria->removeSelectColumn($alias . '.updated_at');

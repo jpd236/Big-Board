@@ -141,6 +141,13 @@ abstract class PuzzleArchive implements ActiveRecordInterface
     protected $sort_order;
 
     /**
+     * The value for the note field.
+     *
+     * @var        string|null
+     */
+    protected $note;
+
+    /**
      * The value for the solver_count field.
      *
      * @var        int|null
@@ -525,6 +532,16 @@ abstract class PuzzleArchive implements ActiveRecordInterface
     }
 
     /**
+     * Get the [note] column value.
+     *
+     * @return string|null
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
      * Get the [solver_count] column value.
      *
      * @return int|null
@@ -821,6 +838,26 @@ abstract class PuzzleArchive implements ActiveRecordInterface
     }
 
     /**
+     * Set the value of [note] column.
+     *
+     * @param string|null $v New value
+     * @return $this The current object (for fluent API support)
+     */
+    public function setNote($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->note !== $v) {
+            $this->note = $v;
+            $this->modifiedColumns[PuzzleArchiveTableMap::COL_NOTE] = true;
+        }
+
+        return $this;
+    }
+
+    /**
      * Set the value of [solver_count] column.
      *
      * @param int|null $v New value
@@ -972,22 +1009,25 @@ abstract class PuzzleArchive implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : PuzzleArchiveTableMap::translateFieldName('SortOrder', TableMap::TYPE_PHPNAME, $indexType)];
             $this->sort_order = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : PuzzleArchiveTableMap::translateFieldName('SolverCount', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : PuzzleArchiveTableMap::translateFieldName('Note', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->note = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : PuzzleArchiveTableMap::translateFieldName('SolverCount', TableMap::TYPE_PHPNAME, $indexType)];
             $this->solver_count = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : PuzzleArchiveTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : PuzzleArchiveTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : PuzzleArchiveTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : PuzzleArchiveTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
             $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : PuzzleArchiveTableMap::translateFieldName('ArchivedAt', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : PuzzleArchiveTableMap::translateFieldName('ArchivedAt', TableMap::TYPE_PHPNAME, $indexType)];
             if ($col === '0000-00-00 00:00:00') {
                 $col = null;
             }
@@ -1000,7 +1040,7 @@ abstract class PuzzleArchive implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 15; // 15 = PuzzleArchiveTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = PuzzleArchiveTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\PuzzleArchive'), 0, $e);
@@ -1231,6 +1271,9 @@ abstract class PuzzleArchive implements ActiveRecordInterface
         if ($this->isColumnModified(PuzzleArchiveTableMap::COL_SORT_ORDER)) {
             $modifiedColumns[':p' . $index++]  = 'sort_order';
         }
+        if ($this->isColumnModified(PuzzleArchiveTableMap::COL_NOTE)) {
+            $modifiedColumns[':p' . $index++]  = 'note';
+        }
         if ($this->isColumnModified(PuzzleArchiveTableMap::COL_SOLVER_COUNT)) {
             $modifiedColumns[':p' . $index++]  = 'solver_count';
         }
@@ -1296,6 +1339,10 @@ abstract class PuzzleArchive implements ActiveRecordInterface
                         break;
                     case 'sort_order':
                         $stmt->bindValue($identifier, $this->sort_order, PDO::PARAM_INT);
+
+                        break;
+                    case 'note':
+                        $stmt->bindValue($identifier, $this->note, PDO::PARAM_STR);
 
                         break;
                     case 'solver_count':
@@ -1403,15 +1450,18 @@ abstract class PuzzleArchive implements ActiveRecordInterface
                 return $this->getSortOrder();
 
             case 11:
-                return $this->getSolverCount();
+                return $this->getNote();
 
             case 12:
-                return $this->getCreatedAt();
+                return $this->getSolverCount();
 
             case 13:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
 
             case 14:
+                return $this->getUpdatedAt();
+
+            case 15:
                 return $this->getArchivedAt();
 
             default:
@@ -1452,17 +1502,14 @@ abstract class PuzzleArchive implements ActiveRecordInterface
             $keys[8] => $this->getWranglerId(),
             $keys[9] => $this->getSheetModDate(),
             $keys[10] => $this->getSortOrder(),
-            $keys[11] => $this->getSolverCount(),
-            $keys[12] => $this->getCreatedAt(),
-            $keys[13] => $this->getUpdatedAt(),
-            $keys[14] => $this->getArchivedAt(),
+            $keys[11] => $this->getNote(),
+            $keys[12] => $this->getSolverCount(),
+            $keys[13] => $this->getCreatedAt(),
+            $keys[14] => $this->getUpdatedAt(),
+            $keys[15] => $this->getArchivedAt(),
         ];
         if ($result[$keys[9]] instanceof \DateTimeInterface) {
             $result[$keys[9]] = $result[$keys[9]]->format('Y-m-d H:i:s.u');
-        }
-
-        if ($result[$keys[12]] instanceof \DateTimeInterface) {
-            $result[$keys[12]] = $result[$keys[12]]->format('Y-m-d H:i:s.u');
         }
 
         if ($result[$keys[13]] instanceof \DateTimeInterface) {
@@ -1471,6 +1518,10 @@ abstract class PuzzleArchive implements ActiveRecordInterface
 
         if ($result[$keys[14]] instanceof \DateTimeInterface) {
             $result[$keys[14]] = $result[$keys[14]]->format('Y-m-d H:i:s.u');
+        }
+
+        if ($result[$keys[15]] instanceof \DateTimeInterface) {
+            $result[$keys[15]] = $result[$keys[15]]->format('Y-m-d H:i:s.u');
         }
 
         $virtualColumns = $this->virtualColumns;
@@ -1547,15 +1598,18 @@ abstract class PuzzleArchive implements ActiveRecordInterface
                 $this->setSortOrder($value);
                 break;
             case 11:
-                $this->setSolverCount($value);
+                $this->setNote($value);
                 break;
             case 12:
-                $this->setCreatedAt($value);
+                $this->setSolverCount($value);
                 break;
             case 13:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 14:
+                $this->setUpdatedAt($value);
+                break;
+            case 15:
                 $this->setArchivedAt($value);
                 break;
         } // switch()
@@ -1618,16 +1672,19 @@ abstract class PuzzleArchive implements ActiveRecordInterface
             $this->setSortOrder($arr[$keys[10]]);
         }
         if (array_key_exists($keys[11], $arr)) {
-            $this->setSolverCount($arr[$keys[11]]);
+            $this->setNote($arr[$keys[11]]);
         }
         if (array_key_exists($keys[12], $arr)) {
-            $this->setCreatedAt($arr[$keys[12]]);
+            $this->setSolverCount($arr[$keys[12]]);
         }
         if (array_key_exists($keys[13], $arr)) {
-            $this->setUpdatedAt($arr[$keys[13]]);
+            $this->setCreatedAt($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setArchivedAt($arr[$keys[14]]);
+            $this->setUpdatedAt($arr[$keys[14]]);
+        }
+        if (array_key_exists($keys[15], $arr)) {
+            $this->setArchivedAt($arr[$keys[15]]);
         }
 
         return $this;
@@ -1704,6 +1761,9 @@ abstract class PuzzleArchive implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PuzzleArchiveTableMap::COL_SORT_ORDER)) {
             $criteria->add(PuzzleArchiveTableMap::COL_SORT_ORDER, $this->sort_order);
+        }
+        if ($this->isColumnModified(PuzzleArchiveTableMap::COL_NOTE)) {
+            $criteria->add(PuzzleArchiveTableMap::COL_NOTE, $this->note);
         }
         if ($this->isColumnModified(PuzzleArchiveTableMap::COL_SOLVER_COUNT)) {
             $criteria->add(PuzzleArchiveTableMap::COL_SOLVER_COUNT, $this->solver_count);
@@ -1816,6 +1876,7 @@ abstract class PuzzleArchive implements ActiveRecordInterface
         $copyObj->setWranglerId($this->getWranglerId());
         $copyObj->setSheetModDate($this->getSheetModDate());
         $copyObj->setSortOrder($this->getSortOrder());
+        $copyObj->setNote($this->getNote());
         $copyObj->setSolverCount($this->getSolverCount());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
@@ -1867,6 +1928,7 @@ abstract class PuzzleArchive implements ActiveRecordInterface
         $this->wrangler_id = null;
         $this->sheet_mod_date = null;
         $this->sort_order = null;
+        $this->note = null;
         $this->solver_count = null;
         $this->created_at = null;
         $this->updated_at = null;

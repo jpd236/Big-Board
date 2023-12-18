@@ -3,6 +3,11 @@
     <td class="solvers">{{ SheetData }} </td>
     <td class="title"><a href="/puzzle/{{ Id }}">{{ Title }}</a></td>
     <td class="solution-cell">{{ Solution }}</td>
+    <td class="icon-link">
+        {{#Note}}
+            <img src="/img/note.png" height="20" alt="" data-toggle="tooltip" data-placement="left" title data-original-title="{{ Note }}">
+        {{/Note}}
+    </td>
     <td class="icon-link">{{ #Url }}<a href="{{ Url }}" target="_blank"><img src="/img/hh.png" width="20" alt="" title="Puzzle page"></a>{{ /Url }}</td>
     <td class="icon-link"><a href="{{ SpreadsheetURL }}" target="_blank"><img src="/img/drive.png" width="20" alt="" title="Google Spreadsheet"></a></td>
     <td class="icon-link"><a href="{{ SlackChannelURL }}" target="_blank"><img src="/img/slack.png" width="20" alt=""  title="Slack channel"></a></td>

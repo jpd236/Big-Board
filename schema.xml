@@ -12,6 +12,7 @@
         <column name="wrangler_id" type="integer" required="false" />
         <column name="sheet_mod_date" type="timestamp" required="false" />
         <column name="sort_order" type="integer" required="false" />
+        <column name="note" type="varchar" size="255" required="false" />
         <foreign-key foreignTable="member" phpName="Wrangler" refPhpName="WrangledPuzzle" onDelete="SETNULL">
             <reference local="wrangler_id" foreign="id"/>
         </foreign-key>
