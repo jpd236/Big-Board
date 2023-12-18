@@ -1,6 +1,10 @@
 <tr class="loc-{{ Location }}">
     <td class="location-cell"><i class="icon-{{ Location }}"></i></td>
-    <td class="avatar-cell"><img class="avatar" src="{{ Avatar }}" alt=""></td>
+    <td class="avatar-cell">
+        <div class="avatar-container">
+            {{#Avatar}}<img class="avatar" src="{{ Avatar }}" alt="">{{/Avatar}}
+        </div>
+    </td>
     <td><a href="/member/{{Id}}">{{ FullName }}</a></td>
     <td class="phone-number">{{ PhoneNumber }}</td>
     <td class="strengths">{{ Strengths }}</td>
