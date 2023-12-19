@@ -352,6 +352,7 @@ function displayPuzzle($puzzle_id, $method = "get") {
 	$metas_to_show = [];
 
     $metas_to_show = PuzzlePuzzleQuery::create()
+		->select(['Parent_Id'])
         ->joinWithParent()
 		->useParentQuery()
 		->withColumn('ANY_VALUE(Title)', 'Title')
