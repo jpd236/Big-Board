@@ -352,11 +352,14 @@ function displayPuzzle($puzzle_id, $method = "get") {
 	$metas_to_show = [];
 
     $metas_to_show = PuzzlePuzzleQuery::create()
-        ->joinWith('PuzzlePuzzle.Parent')
-        ->orderBy('Parent.Title')
+        ->joinWithParent()
+		->useParentQuery()
+		->withColumn('ANY_VALUE(Title)', 'Title')
+		->orderByTitle()
+		->endUse()
         ->withColumn('Sum(puzzle_id ='.$puzzle_id.')', 'IsInMeta')
         ->filterByParentId($puzzle_id, CRITERIA::NOT_EQUAL)
-        ->groupBy('Parent.Id')
+        ->groupByParentId()
         ->find();
 
 	render($template, 'bymeta', array(

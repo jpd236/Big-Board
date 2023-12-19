@@ -93,8 +93,8 @@
                     {% for meta in metas_to_show %}
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type='checkbox' id="meta{{meta.id}}" {% if meta.virtualColumns.IsInMeta %}checked{% endif %} name='metas[]' value="{{ meta.parent.id }}">
-                        {{ meta.parent.title }}
+                        <input class="form-check-input" type='checkbox' id="meta{{meta.Parent_Id}}" {% if meta.IsInMeta %}checked{% endif %} name='metas[]' value="{{ meta.Parent_Id }}">
+                        {{ meta.Title }}
                       </label>
                     </div>
                     {% endfor %}
