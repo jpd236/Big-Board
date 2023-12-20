@@ -184,7 +184,7 @@ class Puzzle extends BasePuzzle {
             $channel = $this->getSlackChannel();
             postToChannel('*'.$this->getTitle().'* is '.$newStatus.': `'.$this->getSolution().'`', $this->getSlackAttachmentMedium(), ":checkered_flag:", "SolveBot", $channel);
             postToHuntChannel('*'.$this->getTitle().'* is '.$newStatus.': `'.$this->getSolution().'`', $this->getSlackAttachmentMedium(), ":checkered_flag:", "SolveBot");
-            
+            notifyPuzzleSubscribers($this, '*'.$this->getTitle().'* is '.$newStatus.': `'.$this->getSolution().'`', $this->getSlackAttachmentMedium());
             $this->save();
 
 	    return $alert;

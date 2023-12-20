@@ -2,18 +2,6 @@
 
 {% block title %}{{ puzzle.title }}{% endblock %}
 
-{% block filters %}
-    {% from 'macros.twig' import solver %}
-    <div class="nav-section">
-        {% for meta in puzzles_metas %}
-            {% if meta.Wrangler %}
-            {{ solver(meta.Wrangler) }}
-            {% endif %}
-        {% else %}
-        {% endfor %}
-    </div>
-{% endblock %}
-
 {% block content %}
     <div class="puzzle-header">
         <h1>
@@ -109,6 +97,18 @@
                   <label class="form-check-label">
                     <input class="form-check-input" type="checkbox" name="is_meta" {{ is_meta|yesno('checked') }} value="y">
                     This is a meta!
+                  </label>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group">
+            <div class="row">
+                <legend class="col-form-legend col-sm-3">Notifications</legend>
+                <div class="col-sm-9">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" name="is_subscriber" {{ is_subscriber|yesno('checked') }} value="y">
+                    Get a Slack DM whenever this puzzle's status changes
                   </label>
                 </div>
             </div>

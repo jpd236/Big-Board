@@ -121,6 +121,19 @@ function scrapeAvatar($member) {
 	return $response_body;
 }
 
+function sendDirectMessage($message, $attachments, $username, $icon = ":boar:", $bot_name = "Big Board Bot") {
+	$client = getTobyBotClient();
+	$response_body = $client->conversations->open([
+		'users' => $username,
+	]);
+	if ($response_body['ok'] == 1) {
+		$channel = $response_body['channel']['id'];
+		return postToSlack($message, $attachments, $icon, $bot_name, $channel);
+	}
+
+	return $response_body;
+}
+
 // See https://api.slack.com/authentication/verifying-requests-from-slack
 function verifySignature($request) {
 	$timestamp = $request->headers()->get("X-Slack-Request-Timestamp");

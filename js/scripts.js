@@ -66,14 +66,10 @@ var loadMemberData = function(url, callback) {
 var loadMemberTemplate = function(response, callback) {
     var template = $('#member_row').html();
     $.each(response, function(key, memberData) {
-        if(memberData['PuzzleId'] != null) {
-            memberData['PuzzleTitle'] = $('#table-' + memberData['PuzzleId']).data('title');
-        }
         memberData['slackDomain'] = slackDomain;
 
         var rendered = Mustache.render(template, memberData);
-        var puzzleID = memberData['PuzzleId'] || 0;
-        var tbody = $('#table-' + puzzleID).find('tbody');
+        var tbody = $('#table-0').find('tbody');
         tbody.append(rendered);
 
         $('#table-alpha tbody').append(rendered);

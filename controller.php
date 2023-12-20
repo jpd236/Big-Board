@@ -320,20 +320,22 @@ function displayAllByMeta() {
 // PUZZLE
 
 function displayPuzzle($puzzle_id, $method = "get") {
-	$puzzle = PuzzleQuery::create()
-		->leftJoinWithWrangler()
+	$puzzles = PuzzleQuery::create()
+		->leftJoinWithPuzzleMember()
+		->where('(PuzzleMember.MemberId IS NULL OR PuzzleMember.MemberId = ?)', $_SESSION['user']->getId())
 		->filterByID($puzzle_id)
-		->findOne();
+		->withColumn('PuzzleMember.MemberId', 'SubscriberId')
+		->find();
 
-	if (!$puzzle) {
+	if (!$puzzles || count($puzzles) != 1) {
 		redirect('/', "Puzzle $puzzle_id does not exist.");
 	}
+	$puzzle = $puzzles[0];
 
 	$members = $puzzle->getMembers();
 
 	$puzzles_metas = PuzzleQuery::create()
 		->joinPuzzleChild()
-		->leftJoinWithWrangler()
 		->orderByStatus('desc')
 		->orderByTitle()
 		->withColumn('PuzzleChild.PuzzleId', 'PuzzleId')
@@ -363,12 +365,15 @@ function displayPuzzle($puzzle_id, $method = "get") {
         ->groupByParentId()
         ->find();
 
+	$is_subscriber = $puzzle->getVirtualColumn('SubscriberId') != NULL;
+
 	render($template, 'bymeta', array(
 			'puzzle_id'     => $puzzle_id,
 			'puzzle'        => $puzzle,
 			'metas_to_show' => $metas_to_show,
 			'puzzles_metas' => $puzzles_metas,
 			'is_meta'       => $is_meta,
+			'is_subscriber' => $is_subscriber,
 		));
 }
 
@@ -378,6 +383,7 @@ function editPuzzle($puzzle_id, $request) {
 		->filterByID($puzzle_id)
 		->findOne();
 
+	$old_status = $puzzle->getStatus();
 	$wrangler_id = ($request->wrangler != "")?$request->wrangler:null;
 
 	$puzzle->setTitle($request->title);
@@ -409,9 +415,30 @@ function editPuzzle($puzzle_id, $request) {
 		$puzzle->addParent($puzzle);
 	}
 
+	if ($request->is_subscriber == "y") {
+		$member = MemberQuery::create()
+			->filterById($_SESSION['user']->getId())
+			->findOne();
+		$puzzle->addMember($member);
+	} else {
+		$subscribers = PuzzleMemberQuery::create()
+			->filterByPuzzleId($puzzle_id)
+			->filterByMemberId($_SESSION['user']->getId())
+			->find();
+		$subscribers->delete();
+	}
+
 	$puzzle->save();
 
 	$puzzle->solve($request->solution, $shared_drive);
+
+	if ($old_status !== $request->status) {
+		notifyPuzzleSubscribers(
+			$puzzle,
+			'*'.$puzzle->getTitle().'* was set to `'.strtoupper($request->status).'`.',
+			$puzzle->getSlackAttachmentMedium(),
+		);
+	}
 
 	$alert = "Saved ".$puzzle->getTitle();
 	redirect('/puzzle/'.$puzzle_id.'/edit', $alert);
@@ -446,6 +473,7 @@ function changePuzzleStatus($puzzle_id, $request) {
 		->filterByID($puzzle_id)
 		->findOne();
 
+	$oldStatus = $puzzle->getStatus();
 	$newStatus = $request->status;
 	$puzzle->setStatus($newStatus);
 	$puzzle->save();
@@ -506,6 +534,18 @@ function reorderMeta($puzzle_id, $request) {
 	redirect('/');
 }
 
+function notifyPuzzleSubscribers($puzzle, $message, $attachments) {
+	$slack_ids = PuzzleMemberQuery::create()
+		->filterByPuzzleId($puzzle->getId())
+		->innerJoinWithMember()
+		->select('Member.SlackId')
+		->find()
+		->toArray();
+
+	foreach ($slack_ids as $slack_id) {
+		sendDirectMessage($message, $attachments, $slack_id);
+	}
+}
 
 // ADDING PUZZLES
 
