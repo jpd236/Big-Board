@@ -33,6 +33,7 @@ Create a `#big-board` channel.
     - `users:write`
     - `channels:manage`
     - `channels:join`
+    - `im:write`
 
 1. Click "Slash Commands". Create these seven commands. For each one, define the Request URL as `http://[YOURAPP].herokuapp.com/tobybot`. Include Descriptions and Usage Hints as desired.
     - `/board`: Query for puzzle status
