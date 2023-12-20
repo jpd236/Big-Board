@@ -652,6 +652,8 @@ body.tags .solution-cell {
     background-image: url("/img/drive.png"); }
   .puzzle-links .link-slack::before {
     background-image: url("/img/slack.png"); }
+  .puzzle-links .link-jitsi::before {
+    background-image: url("/img/camera.png"); }
 
 
 aside .buttons .btn, aside .buttons button {

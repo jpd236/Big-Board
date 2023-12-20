@@ -511,6 +511,12 @@ td.solution-cell {
             background-image :url('/img/slack.png');
         }
     }
+
+    .link-jitsi {
+        &::before {
+            background-image :url('/img/camera.png');
+        }
+    }
 }
 
 .tag-list {
