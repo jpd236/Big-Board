@@ -156,3 +156,39 @@ propel sql:insert
 ```
 
 Set up automatic deployments by connecting your Heroku instance to your GitHub repo.
+
+## Preparing for Hunt
+
+- Make a new Drive folder for the current year (if none exists), and add a nested
+  folder for puzzles. The double nesting ensures that only one folder shows up to
+  select when users have to log in, so they can't accidentally select the wrong
+  one. Update the Heroku environment variables with both folder IDs.
+
+- Archive any Slack channels for puzzles from the prior hunt:
+
+  ```
+  pip install slack_sdk
+  TOBYBOT_SLACK_KEY="..." python archive_puzzle_slack_channels.py
+  ```
+
+- Backup the database:
+
+  ```
+  mysqldump -h $BIG_BOARD_DB_HOST -u $BIG_BOARD_DB_USERNAME -p $BIG_BOARD_DB_NAME > backup.sql
+  ```
+
+  You will need to enter the password on the command line when prompted.
+
+- Clear the puzzle and member tables:
+
+  ```
+  mysql -h $BIG_BOARD_DB_HOST -u $BIG_BOARD_DB_USERNAME -p $BIG_BOARD_DB_NAME
+  # enter password
+  DELETE FROM member;
+  DELETE FROM puzzle;
+  DELETE FROM puzzle_archive;
+  exit;
+  ```
+
+- Send out the tech workflow email, updating the prior year's doc. Ensure the
+  Slack invitation is valid.
