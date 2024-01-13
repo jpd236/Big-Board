@@ -44,9 +44,15 @@ function createNewSlackChannel($slug) {
 		]);
 
     if (array_key_exists("error", $slack_response)) {
-      error_log(sprintf("Error creating slack channel: %s",
-                        $slack_response["error"]));
-      error_log(serialize($slack_response));
+	  if ($slack_response["error"] == "name_taken") {
+		// Find the existing channel.
+		return getSlackChannelID($slug);
+	  } else {
+		error_log(sprintf("Error creating slack channel: %s",
+			$slack_response["error"]));
+		error_log(serialize($slack_response));
+		return "";
+	  }
     }
 
     $id = $slack_response["channel"]["id"];
